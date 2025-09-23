@@ -42,22 +42,26 @@ public class PowerUp extends EnhancedMapTile{
         }
     }
 
+
+    //Raster issues previously due to animations, will work now
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 40)
-                        .withScale(3)
+                new FrameBuilder(spriteSheet.getSprite(0, 0))
+                        .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build(),
+                /* 
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
-                        .withScale(3)
+                        .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 40)
-                        .withScale(3)
+                        .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build()
+                */
             });
         }};
     }

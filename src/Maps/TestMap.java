@@ -51,7 +51,11 @@ public class TestMap extends Map {
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(32, 7).getLocation());
         
+        PowerUp tester = new PowerUp(getMapTile(15,9).getLocation(),"tester","PowerUp.png");
+        //PowerUp tester = new PowerUp(getMapTile(15,9).getLocation(),"tester","Cat.png");
+
         enhancedMapTiles.add(endLevelBox);
+        enhancedMapTiles.add(tester);
 
         return enhancedMapTiles;
     }
