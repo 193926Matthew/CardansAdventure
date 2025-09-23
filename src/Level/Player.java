@@ -47,6 +47,7 @@ public abstract class Player extends GameObject {
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
+    protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -205,7 +206,7 @@ public abstract class Player extends GameObject {
     protected void playerJumping() {
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
-        if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
+        if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
 
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
@@ -310,13 +311,16 @@ public abstract class Player extends GameObject {
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
         // if player collides with a map tile below it, it is now on the ground
         // if player does not collide with a map tile below, it is in air
-        if (direction == Direction.DOWN) {
+        if (direction == Direction.DOWN || isOnPlatform) {
             if (hasCollided) {
                 momentumY = 0;
                 airGroundState = AirGroundState.GROUND;
-            } else {
+                //System.out.println("On Platform"); uncomment to see if player is on platform
+            } else{
                 playerState = PlayerState.JUMPING;
                 airGroundState = AirGroundState.AIR;
+                //System.out.println("Not On Platform"); uncomment to see if player is not on platform
+                isOnPlatform = false; //reset the isOnPlatform only if the player is falling
             }
         }
 
@@ -346,7 +350,7 @@ public abstract class Player extends GameObject {
     // if player has beaten level, this will be the update cycle
     public void updateLevelCompleted() {
         // if player is not on ground, player should fall until it touches the ground
-        if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this)) {
+        if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this) && !isOnPlatform) {
             currentAnimationName = "FALL_RIGHT";
             applyGravity();
             increaseMomentum();
@@ -410,6 +414,14 @@ public abstract class Player extends GameObject {
         return facingDirection;
     }
 
+    public void setIsOnPlatform(boolean isOnPlatfrom){
+        this.isOnPlatform = isOnPlatfrom;
+    }
+
+    public void setAirGroundState(AirGroundState airGroundState) {
+        this.airGroundState = airGroundState;
+    }
+
     public void setFacingDirection(Direction facingDirection) {
         this.facingDirection = facingDirection;
     }
@@ -423,7 +435,7 @@ public abstract class Player extends GameObject {
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
+    /* 
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
         drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
