@@ -1,5 +1,5 @@
 package Maps;
-
+import EnhancedMapTiles.PowerUp;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
@@ -50,6 +50,7 @@ public class TestMap extends Map {
         enhancedMapTiles.add(hmp);
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(32, 7).getLocation());
+        
         enhancedMapTiles.add(endLevelBox);
 
         return enhancedMapTiles;
