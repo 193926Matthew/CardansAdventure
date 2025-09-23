@@ -118,9 +118,9 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
-            case ATTACKING:
-                playerAttack();
-                break;
+            // case ATTACKING:
+            //     playerAttack();
+            //     break;
         }
     }
 
@@ -141,9 +141,9 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
-        else if (Keyboard.isKeyDown(ATTACK)) {
-            playerState = PlayerState.ATTACKING;
-        }
+        // else if (Keyboard.isKeyDown(ATTACK)) {
+        //     playerState = PlayerState.ATTACKING;
+        // }
     }
 
     // player WALKING state logic
@@ -172,9 +172,9 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
-        else if (Keyboard.isKeyDown(ATTACK)) {
-            playerState = PlayerState.ATTACKING;
-        }
+        // else if (Keyboard.isKeyDown(ATTACK)) {
+        //     playerState = PlayerState.ATTACKING;
+        // }
     }
 
     // player CROUCHING state logic
@@ -189,17 +189,17 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
-        if (Keyboard.isKeyDown(ATTACK)) {
-            playerState = PlayerState.ATTACKING;
-        }
+        // if (Keyboard.isKeyDown(ATTACK)) {
+        //     playerState = PlayerState.ATTACKING;
+        // }
     } 
 
-    protected void playerAttack() {
-        // if crouch key is released, player enters STANDING state
-        if (Keyboard.isKeyUp(ATTACK)) {
-            playerState = PlayerState.STANDING;
-        }
-    }
+    // protected void playerAttack() {
+    //     // if crouch key is released, player enters STANDING state
+    //     if (Keyboard.isKeyUp(ATTACK)) {
+    //         playerState = PlayerState.STANDING;
+    //     }
+    // }
 
     // player JUMPING state logic
     protected void playerJumping() {
@@ -281,10 +281,10 @@ public abstract class Player extends GameObject {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
         }
-        else if (playerState == PlayerState.ATTACKING) {
-            // sets animation to a ATTACK animation based on which way player is facing
-            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
-        }
+        // else if (playerState == PlayerState.ATTACKING) {
+        //     // sets animation to a ATTACK animation based on which way player is facing
+        //     this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
+        // }
         else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
