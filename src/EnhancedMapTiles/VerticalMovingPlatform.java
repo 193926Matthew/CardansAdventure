@@ -1,7 +1,4 @@
 package EnhancedMapTiles;
-//TODO: FIX JUMPING WHEN PLATFORM MOVES DOWN CAN DO BY
-//1, MAKE A CHECK WHEN A PLAYER TOUVHES THE PLAFORM AND THEN ADD ANOTHER CHECK WHEN THE PLAYER JUMPS OFF
-//JUST MAKE THE PLAYER BE ABLE TO JUMP WHILE MOVING DOWN
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import GameObject.Rectangle;
@@ -53,15 +50,17 @@ public class VerticalMovingPlatform extends EnhancedMapTile {
 
         moveY(moveAmountY);
 
-        // Check if the player is standing on top of the platform
-        boolean playerOnPlatform = Math.abs(player.getBounds().getY2() - this.getBounds().getY1()) <= 2&&
-                player.getBounds().getX2() > this.getBounds().getX1() &&
-                player.getBounds().getX1() < this.getBounds().getX2() &&
-                player.getAirGroundState() == AirGroundState.GROUND;
+        // Check if the player is standing on top of the platform with a 5 pixel tolerance
+        boolean playerOnPlatform = 
+        player.getBounds().getY2() <= this.getBounds().getY1() + 5 &&
+        player.getBounds().getY2() >= this.getBounds().getY1() - 5 && 
+        player.getBounds().getX2() > this.getBounds().getX1() &&
+        player.getBounds().getX1() < this.getBounds().getX2();
 
-        // Move the player along with the platform if standing on it
+
+        // Move the players Y with the vertical platform 
         if (playerOnPlatform) {
-            player.moveYHandleCollision(moveAmountY);
+            player.moveY(moveAmountY); 
             player.setIsOnPlatform(true);
         }
         
@@ -78,12 +77,6 @@ public class VerticalMovingPlatform extends EnhancedMapTile {
             moveY(difference);
             moveAmountY += difference;
             direction = Direction.UP;
-        }
-
-        
-
-        if (touching(player) && (player.getBounds().getX2() + 1) == getBounds().getX1() && player.getAirGroundState() == AirGroundState.GROUND) {
-            player.moveYHandleCollision(moveAmountY);
         }
 
         super.update(player);

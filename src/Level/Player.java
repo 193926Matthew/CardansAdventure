@@ -43,6 +43,7 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
+    protected Key ATTACK = Key.Q;
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
@@ -105,6 +106,7 @@ public abstract class Player extends GameObject {
     // based on player's current state, call appropriate player state handling method
     protected void handlePlayerState() {
         switch (playerState) {
+            
             case STANDING:
                 playerStanding();
                 break;
@@ -116,6 +118,9 @@ public abstract class Player extends GameObject {
                 break;
             case JUMPING:
                 playerJumping();
+                break;
+            case ATTACKING:
+                playerAttack();
                 break;
         }
     }
@@ -136,6 +141,9 @@ public abstract class Player extends GameObject {
         // if crouch key is pressed, player enters CROUCHING state
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
+        }
+        else if (Keyboard.isKeyDown(ATTACK)) {
+            playerState = PlayerState.ATTACKING;
         }
     }
 
@@ -165,6 +173,9 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
+        else if (Keyboard.isKeyDown(ATTACK)) {
+            playerState = PlayerState.ATTACKING;
+        }
     }
 
     // player CROUCHING state logic
@@ -179,10 +190,21 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
+        if (Keyboard.isKeyDown(ATTACK)) {
+            playerState = PlayerState.ATTACKING;
+        }
+    } 
+
+    protected void playerAttack() {
+        // if crouch key is released, player enters STANDING state
+        if (Keyboard.isKeyUp(ATTACK)) {
+            playerState = PlayerState.STANDING;
+        }
     }
 
     // player JUMPING state logic
     protected void playerJumping() {
+
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
 
@@ -203,6 +225,7 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
+            
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
@@ -259,6 +282,10 @@ public abstract class Player extends GameObject {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
         }
+        else if (playerState == PlayerState.ATTACKING) {
+            // sets animation to a ATTACK animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
+        }
         else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
@@ -284,17 +311,17 @@ public abstract class Player extends GameObject {
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
         // if player collides with a map tile below it, it is now on the ground
         // if player does not collide with a map tile below, it is in air
-        if (direction == Direction.DOWN) {
+        if (direction == Direction.DOWN || isOnPlatform) {
             if (hasCollided) {
                 momentumY = 0;
                 airGroundState = AirGroundState.GROUND;
-                //System.out.println("On Platform"); uncomment to check if player is on platform
+                //System.out.println("On Platform"); uncomment to see if player is on platform
             } else{
                 playerState = PlayerState.JUMPING;
                 airGroundState = AirGroundState.AIR;
-               //System.out.println("Not On Platform"); uncomment to check if player is not on platform
+                //System.out.println("Not On Platform"); uncomment to see if player is not on platform
+                isOnPlatform = false; //reset the isOnPlatform only if the player is falling
             }
-            isOnPlatform = false; //reset the isOnPlatform flag for next frame
         }
 
         // if player collides with map tile upwards, it means it was jumping and then hit into a ceiling -- immediately stop upwards jump velocity
