@@ -1,22 +1,30 @@
 package Game;
 
-import Engine.DefaultScreen;
-import Engine.GraphicsHandler;
-import Engine.Screen;
 import Screens.CreditsScreen;
+import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+
+import Engine.*;
+import Game.ScreenCoordinator;
+import Level.Map;
+import Maps.TitleScreenMap;
+import SpriteFont.SpriteFont;
 
 /*
  * Based on the current game state, this class determines which Screen should be shown
  * There can only be one "currentScreen", although screens can have "nested" screens
  */
 public class ScreenCoordinator extends Screen {
+
+	        public KeyLocker keyLocker = new KeyLocker();
+        protected ScreenCoordinator screenCoordinator;
+		int i = 0;
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
-	protected GameState gameState;
+	public GameState gameState;
 	protected GameState previousGameState;
 
 	public GameState getGameState() {
@@ -31,11 +39,23 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
-		gameState = GameState.MENU;
+		if (i == 0) {
+			gameState = GameState.LOBBY;
+			i = i + 1;
+		} else {
+			gameState = GameState.LEVEL;
+		}
+
+        
 	}
 
 	@Override
 	public void update() {
+
+				    if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+                initialize();
+            }
+
 		do {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
@@ -50,6 +70,8 @@ public class ScreenCoordinator extends Screen {
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
 						break;
+					case LOBBY:
+						currentScreen = new LobbyScreen(this);
 				}
 				currentScreen.initialize();
 			}

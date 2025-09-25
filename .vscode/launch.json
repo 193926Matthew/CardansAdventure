@@ -9,6 +9,7 @@
             "name": "Game",
             "request": "launch",
             "mainClass": "Game.Game",
+
             "projectName": "CardansAdventure_7fd3023"
         },
         {

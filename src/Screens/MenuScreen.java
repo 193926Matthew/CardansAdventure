@@ -19,7 +19,7 @@ public class MenuScreen extends Screen {
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
-    protected KeyLocker keyLocker = new KeyLocker();
+    public KeyLocker keyLocker = new KeyLocker();
 
     public MenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
