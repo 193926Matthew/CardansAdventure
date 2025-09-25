@@ -3,14 +3,14 @@ package Maps;
 import java.util.ArrayList;
 
 import EnhancedMapTiles.NextLevelBox;
-
+import Game.GameState;
 import Level.EnhancedMapTile;
 import Level.Map;
 
 import Tilesets.CommonTileset;
 import Utils.Point;
 
-public class LobbyMap extends Map{
+public class LobbyMap extends Map {
 
 
 

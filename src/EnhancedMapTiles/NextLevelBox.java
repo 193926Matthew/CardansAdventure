@@ -3,11 +3,18 @@ package EnhancedMapTiles;
 import java.util.HashMap;
 
 import Builders.FrameBuilder;
-import Engine.ImageLoader;
-
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.EnhancedMapTile;
+
+import Engine.*;
+import Game.ScreenCoordinator;
+import Level.Map;
+import Maps.TitleScreenMap;
+import SpriteFont.SpriteFont;
+
+import java.awt.*;
 
 import Level.Player;
 
@@ -17,22 +24,26 @@ import Level.TileType;
 import Utils.Point;
 
 
-public class NextLevelBox extends EnhancedMapTile{
+public class NextLevelBox extends EnhancedMapTile {
+
+        public KeyLocker keyLocker = new KeyLocker();
+        protected ScreenCoordinator screenCoordinator;
+        
+
+
 
 
 
     public NextLevelBox(Point location) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("GoldBox.png"), 16, 16), TileType.PASSABLE);
+
     }
 
     @Override
     public void update(Player player) {
         super.update(player);
-        if (intersects(player)) {
-            System.out.println("The next level");
-            
-        }
     }
+    
 
         @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
@@ -54,3 +65,4 @@ public class NextLevelBox extends EnhancedMapTile{
         }};
     }
 }
+

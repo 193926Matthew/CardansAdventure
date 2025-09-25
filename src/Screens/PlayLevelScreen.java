@@ -13,7 +13,7 @@ import Players.Cat;
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
-    protected Map map;
+    protected static Map map;
     protected Player player;
     protected PlayLevelScreenState playLevelScreenState;
     protected int screenTimer;
