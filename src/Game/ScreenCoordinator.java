@@ -4,6 +4,7 @@ import Engine.DefaultScreen;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.CreditsScreen;
+import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 
@@ -16,7 +17,7 @@ public class ScreenCoordinator extends Screen {
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
-	protected GameState gameState;
+	public GameState gameState;
 	protected GameState previousGameState;
 
 	public GameState getGameState() {
@@ -31,7 +32,7 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
-		gameState = GameState.MENU;
+		gameState = GameState.LOBBY;
 	}
 
 	@Override
@@ -50,6 +51,8 @@ public class ScreenCoordinator extends Screen {
 					case CREDITS:
 						currentScreen = new CreditsScreen(this);
 						break;
+					case LOBBY:
+						currentScreen = new LobbyScreen(this);
 				}
 				currentScreen.initialize();
 			}

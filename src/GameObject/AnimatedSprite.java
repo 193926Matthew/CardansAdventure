@@ -1,6 +1,7 @@
 package GameObject;
 
 import Engine.GraphicsHandler;
+
 import Utils.Point;
 
 import java.awt.*;
