@@ -43,7 +43,15 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
-    protected Key ATTACK = Key.Q;
+    protected Key TAIL_ATTACK_KEY = Key.T;
+
+    //Attack variables
+    private boolean isAttacking = false;
+    private boolean isReturning = false;
+    private int attackStartX;
+    private int attackDistance = 40; // pixels forward
+    private int attackSpeed = 4;     // dash speed
+
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
@@ -57,6 +65,8 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
+
+        
     }
 
     public void update() {
@@ -119,14 +129,15 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
-            // case ATTACKING:
-            //     playerAttack();
-            //     break;
+            case ATTACKING:
+                playerAttacking();
+                break;
         }
     }
 
     // player STANDING state logic
     protected void playerStanding() {
+        isAttacking = false;
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
@@ -142,9 +153,11 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
-        // else if (Keyboard.isKeyDown(ATTACK)) {
-        //     playerState = PlayerState.ATTACKING;
-        // }
+
+        //should check if the attack key is being pressed as well
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
+    playerState = PlayerState.ATTACKING;
+}
     }
 
     // player WALKING state logic
@@ -173,9 +186,11 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(CROUCH_KEY)) {
             playerState = PlayerState.CROUCHING;
         }
-        // else if (Keyboard.isKeyDown(ATTACK)) {
-        //     playerState = PlayerState.ATTACKING;
-        // }
+
+        //should check if the attack key is being pressed as well
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
+    playerState = PlayerState.ATTACKING;
+}
     }
 
     // player CROUCHING state logic
@@ -190,17 +205,12 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
-        // if (Keyboard.isKeyDown(ATTACK)) {
-        //     playerState = PlayerState.ATTACKING;
-        // }
+         if (Keyboard.isKeyDown(TAIL_ATTACK_KEY)) {
+            playerState = PlayerState.ATTACKING;
+        }
     } 
 
-    // protected void playerAttack() {
-    //     // if crouch key is released, player enters STANDING state
-    //     if (Keyboard.isKeyUp(ATTACK)) {
-    //         playerState = PlayerState.STANDING;
-    //     }
-    // }
+    
 
     // player JUMPING state logic
     protected void playerJumping() {
@@ -252,6 +262,64 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
     }
+
+    // player ATTACKING state logic
+protected void playerAttacking() {
+    // if attack just started, set up
+    if (!isAttacking && !isReturning) {
+        isAttacking = true;
+        attackStartX = (int) getX();
+
+        // set animation
+        currentAnimationName = facingDirection == Direction.RIGHT ? 
+                "TAIL_ATTACK_RIGHT" : "TAIL_ATTACK_LEFT";
+    }
+
+    if (isAttacking) {
+        // dash forward
+        if (facingDirection == Direction.RIGHT) {
+            moveAmountX += attackSpeed;
+            if (getX() >= attackStartX + attackDistance) {
+                isAttacking = false;
+                isReturning = true;
+
+                // flip around before returning
+                facingDirection = Direction.LEFT;
+                currentAnimationName = "TAIL_ATTACK_LEFT";
+            }
+        } else {
+            moveAmountX -= attackSpeed;
+            if (getX() <= attackStartX - attackDistance) {
+                isAttacking = false;
+                isReturning = true;
+
+                // flip around before returning
+                facingDirection = Direction.RIGHT;
+                currentAnimationName = "TAIL_ATTACK_RIGHT";
+            }
+        }
+    } 
+    else if (isReturning) {
+        // dash back toward start position
+        if (facingDirection == Direction.LEFT) {
+            moveAmountX -= attackSpeed;
+            if (getX() <= attackStartX) {
+                isReturning = false;
+                playerState = PlayerState.STANDING;
+                facingDirection = Direction.RIGHT; // restore original facing
+            }
+        } else {
+            moveAmountX += attackSpeed;
+            if (getX() >= attackStartX) {
+                isReturning = false;
+                playerState = PlayerState.STANDING;
+                facingDirection = Direction.LEFT; // restore original facing
+            }
+        }
+    }
+}
+
+
 
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
@@ -305,11 +373,18 @@ public abstract class Player extends GameObject {
     }
 
     @Override
-    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { }
+    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { 
+       // if (direction == Direction.RIGHT) {
+       //     if (hasCollided && isAttacking) {
+       //         isAttacking = false;
+       //         this.previousX = x - 10;
+       //     } 
+       // }
+    }
 
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
-        // if player collides with a map tile below it, it is now on the ground
+        // if player collides 5swith a map tile below it, it is now on the ground
         // if player does not collide with a map tile below, it is in air
         if (direction == Direction.DOWN || isOnPlatform) {
             if (hasCollided) {

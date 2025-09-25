@@ -19,8 +19,8 @@ import java.util.HashMap;
 public class Cat extends Player {
         private static float xCardan = 10;
         private static float yCardan = 8;
-        private static int wCardan = 50;
-        private static int hCardan = 50;
+        private static int wCardan = 48;
+        private static int hCardan = 48;
 
     public Cat(float x, float y) {
         super(new SpriteSheet(ImageLoader.load("Cardan.png"), 70, 70), x, y-100, "STAND_RIGHT");
@@ -30,7 +30,7 @@ public class Cat extends Player {
         jumpDegrade = .5f;
         walkSpeed = 4.3f;
         momentumYIncrease = .5f;
-
+        
     }
 
     public void update() {
@@ -276,6 +276,32 @@ public class Cat extends Player {
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
+
+            put("TAIL_ATTACK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), 12) // example frame
+                        .withScale(1)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), 12) // next frame
+                        .withScale(1)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build()
+            });
+
+           put("TAIL_ATTACK_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), 12)
+                        .withScale(1)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), 12)
+                        .withScale(1)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build()
+            });
+
         }};
+        
     }
 }
