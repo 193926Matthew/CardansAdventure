@@ -22,6 +22,7 @@ public class Cat extends Player {
         jumpDegrade = .5f;
         walkSpeed = 2.3f;
         momentumYIncrease = .5f;
+        
     }
 
     public void update() {
@@ -179,6 +180,32 @@ public class Cat extends Player {
                             .withBounds(8, 9, 8, 9)
                             .build()
             });
+
+            put("TAIL_ATTACK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 12) // example frame
+                        .withScale(3)
+                        .withBounds(8, 9, 8, 9)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 12) // next frame
+                        .withScale(3)
+                        .withBounds(8, 9, 8, 9)
+                        .build()
+            });
+
+           put("TAIL_ATTACK_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 12)
+                        .withScale(3)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(8, 9, 8, 9)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
+                        .withScale(3)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(8, 9, 8, 9)
+                        .build()
+            });
+
         }};
+        
     }
 }
