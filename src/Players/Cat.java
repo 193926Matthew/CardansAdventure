@@ -1,5 +1,6 @@
 package Players;
 
+import java.awt.Color;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -12,16 +13,24 @@ import java.util.HashMap;
 
 // This is the class for the Cat player character
 // basically just sets some values for physics and then defines animations
+
+// Need to rename to Cardan
+
 public class Cat extends Player {
+        private static float xCardan = 10;
+        private static float yCardan = 8;
+        private static int wCardan = 50;
+        private static int hCardan = 50;
 
     public Cat(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24), x, y, "STAND_RIGHT");
-        gravity = .5f;
+        super(new SpriteSheet(ImageLoader.load("Cardan.png"), 70, 70), x, y-100, "STAND_RIGHT");
+        gravity = 1f;
         terminalVelocityY = 6f;
         jumpHeight = 14.5f;
         jumpDegrade = .5f;
-        walkSpeed = 2.3f;
+        walkSpeed = 4.3f;
         momentumYIncrease = .5f;
+
     }
 
     public void update() {
@@ -36,147 +45,235 @@ public class Cat extends Player {
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
+
+        //     put("ATTACK_RIGHT", new Frame[] {
+        //             new FrameBuilder(spriteSheet.getSprite(7, 0), 7)
+        //                     .withScale(1)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build(),
+        //             new FrameBuilder(spriteSheet.getSprite(7, 1), 7)
+        //                     .withScale(1)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build(),
+        //             new FrameBuilder(spriteSheet.getSprite(7, 2), 7)
+        //                     .withScale(1)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build()
+        //     });
+
+        //                 put("ATTACK_LEFT", new Frame[] {
+        //             new FrameBuilder(spriteSheet.getSprite(7, 0), 7)
+        //                     .withScale(1)
+        //                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build(),
+        //             new FrameBuilder(spriteSheet.getSprite(7, 1), 7)
+        //                     .withScale(1)
+        //                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build(),
+        //             new FrameBuilder(spriteSheet.getSprite(7, 2), 7)
+        //                     .withScale(1)
+        //                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+        //                     .withBounds(xCardan, yCardan, wCardan, hCardan)
+        //                     .build()
+        //     });
+
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("WALK_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("JUMP_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(2, 0))
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 1), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 2), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 3), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("JUMP_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(2, 0))
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 14)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 1), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 2), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 3), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("FALL_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(3, 0))
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 1), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 2), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 3), 14)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("FALL_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(3, 0))
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 14)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 1), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 2), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(3, 3), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("CROUCH_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(4, 0))
-                            .withScale(3)
-                            .withBounds(8, 12, 8, 6)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("CROUCH_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(4, 0))
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 12, 8, 6)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("DEATH_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(5, 0), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(5, 1), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(5, 2), -1)
-                            .withScale(3)
+                            .withScale(1)
                             .build()
             });
 
             put("DEATH_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(5, 0), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(5, 1), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(5, 2), -1)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .build()
             });
 
             put("SWIM_STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(6, 0))
-                            .withScale(3)
-                            .withBounds(8, 9, 8, 9)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
             put("SWIM_STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(6, 0))
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(8, 9, 8, 9)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
         }};
