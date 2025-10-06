@@ -47,9 +47,9 @@ public class Camera extends Rectangle {
         return new Point(xIndex, yIndex);
     }
 
-    public void update(Player player) {
+    public void update(Player player, Player hitbox) {
         updateMapTiles();
-        updateMapEntities(player);
+        updateMapEntities(player, hitbox);
     }
 
     private void updateMapTiles() {
@@ -61,13 +61,13 @@ public class Camera extends Rectangle {
 
     // update map entities currently a part of the update/draw cycle
     // active entities are calculated each frame using the loadActiveEntity methods below
-    public void updateMapEntities(Player player) {
+    public void updateMapEntities(Player player, Player hitbox) {
         activeEnemies = loadActiveEnemies();
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
 
         for (Enemy enemy : activeEnemies) {
-            enemy.update(player);
+            enemy.update(player, hitbox);
         }
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {

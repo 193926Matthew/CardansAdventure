@@ -25,6 +25,7 @@ public class BugEnemy extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
+    private int health = 20;
 
     public BugEnemy(Point location, Direction facingDirection) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 24, 15), "WALK_LEFT");
@@ -33,6 +34,15 @@ public class BugEnemy extends Enemy {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
+        if (isDead()) {
+            if (health >= 0) {
+                health = health - 1;
+                System.out.println(health);
+                this.live();
+            } else {
+            return;
+            }
+        }
         super.draw(graphicsHandler);
         // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
@@ -51,7 +61,8 @@ public class BugEnemy extends Enemy {
     }
 
     @Override
-    public void update(Player player) {
+    public void update(Player player, Player hitbox) {
+
         float moveAmountX = 0;
         float moveAmountY = 0;
 
@@ -71,7 +82,7 @@ public class BugEnemy extends Enemy {
         moveYHandleCollision(moveAmountY);
         moveXHandleCollision(moveAmountX);
 
-        super.update(player);
+        super.update(player, hitbox);
     }
 
     @Override

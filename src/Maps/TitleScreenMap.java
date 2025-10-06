@@ -1,5 +1,6 @@
 package Maps;
 
+import Enemies.Hitbox;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Sprite;
@@ -26,5 +27,6 @@ public class TitleScreenMap extends Map {
         super.draw(graphicsHandler);
         cat.draw(graphicsHandler);
     }
+
 
 }

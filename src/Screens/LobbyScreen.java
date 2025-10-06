@@ -1,10 +1,12 @@
 package Screens;
 
+import Enemies.Hitbox;
 import Engine.GraphicsHandler;
 
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.Enemy;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -15,6 +17,7 @@ public class LobbyScreen extends Screen implements PlayerListener{
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
+    protected Hitbox hitbox;
     protected LobbyScreenState lobbyScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
@@ -31,7 +34,9 @@ public class LobbyScreen extends Screen implements PlayerListener{
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+        this.hitbox = new Hitbox(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y, player);
         this.player.setMap(map);
+        this.hitbox.setMap(map);
         this.player.addListener(this);
 
         levelClearedScreen = new LevelClearedScreen();
@@ -46,7 +51,9 @@ public class LobbyScreen extends Screen implements PlayerListener{
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
-                map.update(player);
+                map.update(player, hitbox);
+                hitbox.update();
+                
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
@@ -74,6 +81,7 @@ public class LobbyScreen extends Screen implements PlayerListener{
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+                hitbox.draw(graphicsHandler);
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);

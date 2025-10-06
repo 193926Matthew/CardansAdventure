@@ -1,6 +1,7 @@
 package Enemies;
 
 import Builders.FrameBuilder;
+import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
@@ -12,6 +13,7 @@ import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 // This class is for the green dinosaur enemy that shoots fireballs
@@ -27,6 +29,7 @@ public class DinosaurEnemy extends Enemy {
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
+    private int health = 10;
 
     // timer is used to determine how long dinosaur freezes in place before shooting fireball
     protected int shootWaitTimer;
@@ -63,8 +66,31 @@ public class DinosaurEnemy extends Enemy {
         shootWaitTimer = 65;
     }
 
+
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (isDead()) {
+            if (health >= 0) {
+                health = health - 1;
+                System.out.println(health);
+                this.live();
+            } else {
+                return;
+            }
+        }
+        super.draw(graphicsHandler);
+        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
+    }
+
     @Override
-    public void update(Player player) {
+    public void update(Player player, Player hitbox) {
+
+
+        if (health <= 0) {
+            currentAnimationName = "DEAD";
+            super.update();
+            return;
+        }
+        
         float startBound = startLocation.x;
         float endBound = endLocation.x;
 
@@ -144,7 +170,7 @@ public class DinosaurEnemy extends Enemy {
             shootWaitTimer = 130;
         }
 
-        super.update(player);
+        super.update(player, hitbox);
 
         previousDinosaurState = dinosaurState;
     }
@@ -199,6 +225,14 @@ public class DinosaurEnemy extends Enemy {
 
             put("SHOOT_RIGHT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(1, 0))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 5, 13)
+                            .build(),
+            });
+
+            put("DEAD", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(1, 1))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 5, 13)

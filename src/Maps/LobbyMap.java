@@ -2,6 +2,7 @@ package Maps;
 
 import java.util.ArrayList;
 
+import Enemies.Hitbox;
 import EnhancedMapTiles.NextLevelBox;
 import Game.GameState;
 import Level.EnhancedMapTile;
@@ -18,6 +19,7 @@ public class LobbyMap extends Map {
         super("lobby_map.txt", new CommonTileset());
         this.playerStartPosition = new Point(-5, 1);
     }
+
 
     // @Override
     // public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){

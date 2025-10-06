@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Enemies.Hitbox;
+
 /*
     This class is for defining a map that is used for a specific level
     The map class handles/manages a lot of different things, including:
@@ -327,12 +329,12 @@ public abstract class Map {
         this.adjustCamera = adjustCamera;
     }
 
-    public void update(Player player) {
+    public void update(Player player, Player hitbox) {
         if (adjustCamera) {
             adjustMovementY(player);
             adjustMovementX(player);
         }
-        camera.update(player);
+        camera.update(player, hitbox);
     }
 
     // based on the player's current X position (which in a level can potentially be updated each frame),
@@ -399,4 +401,5 @@ public abstract class Map {
 
     public int getEndBoundX() { return endBoundX; }
     public int getEndBoundY() { return endBoundY; }
+
 }

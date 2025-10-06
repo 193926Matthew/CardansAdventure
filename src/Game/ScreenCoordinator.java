@@ -44,6 +44,7 @@ public class ScreenCoordinator extends Screen {
 			i = i + 1;
 		} else {
 			gameState = GameState.LEVEL;
+			i = i - 1;
 		}
 
         
@@ -52,7 +53,7 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void update() {
 
-				    if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+			if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
                 initialize();
             }
 

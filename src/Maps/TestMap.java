@@ -2,6 +2,7 @@ package Maps;
 import EnhancedMapTiles.PowerUp;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.Hitbox;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
@@ -129,4 +130,6 @@ public class TestMap extends Map {
 
         return npcs;
     }
+
+
 }

@@ -31,7 +31,7 @@ public class Fireball extends Enemy {
     }
 
     @Override
-    public void update(Player player) {
+    public void update(Player player, Player hitbox) {
         // if timer is up, set map entity status to REMOVED
         // the camera class will see this next frame and remove it permanently from the map
         if (existenceFrames == 0) {
@@ -39,7 +39,7 @@ public class Fireball extends Enemy {
         } else {
             // move fireball forward
             moveXHandleCollision(movementSpeed);
-            super.update(player);
+            super.update(player, hitbox);
         }
         existenceFrames--;
     }

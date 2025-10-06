@@ -10,6 +10,8 @@ import Utils.Direction;
 
 import java.util.ArrayList;
 
+import Enemies.Hitbox;
+
 public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
@@ -76,6 +78,7 @@ public abstract class Player extends GameObject {
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
+
             applyGravity();
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
@@ -441,7 +444,16 @@ protected void playerAttackingDash() {
         if (!isInvincible) {
             // if map entity is an enemy, kill player on touch
             if (mapEntity instanceof Enemy) {
-                levelState = LevelState.PLAYER_DEAD;
+                    levelState = LevelState.PLAYER_DEAD;
+                }
+            }
+        }
+
+    public void hurtHitbox(MapEntity mapEntity) {
+        if (!isInvincible) {
+            // if map entity is an enemy, kill player on touch
+            if (mapEntity instanceof Enemy) {
+                    mapEntity.kill();
             }
         }
     }
@@ -456,7 +468,9 @@ protected void playerAttackingDash() {
         // if player is not on ground, player should fall until it touches the ground
         if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this) && !isOnPlatform) {
             currentAnimationName = "FALL_RIGHT";
-            applyGravity();
+            if (gravity != 0f) {
+                applyGravity();
+            }
             increaseMomentum();
             super.update();
             moveYHandleCollision(moveAmountY);
