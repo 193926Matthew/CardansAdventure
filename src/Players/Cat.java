@@ -304,4 +304,12 @@ public class Cat extends Player {
         }};
         
     }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
+    public float getGravity() {
+        return gravity;
+    }  
 }
