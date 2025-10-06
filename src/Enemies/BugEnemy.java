@@ -25,13 +25,14 @@ public class BugEnemy extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
-    private int health = 20;
+    private int health = 25;
 
     public BugEnemy(Point location, Direction facingDirection) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 24, 15), "WALK_LEFT");
         this.startFacingDirection = facingDirection;
         this.initialize();
     }
+
 
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead()) {
