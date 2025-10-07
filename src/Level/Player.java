@@ -374,17 +374,17 @@ protected void playerAttacking() {
 
     @Override
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { 
-       // if (direction == Direction.RIGHT) {
-       //     if (hasCollided && isAttacking) {
-       //         isAttacking = false;
-       //         this.previousX = x - 10;
-       //     } 
-       // }
+        if (direction == Direction.RIGHT || direction == Direction.RIGHT) {
+            if (hasCollided && isAttacking) {
+                isAttacking = false; 
+                 = x - 10;
+            } 
+        }
     }
 
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
-        // if player collides 5swith a map tile below it, it is now on the ground
+        // if player collides with a map tile below it, it is now on the ground
         // if player does not collide with a map tile below, it is in air
         if (direction == Direction.DOWN || isOnPlatform) {
             if (hasCollided) {
