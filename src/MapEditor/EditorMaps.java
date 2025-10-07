@@ -1,6 +1,7 @@
 package MapEditor;
 
 import Level.Map;
+import Maps.JungleMap;
 import Maps.DesertMap;
 import Maps.LobbyMap;
 import Maps.TestMap;
@@ -15,6 +16,7 @@ public class EditorMaps {
             add("TitleScreen");
             add("LobbyMap");
             add("DesertMap");
+            add("JungleMap");
         }};
     }
 
@@ -28,6 +30,8 @@ public class EditorMaps {
                 return new LobbyMap();
             case "DesertMap":
                 return new DesertMap();
+            case "JungleMap":
+                return new JungleMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

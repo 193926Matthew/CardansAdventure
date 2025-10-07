@@ -9,22 +9,16 @@
             "name": "MapEditor",
             "request": "launch",
             "mainClass": "MapEditor.MapEditor",
-            "projectName": "CardansAdventure_7fd3023"
+            "projectName": "CardansAdventure_7c3ee5a9"
         },
         {
             "type": "java",
             "name": "Game",
             "request": "launch",
             "mainClass": "Game.Game",
-<<<<<<< HEAD
-            "projectName": "CardansAdventure_7fd3023"
-=======
-<<<<<<< HEAD
-            "projectName": "SER-225-Game-Platformer_88e2cf55"
-=======
+
             "projectName": "CardansAdventure_7c3ee5a9"
->>>>>>> c11fd03cf3e973dd9ac66664f454811e37963e3c
->>>>>>> 85f7c95714d33c36f214d1216d578a73e6d53a96
+
         },
         {
             "type": "java",
