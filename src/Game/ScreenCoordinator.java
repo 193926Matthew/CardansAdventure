@@ -1,6 +1,8 @@
 package Game;
 
 import Screens.CreditsScreen;
+import Screens.JungleScreen;
+//import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
@@ -46,15 +48,16 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
+		gameState = GameState.MENU;
+
+		/* 
 		if (i == 0) {
-			gameState = GameState.LEVEL;
-			currentGameState = gameState;
+			gameState = GameState.MENU;
 			i = i + 1;
 		} else {
 			gameState = GameState.LOBBY;
-			currentGameState = gameState;
 		}
-
+		*/
         
 	}
 
@@ -65,6 +68,12 @@ public class ScreenCoordinator extends Screen {
                 initialize();
             }
 
+	/* 
+	System.out.println(gameState);
+	if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        initialize();
+    }
+	*/
 		do {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
@@ -81,6 +90,10 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case LOBBY:
 						currentScreen = new LobbyScreen(this);
+						break;
+					case JUNGLE:
+						currentScreen = new JungleScreen(this);
+						break;
 				}
 				currentScreen.initialize();
 			}
