@@ -45,7 +45,8 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
-    protected Key TAIL_ATTACK_KEY = Key.T;
+    protected Key TAIL_ATTACK_DASH_KEY = Key.T;
+    protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
 
     //Attack variables
     private boolean isAttacking = false;
@@ -147,8 +148,11 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
-            case ATTACKING:
-                playerAttacking();
+            case ATTACKING_DASH:
+                playerAttackingDash();
+                break;
+            case ATTACKING_SPIN:
+                playerAttackingSpin();
                 break;
         }
     }
@@ -173,9 +177,13 @@ public abstract class Player extends GameObject {
         }
 
         //should check if the attack key is being pressed as well
-        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
-    playerState = PlayerState.ATTACKING;
-}
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
+        playerState = PlayerState.ATTACKING_DASH;
+        }
+
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+        playerState = PlayerState.ATTACKING_SPIN;
+        }
     }
 
     // player WALKING state logic
@@ -206,9 +214,13 @@ public abstract class Player extends GameObject {
         }
 
         //should check if the attack key is being pressed as well
-        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
-    playerState = PlayerState.ATTACKING;
-}
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
+        playerState = PlayerState.ATTACKING_DASH;
+        }
+
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+        playerState = PlayerState.ATTACKING_SPIN;
+        }
     }
 
     // player CROUCHING state logic
@@ -223,9 +235,26 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
-         if (Keyboard.isKeyDown(TAIL_ATTACK_KEY)) {
-            playerState = PlayerState.ATTACKING;
+         if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY)) {
+            playerState = PlayerState.ATTACKING_DASH;
         }
+        if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+            playerState = PlayerState.ATTACKING_SPIN;
+        }
+    } 
+
+    protected void playerAttackingSpin() {
+
+        // if jump key is pressed, player enters JUMPING state
+        if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+            keyLocker.lockKey(JUMP_KEY);
+            playerState = PlayerState.JUMPING;
+        }
+
+        if (Keyboard.isKeyUp(TAIL_ATTACK_SPIN_KEY)) {
+            playerState = PlayerState.STANDING;
+        }
+
     } 
 
     
@@ -282,7 +311,7 @@ public abstract class Player extends GameObject {
     }
 
     // player ATTACKING state logic
-protected void playerAttacking() {
+protected void playerAttackingDash() {
     // if attack just started, set up
     if (!isAttacking && !isReturning) {
         isAttacking = true;
@@ -290,7 +319,7 @@ protected void playerAttacking() {
 
         // set animation
         currentAnimationName = facingDirection == Direction.RIGHT ? 
-                "TAIL_ATTACK_RIGHT" : "TAIL_ATTACK_LEFT";
+                "TAIL_ATTACK_DASH_RIGHT" : "TAIL_ATTACK_DASH_LEFT";
     }
 
     if (isAttacking) {
@@ -303,7 +332,7 @@ protected void playerAttacking() {
 
                 // flip around before returning
                 facingDirection = Direction.LEFT;
-                currentAnimationName = "TAIL_ATTACK_LEFT";
+                currentAnimationName = "TAIL_ATTACK_DASH_LEFT";
             }
         } else {
             moveAmountX -= attackSpeed;
@@ -313,7 +342,7 @@ protected void playerAttacking() {
 
                 // flip around before returning
                 facingDirection = Direction.RIGHT;
-                currentAnimationName = "TAIL_ATTACK_RIGHT";
+                currentAnimationName = "TAIL_ATTACK_DASH_RIGHT";
             }
         }
     } 
@@ -368,10 +397,10 @@ protected void playerAttacking() {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
         }
-        // else if (playerState == PlayerState.ATTACKING) {
-        //     // sets animation to a ATTACK animation based on which way player is facing
-        //     this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
-        // }
+        else if (playerState == PlayerState.ATTACKING_SPIN) {
+            // sets animation to a ATTACK SPIN animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT_SPIN" : "ATTACK_LEFT_SPIN";
+        }
         else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";

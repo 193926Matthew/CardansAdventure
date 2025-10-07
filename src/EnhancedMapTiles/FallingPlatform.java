@@ -9,7 +9,8 @@ import Level.TileType;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import java.awt.image.BufferedImage;
 
 public class FallingPlatform extends EnhancedMapTile {
@@ -33,10 +34,14 @@ public class FallingPlatform extends EnhancedMapTile {
     public void initialize() {
         super.initialize();
         direction = startDirection;
+        movementSpeed = 1f;
+        isFalling = false;
     }
 
     @Override
     public void update(Player player) {
+
+        Timer timer = new Timer();
 
         // Check if the player is standing on top of the platform with a 5 pixel tolerance
         boolean playerOnPlatform = 
@@ -53,7 +58,7 @@ public class FallingPlatform extends EnhancedMapTile {
         if (isFalling) {
             moveAmountY += movementSpeed;
             //adds acceleration to the falling platform
-            movementSpeed += 0.05;
+            movementSpeed += 0.1;
         }
 
         moveY(moveAmountY);
@@ -63,6 +68,13 @@ public class FallingPlatform extends EnhancedMapTile {
         if (playerOnPlatform) {
             player.setY(player.getY() + moveAmountY);
             player.setIsOnPlatform(true);
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    initialize();
+                }
+            }, 6000);
         }
 
         super.update(player);
