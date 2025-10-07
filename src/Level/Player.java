@@ -7,8 +7,10 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
-
+import EnhancedMapTiles.PowerUp;
 import java.util.ArrayList;
+import Utils.Point;
+import java.util.List;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -45,6 +47,9 @@ public abstract class Player extends GameObject {
     protected Key CROUCH_KEY = Key.DOWN;
     protected Key TAIL_ATTACK_DASH_KEY = Key.T;
     protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
+    protected Key DOUBLE_JUMP_KEY = Key.D;
+    protected Key ICE_BALL_KEY = Key.I;
+
 
     //Attack variables
     private boolean isAttacking = false;
@@ -53,6 +58,12 @@ public abstract class Player extends GameObject {
     private int attackDistance = 40; // pixels forward
     private int attackSpeed = 4;     // dash speed
 
+    //PowerUp variables
+    private boolean hasDoubleJump = false;
+    private boolean usedDoubleJump = false;
+    private boolean hasIceBall = false;
+    private boolean hasJumped = false;
+    private int doubleJumpKeyCount = 0;
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
@@ -136,6 +147,12 @@ public abstract class Player extends GameObject {
             case ATTACKING_SPIN:
                 playerAttackingSpin();
                 break;
+            case DOUBLE_JUMP:
+                playerDoubleJump();
+                break;
+            case ICE_BALL:
+                playerIceBallAttack();
+                break;
         }
     }
 
@@ -166,6 +183,12 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
         }
+        else if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+            playerState = PlayerState.ICE_BALL;
+        }
+
+
+
     }
 
     // player WALKING state logic
@@ -203,6 +226,10 @@ public abstract class Player extends GameObject {
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
         }
+
+        else if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+            playerState = PlayerState.ICE_BALL;
+        }
     }
 
     // player CROUCHING state logic
@@ -223,10 +250,14 @@ public abstract class Player extends GameObject {
         if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
             playerState = PlayerState.ATTACKING_SPIN;
         }
+
+        //if player is crouched, and hits the ice key, then if they have the powerup it will activate
+        if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+            playerState = PlayerState.ICE_BALL;
+        }
     } 
 
     protected void playerAttackingSpin() {
-
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
             keyLocker.lockKey(JUMP_KEY);
@@ -239,10 +270,90 @@ public abstract class Player extends GameObject {
 
     } 
 
-    
+    protected void playerDoubleJump(){
+        //if jump key is pressed and the key is not locked
+        if(Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)){
+            //locks the jump key
+            keyLocker.lockKey(JUMP_KEY);
+            //enters jumping state
+            playerState = PlayerState.JUMPING;
+            hasJumped = true;
+        }
+        //if Cardan is in the air, and the Double Jump key is not locked
+        if(previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.AIR && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY)){
+            //If Double jump key is pressed
+              if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY) && hasDoubleJump() == true){ 
+                    keyLocker.lockKey(DOUBLE_JUMP_KEY);
+                    usedDoubleJump = false;
+                    doubleJumpKeyCount +=1;
+                if(doubleJumpKeyCount == 2 && Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && usedDoubleJump == false){
+                    usedDoubleJump = true;
+                //keyLocker.unlockKey(DOUBLE_JUMP_KEY);
+                currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
+                airGroundState = AirGroundState.AIR;
+                jumpForce = jumpHeight * 2;
+                jumpForce -= 10;
+                if (jumpForce > 0) {
+                moveAmountY -= jumpForce;
+                jumpForce -= jumpDegrade;
+                if (jumpForce < 0) {
+                    jumpForce = 0;
+                }
+                doubleJumpKeyCount = 0;
+                usedDoubleJump = false;
+                }
+            }
+              }
+        }
+
+        if(Keyboard.isKeyUp(DOUBLE_JUMP_KEY)){
+            keyLocker.unlockKey(DOUBLE_JUMP_KEY);
+        }
+    }
+
+    protected void playerIceBallAttack(){
+        if(hasIceBall && Keyboard.isKeyDown(ICE_BALL_KEY) && !keyLocker.isKeyLocked(ICE_BALL_KEY)){
+            keyLocker.lockKey(ICE_BALL_KEY);
+            fireIceBall();
+        }
+        if(Keyboard.isKeyUp(ICE_BALL_KEY)){
+            keyLocker.unlockKey(ICE_BALL_KEY);
+            playerState = PlayerState.WALKING;
+        }
+    }
+
+    protected void fireIceBall(){
+        //float speed = facingDirection == Direction.RIGHT ? 3.0f: -3.0f;
+        float speed = 0;
+
+        //Point spawn = new Point(getX() + offsetX,getY());
+        //IceBall iceBall = new IceBall(spawn,speed,60);
+        //this.map.addEnhancedMapTile(iceBall);
+        if(this.facingDirection == Direction.RIGHT){
+            for(int i = 0; i < 3; i++){
+                Point spawn = new Point(Math.round(getX() + getWidth()), getY() + (i * 10));
+                speed = 1.5f;
+                IceBall iceBall = new IceBall(spawn,speed + (i*1.2f),60,map.getEnemies());
+                map.addEnhancedMapTile(iceBall);
+            }
+
+        }else{
+            for(int i = 0; i < 3; i++){
+                Point spawn = new Point(Math.round(getX() - 21), getY() + (i * 10));
+                speed = -1.5f;
+                IceBall iceBall = new IceBall(spawn,speed + (i*0.5f),60,map.getEnemies());
+                map.addEnhancedMapTile(iceBall);
+            }
+
+        }
+    }
+        
+    
+    
     // player JUMPING state logic
     protected void playerJumping() {
+
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
@@ -264,7 +375,10 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
-            
+            if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY)){
+                playerState = PlayerState.DOUBLE_JUMP;
+            }
+
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
@@ -284,16 +398,23 @@ public abstract class Player extends GameObject {
             if (moveAmountY > 0) {
                 increaseMomentum();
             }
+
+
+            
         }
 
         // if player last frame was in air and this frame is now on ground, player enters STANDING state
         else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
             playerState = PlayerState.STANDING;
         }
+
+        if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+            playerState = PlayerState.ICE_BALL;
+        }
     }
 
     // player ATTACKING state logic
-protected void playerAttackingDash() {
+    protected void playerAttackingDash() {
     // if attack just started, set up
     if (!isAttacking && !isReturning) {
         isAttacking = true;
@@ -349,7 +470,21 @@ protected void playerAttackingDash() {
 }
 
 
+    public void setHasDoubleJump(boolean value){
+        this.hasDoubleJump = value;
+    }
 
+    public boolean hasDoubleJump(){
+        return hasDoubleJump;
+    }
+
+     public void setHasIceBall(boolean value){
+        this.hasIceBall = value;
+    }
+
+    public boolean hasIceBall(){
+        return hasIceBall;
+    }
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
         momentumY += momentumYIncrease;

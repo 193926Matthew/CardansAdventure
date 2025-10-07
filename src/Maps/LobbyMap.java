@@ -9,6 +9,7 @@ import Level.Map;
 
 import Tilesets.CommonTileset;
 import Utils.Point;
+import EnhancedMapTiles.PowerUp;
 
 public class LobbyMap extends Map {
 
