@@ -66,7 +66,10 @@ public class TestMap extends Map {
         );
         enhancedMapTiles.add(hmp);
         
-        PowerUp tester = new PowerUp(getMapTile(15,9).getLocation(),"tester","PowerUp.png");
+        PowerUp doubleJump = new PowerUp(getMapTile(15,9).getLocation(),"Double Jump","doubleJump.png");
+
+        PowerUp iceBall = new PowerUp(getMapTile(10,9).getLocation(),"Ice Ball","ICEPOWER.png");
+
         //PowerUp tester = new PowerUp(getMapTile(15,9).getLocation(),"tester","Cat.png");
 
         HorizontalMovingPlatform hmp2 = new HorizontalMovingPlatform(
@@ -115,7 +118,8 @@ public class TestMap extends Map {
         
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(78, 10).getLocation());
         enhancedMapTiles.add(endLevelBox);
-        enhancedMapTiles.add(tester);
+        enhancedMapTiles.add(doubleJump);
+        enhancedMapTiles.add(iceBall);
 
         return enhancedMapTiles;
         

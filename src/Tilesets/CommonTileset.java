@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class CommonTileset extends Tileset {
 
     public CommonTileset() {
-         super(ImageLoader.load("CommonTileset.png"), 16, 16, 3);
+         super(ImageLoader.load("CommonTileset2.png"), 48, 48, 1);
         // super(ImageLoader.load("CommonTileset2.png"), 72, 72, 1);
     }
 

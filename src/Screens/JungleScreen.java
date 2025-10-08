@@ -3,8 +3,11 @@ package Screens;
 import Engine.Screen;
 import EnhancedMapTiles.BackToLobby;
 import Engine.GraphicsHandler;
+import Engine.Key;
+import Engine.Keyboard;
 import Game.ScreenCoordinator;
 import Level.EnhancedMapTile;
+import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -16,6 +19,7 @@ public class JungleScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
+    protected Hitbox hitbox;
     protected JungleScreenState jungleScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
@@ -34,6 +38,8 @@ public class JungleScreen extends Screen implements PlayerListener {
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
+        this.hitbox = new Hitbox(player.getLocation());
+        map.addHitbox(this.hitbox);
 
         levelClearedScreen = new LevelClearedScreen();
         //levelLoseScreen = new LevelLoseScreen(this);
@@ -47,6 +53,21 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
+                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                    if (hitbox == null) {
+                        hitbox = new Hitbox(player.getLocation());
+                        map.addHitbox(hitbox);
+                    }
+                }
+
+                if (hitbox != null) {
+                    hitbox.update(player);
+
+                    if (hitbox.isRemoved()) {
+                        hitbox = null;
+                    }
+                }
+
 
                 for (EnhancedMapTile tile : map.getEnhancedMapTiles()){
                     BackToLobby backToLobby = (BackToLobby) tile;   
@@ -66,6 +87,9 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+                if (hitbox != null) {
+                    hitbox.draw(graphicsHandler);
+                }
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);

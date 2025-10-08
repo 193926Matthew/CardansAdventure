@@ -19,24 +19,30 @@ import SpriteFont.SpriteFont;
  */
 public class ScreenCoordinator extends Screen {
 
-	public KeyLocker keyLocker = new KeyLocker();
-    protected ScreenCoordinator screenCoordinator;
-	
-	int i = 0;
+	    public KeyLocker keyLocker = new KeyLocker();
+        protected ScreenCoordinator screenCoordinator;
+		int i = 0;
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	public GameState gameState;
+	public static GameState currentGameState;
 	protected GameState previousGameState;
 
 	public GameState getGameState() {
+		currentGameState = gameState;
 		return gameState;
+	}
+
+	public static GameState returnCurrentGameState(){
+		return currentGameState;
 	}
 
 	// Other Screens can set the gameState of this class to force it to change the currentScreen
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
+		currentGameState = gameState;
 	}
 
 	@Override
@@ -57,6 +63,10 @@ public class ScreenCoordinator extends Screen {
 
 	@Override
 	public void update() {
+
+				if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+                initialize();
+            }
 
 	/* 
 	System.out.println(gameState);
