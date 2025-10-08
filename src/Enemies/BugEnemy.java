@@ -9,6 +9,7 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntity;
+import Level.MapEntityStatus;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -25,6 +26,7 @@ public class BugEnemy extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
+    private int health = 25;
 
     public BugEnemy(Point location, Direction facingDirection) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 24, 15), "WALK_LEFT");
@@ -32,7 +34,17 @@ public class BugEnemy extends Enemy {
         this.initialize();
     }
 
+
     public void draw(GraphicsHandler graphicsHandler) {
+        if (isDead()) {
+            if (health >= 0) {
+                health = health - 1;
+                // System.out.println(health);
+                this.live();
+            } else {
+                this.mapEntityStatus = MapEntityStatus.REMOVED;
+            }
+        }
         super.draw(graphicsHandler);
         // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
@@ -52,6 +64,13 @@ public class BugEnemy extends Enemy {
 
     @Override
     public void update(Player player) {
+
+        if (health <= 0) {
+            this.mapEntityStatus = MapEntityStatus.REMOVED;
+            super.update();
+            return;
+        }
+
         float moveAmountX = 0;
         float moveAmountY = 0;
 

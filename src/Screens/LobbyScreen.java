@@ -1,12 +1,16 @@
 package Screens;
 
 import Engine.GraphicsHandler;
-
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.Screen;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.Enemy;
+import Level.Hitbox;
+import Level.HitboxR;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.Player;
@@ -18,6 +22,7 @@ public class LobbyScreen extends Screen implements PlayerListener{
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
+    protected Hitbox hitbox;
     protected LobbyScreenState lobbyScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
@@ -36,6 +41,8 @@ public class LobbyScreen extends Screen implements PlayerListener{
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
+        this.hitbox = new Hitbox(player.getLocation());
+        map.addHitbox(this.hitbox);
 
         levelClearedScreen = new LevelClearedScreen();
         //levelLoseScreen = new LevelLoseScreen(this);
@@ -50,6 +57,21 @@ public class LobbyScreen extends Screen implements PlayerListener{
             case RUNNING:
                 player.update();
                 map.update(player);
+                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                    if (hitbox == null) {
+                        hitbox = new Hitbox(player.getLocation());
+                        map.addHitbox(hitbox);
+                    }
+                }
+
+                if (hitbox != null) {
+                    hitbox.update(player);
+
+                    if (hitbox.isRemoved()) {
+                        hitbox = null;
+                    }
+                }
+                
 
                 //code for the level enter tiles. have for jungle and snow
                 //if want to add more, just add a new enhancedtile and copy from the other tiles
@@ -95,6 +117,9 @@ public class LobbyScreen extends Screen implements PlayerListener{
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+                if (hitbox != null) {
+                    hitbox.draw(graphicsHandler);
+                }
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);

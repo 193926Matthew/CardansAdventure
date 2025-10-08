@@ -3,6 +3,7 @@ package Level;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import GameObject.Rectangle;
 import Utils.Point;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public abstract class Map {
 
     // lists to hold map entities that are a part of the map
     protected ArrayList<Enemy> enemies;
+    protected ArrayList<HitboxR> hitboxes;
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
 
@@ -82,6 +84,11 @@ public abstract class Map {
         this.animatedMapTiles = new ArrayList<>();
 
         loadMapFile();
+
+        this.hitboxes = loadHitboxes();
+        for (HitboxR hitbox: this.hitboxes) {
+            hitbox.setMap(this);
+        }
 
         this.enemies = loadEnemies();
         for (Enemy enemy: this.enemies) {
@@ -262,6 +269,11 @@ public abstract class Map {
         return new ArrayList<>();
     }
 
+    // list of enemies defined to be a part of the map, should be overridden in a subclass
+    protected ArrayList<HitboxR> loadHitboxes() {
+        return new ArrayList<>();
+    }
+
     // list of enhanced map tiles defined to be a part of the map, should be overridden in a subclass
     protected ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         return new ArrayList<>();
@@ -279,6 +291,9 @@ public abstract class Map {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
+    public ArrayList<HitboxR> getHitboxes() {
+        return hitboxes;
+    }
     public ArrayList<EnhancedMapTile> getEnhancedMapTiles() {
         return enhancedMapTiles;
     }
@@ -295,6 +310,11 @@ public abstract class Map {
         return camera.getActiveEnemies();
     }
 
+        // returns all active enemies (enemies that are a part of the current update cycle) -- this changes every frame by the Camera class
+    public ArrayList<HitboxR> getActiveHitboxes() {
+        return camera.getActiveHitboxes();
+    }
+
     // returns all active enhanced map tiles (enhanced map tiles that are a part of the current update cycle) -- this changes every frame by the Camera class
     public ArrayList<EnhancedMapTile> getActiveEnhancedMapTiles() {
         return camera.getActiveEnhancedMapTiles();
@@ -309,6 +329,11 @@ public abstract class Map {
     public void addEnemy(Enemy enemy) {
         enemy.setMap(this);
         this.enemies.add(enemy);
+    }
+
+    public void addHitbox(HitboxR hitbox) {
+        hitbox.setMap(this);
+        this.hitboxes.add(hitbox);
     }
 
     // add an enhanced map tile to the map's list of enhanced map tiles
@@ -399,4 +424,5 @@ public abstract class Map {
 
     public int getEndBoundX() { return endBoundX; }
     public int getEndBoundY() { return endBoundY; }
+
 }

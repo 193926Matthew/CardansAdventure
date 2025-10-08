@@ -6,6 +6,7 @@ import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
 import Level.EnhancedMapTile;
+import Level.Hitbox;
 import Level.Map;
 
 import Tilesets.CommonTileset;

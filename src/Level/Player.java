@@ -9,6 +9,7 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
 
@@ -73,12 +74,27 @@ public abstract class Player extends GameObject {
         
     }
 
+    private void spawnHitbox(HitboxState state) {
+        // determine spawn position relative to player
+        float hitboxX = getX();
+        float hitboxY = getY();
+
+        // create hitbox entity
+        HitboxR hitbox = new HitboxR(hitboxX, hitboxY);
+        hitbox.hitboxState = state;
+        hitbox.facingDirection = this.facingDirection;
+
+        // System.out.println(hitbox);
+        map.addHitbox(hitbox);
+    }
+
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
+
             applyGravity();
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
@@ -179,11 +195,13 @@ public abstract class Player extends GameObject {
         //should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
-        }
+        spawnHitbox(HitboxState.ATTACKING_DASH);
+            }
 
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
-        }
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
+            }
     }
 
     // player WALKING state logic
@@ -216,10 +234,12 @@ public abstract class Player extends GameObject {
         //should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
+        spawnHitbox(HitboxState.ATTACKING_DASH);
         }
 
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
         }
     }
 
@@ -240,10 +260,13 @@ public abstract class Player extends GameObject {
         }
         if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
             playerState = PlayerState.ATTACKING_SPIN;
+            spawnHitbox(HitboxState.ATTACKING_SPIN);
         }
     } 
 
     protected void playerAttackingSpin() {
+
+        // System.out.println("Attack");
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
@@ -462,7 +485,16 @@ protected void playerAttackingDash() {
         if (!isInvincible) {
             // if map entity is an enemy, kill player on touch
             if (mapEntity instanceof Enemy) {
-                levelState = LevelState.PLAYER_DEAD;
+                    levelState = LevelState.PLAYER_DEAD;
+                }
+            }
+        }
+
+    public void hurtHitbox(MapEntity mapEntity) {
+        if (!isInvincible) {
+            // if map entity is an enemy, kill player on touch
+            if (mapEntity instanceof Enemy) {
+                    mapEntity.kill();
             }
         }
     }
@@ -477,7 +509,9 @@ protected void playerAttackingDash() {
         // if player is not on ground, player should fall until it touches the ground
         if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this) && !isOnPlatform) {
             currentAnimationName = "FALL_RIGHT";
-            applyGravity();
+            if (gravity != 0f) {
+                applyGravity();
+            }
             increaseMomentum();
             super.update();
             moveYHandleCollision(moveAmountY);

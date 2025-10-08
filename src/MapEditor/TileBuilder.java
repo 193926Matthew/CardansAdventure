@@ -19,6 +19,7 @@ public class TileBuilder extends JPanel {
     private boolean showNPCs;
     private boolean showEnhancedMapTiles;
     private boolean showEnemies;
+    private boolean showHitboxes;
 
     public TileBuilder(SelectedTileIndexHolder controlPanelHolder, JLabel hoveredTileIndexLabel) {
         setBackground(Colors.MAGENTA);
@@ -89,6 +90,12 @@ public class TileBuilder extends JPanel {
         if (showEnemies) {
             for (Enemy enemy : map.getEnemies()) {
                 enemy.draw(graphicsHandler);
+            }
+        }
+
+        if (showHitboxes) {
+            for (HitboxR hitbox : map.getHitboxes()) {
+                hitbox.draw(graphicsHandler);
             }
         }
 
@@ -181,6 +188,15 @@ public class TileBuilder extends JPanel {
 
     public void setShowEnemies(boolean showEnemies) {
         this.showEnemies = showEnemies;
+        repaint();
+    }
+
+    public boolean getShowHitboxes() {
+        return showHitboxes;
+    }
+
+    public void setShowHitboxes(boolean showHitboxes) {
+        this.showHitboxes = showHitboxes;
         repaint();
     }
 }
