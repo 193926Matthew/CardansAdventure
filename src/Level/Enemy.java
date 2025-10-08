@@ -14,6 +14,10 @@ public class Enemy extends MapEntity {
         return isDead;
     }
 
+    public int damage() {
+        return 1;
+    }
+
     public void kill() {
         this.isDead = true;
     }

@@ -50,6 +50,10 @@ public class IceBall extends EnhancedMapTile{
             for(Enemy enemy: enemies){
                 if(this.intersects(enemy)){
                     System.out.println("Enemy attacked!");
+                    for (MapEntity entity : map.getEnemies()) {
+                        if (entity instanceof Enemy && this.intersects(entity)) {
+                     ((Enemy) entity).kill();
+                    }
                     //enemy.mapEntityStatus = MapEntityStatus.REMOVED;
                     this.mapEntityStatus = MapEntityStatus.REMOVED;
                 }
@@ -57,6 +61,8 @@ public class IceBall extends EnhancedMapTile{
             }
 
             }
+
+        }
 
         }
        

@@ -3,6 +3,8 @@ package Level;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import EnhancedMapTiles.QuicksandTile;
+import EnhancedMapTiles.QuicksandTopTile;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
@@ -69,6 +71,7 @@ public abstract class Player extends GameObject {
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
+    public boolean isInTile = false; //checks to see if the player is in a quicksand tile
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -136,9 +139,24 @@ public abstract class Player extends GameObject {
         }
     }
 
-    // add gravity to player, which is a downward force
     protected void applyGravity() {
+        // if player is in quicksand, reduce walk speed and jump height and limit downward momentum
+        if (isInQuicksand()) {
+            isInTile = true;
+            setWalkSpeed(2.15f); 
+            setJumpHeight(14.5f/2);
+            if (momentumY > 0.001f) {
+                setYMomentum(0.001f);
+            }
+        //if the player is not in quicksand, reset walk speed and jump height
+        } else {
+            isInTile = false;
+            setJumpHeight(14.5f);
+            setWalkSpeed(4.3f);
+        }
+
         moveAmountY += gravity + momentumY;
+
     }
 
     // based on player's current state, call appropriate player state handling method
@@ -358,7 +376,7 @@ public abstract class Player extends GameObject {
             for(int i = 0; i < 3; i++){
                 Point spawn = new Point(Math.round(getX() + getWidth()), getY() + (i * 10));
                 speed = 1.5f;
-                IceBall iceBall = new IceBall(spawn,speed + (i*1.2f),60,map.getEnemies());
+                IceBall iceBall = new IceBall(spawn,speed + (i*1.2f),240,map.getEnemies());
                 map.addEnhancedMapTile(iceBall);
             }
 
@@ -366,7 +384,7 @@ public abstract class Player extends GameObject {
             for(int i = 0; i < 3; i++){
                 Point spawn = new Point(Math.round(getX() - 21), getY() + (i * 10));
                 speed = -1.5f;
-                IceBall iceBall = new IceBall(spawn,speed + (i*0.5f),60,map.getEnemies());
+                IceBall iceBall = new IceBall(spawn,speed + (i*0.5f),240,map.getEnemies());
                 map.addEnhancedMapTile(iceBall);
             }
 
@@ -579,7 +597,10 @@ public abstract class Player extends GameObject {
                 momentumY = 0;
                 airGroundState = AirGroundState.GROUND;
                 //System.out.println("On Platform"); uncomment to see if player is on platform
-            } else{
+            }else if(isInTile){
+                airGroundState = AirGroundState.GROUND;
+            }
+             else{
                 playerState = PlayerState.JUMPING;
                 airGroundState = AirGroundState.AIR;
                 //System.out.println("Not On Platform"); uncomment to see if player is not on platform
@@ -672,6 +693,17 @@ public abstract class Player extends GameObject {
         }
     }
 
+    // checks if player is in quicksand tile
+    protected boolean isInQuicksand() {
+    for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
+        if ((tile instanceof QuicksandTile || tile instanceof QuicksandTopTile) && getBounds().intersects(tile.getBounds())) {
+            return true;
+        }
+    }
+    return false;
+    
+}
+
     public PlayerState getPlayerState() {
         return playerState;
     }
@@ -706,6 +738,29 @@ public abstract class Player extends GameObject {
 
     public void addListener(PlayerListener listener) {
         listeners.add(listener);
+    }
+
+    public float getYMomentum(){
+        return momentumY;
+    }
+
+    public void setYMomentum(float momentumY){
+        this.momentumY = momentumY;
+    }
+
+    public void setWalkSpeed(float walkSpeed) {
+        this.walkSpeed = walkSpeed;
+    }
+    public float getWalkSpeed(){
+        return walkSpeed;
+    }
+
+    public void setIsInTile(boolean isInTile){
+        this.isInTile = isInTile;
+    }
+
+    public void setJumpHeight(float jumpHeight){
+        this.jumpHeight = jumpHeight;
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize

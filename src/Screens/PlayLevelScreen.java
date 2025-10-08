@@ -10,6 +10,7 @@ import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.DesertMap;
 import Maps.TestMap;
 import Players.Cat;
 
@@ -31,7 +32,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        map = new TestMap();
+        map = new DesertMap();
 
         System.out.print("Start");
         // setup player
