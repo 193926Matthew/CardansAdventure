@@ -7,6 +7,7 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,8 @@ public abstract class Player extends GameObject {
     protected Key MOVE_LEFT_KEY = Key.LEFT;
     protected Key MOVE_RIGHT_KEY = Key.RIGHT;
     protected Key CROUCH_KEY = Key.DOWN;
-    protected Key TAIL_ATTACK_KEY = Key.T;
+    protected Key TAIL_ATTACK_DASH_KEY = Key.T;
+    protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
 
     //Attack variables
     private boolean isAttacking = false;
@@ -69,12 +71,27 @@ public abstract class Player extends GameObject {
         
     }
 
+    private void spawnHitbox(HitboxState state) {
+        // determine spawn position relative to player
+        float hitboxX = getX();
+        float hitboxY = getY();
+
+        // create hitbox entity
+        HitboxR hitbox = new HitboxR(hitboxX, hitboxY);
+        hitbox.hitboxState = state;
+        hitbox.facingDirection = this.facingDirection;
+
+        // System.out.println(hitbox);
+        map.addHitbox(hitbox);
+    }
+
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
+
             applyGravity();
 
             // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
@@ -129,8 +146,11 @@ public abstract class Player extends GameObject {
             case JUMPING:
                 playerJumping();
                 break;
-            case ATTACKING:
-                playerAttacking();
+            case ATTACKING_DASH:
+                playerAttackingDash();
+                break;
+            case ATTACKING_SPIN:
+                playerAttackingSpin();
                 break;
         }
     }
@@ -155,9 +175,15 @@ public abstract class Player extends GameObject {
         }
 
         //should check if the attack key is being pressed as well
-        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
-    playerState = PlayerState.ATTACKING;
-}
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
+        playerState = PlayerState.ATTACKING_DASH;
+        spawnHitbox(HitboxState.ATTACKING_DASH);
+            }
+
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+        playerState = PlayerState.ATTACKING_SPIN;
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
+            }
     }
 
     // player WALKING state logic
@@ -188,9 +214,15 @@ public abstract class Player extends GameObject {
         }
 
         //should check if the attack key is being pressed as well
-        else if (Keyboard.isKeyDown(TAIL_ATTACK_KEY) && !isAttacking && !isReturning) {
-    playerState = PlayerState.ATTACKING;
-}
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
+        playerState = PlayerState.ATTACKING_DASH;
+        spawnHitbox(HitboxState.ATTACKING_DASH);
+        }
+
+        else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+        playerState = PlayerState.ATTACKING_SPIN;
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
+        }
     }
 
     // player CROUCHING state logic
@@ -205,9 +237,29 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
-         if (Keyboard.isKeyDown(TAIL_ATTACK_KEY)) {
-            playerState = PlayerState.ATTACKING;
+         if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY)) {
+            playerState = PlayerState.ATTACKING_DASH;
         }
+        if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
+            playerState = PlayerState.ATTACKING_SPIN;
+            spawnHitbox(HitboxState.ATTACKING_SPIN);
+        }
+    } 
+
+    protected void playerAttackingSpin() {
+
+        // System.out.println("Attack");
+
+        // if jump key is pressed, player enters JUMPING state
+        if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
+            keyLocker.lockKey(JUMP_KEY);
+            playerState = PlayerState.JUMPING;
+        }
+
+        if (Keyboard.isKeyUp(TAIL_ATTACK_SPIN_KEY)) {
+            playerState = PlayerState.STANDING;
+        }
+
     } 
 
     
@@ -264,7 +316,7 @@ public abstract class Player extends GameObject {
     }
 
     // player ATTACKING state logic
-protected void playerAttacking() {
+protected void playerAttackingDash() {
     // if attack just started, set up
     if (!isAttacking && !isReturning) {
         isAttacking = true;
@@ -272,7 +324,7 @@ protected void playerAttacking() {
 
         // set animation
         currentAnimationName = facingDirection == Direction.RIGHT ? 
-                "TAIL_ATTACK_RIGHT" : "TAIL_ATTACK_LEFT";
+                "TAIL_ATTACK_DASH_RIGHT" : "TAIL_ATTACK_DASH_LEFT";
     }
 
     if (isAttacking) {
@@ -285,7 +337,7 @@ protected void playerAttacking() {
 
                 // flip around before returning
                 facingDirection = Direction.LEFT;
-                currentAnimationName = "TAIL_ATTACK_LEFT";
+                currentAnimationName = "TAIL_ATTACK_DASH_LEFT";
             }
         } else {
             moveAmountX -= attackSpeed;
@@ -295,7 +347,7 @@ protected void playerAttacking() {
 
                 // flip around before returning
                 facingDirection = Direction.RIGHT;
-                currentAnimationName = "TAIL_ATTACK_RIGHT";
+                currentAnimationName = "TAIL_ATTACK_DASH_RIGHT";
             }
         }
     } 
@@ -350,10 +402,10 @@ protected void playerAttacking() {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
         }
-        // else if (playerState == PlayerState.ATTACKING) {
-        //     // sets animation to a ATTACK animation based on which way player is facing
-        //     this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT" : "ATTACK_LEFT";
-        // }
+        else if (playerState == PlayerState.ATTACKING_SPIN) {
+            // sets animation to a ATTACK SPIN animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT_SPIN" : "ATTACK_LEFT_SPIN";
+        }
         else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
@@ -412,7 +464,16 @@ protected void playerAttacking() {
         if (!isInvincible) {
             // if map entity is an enemy, kill player on touch
             if (mapEntity instanceof Enemy) {
-                levelState = LevelState.PLAYER_DEAD;
+                    levelState = LevelState.PLAYER_DEAD;
+                }
+            }
+        }
+
+    public void hurtHitbox(MapEntity mapEntity) {
+        if (!isInvincible) {
+            // if map entity is an enemy, kill player on touch
+            if (mapEntity instanceof Enemy) {
+                    mapEntity.kill();
             }
         }
     }
@@ -427,7 +488,9 @@ protected void playerAttacking() {
         // if player is not on ground, player should fall until it touches the ground
         if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this) && !isOnPlatform) {
             currentAnimationName = "FALL_RIGHT";
-            applyGravity();
+            if (gravity != 0f) {
+                applyGravity();
+            }
             increaseMomentum();
             super.update();
             moveYHandleCollision(moveAmountY);

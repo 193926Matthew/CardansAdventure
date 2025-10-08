@@ -2,17 +2,17 @@ package Maps;
 
 import java.util.ArrayList;
 
-import EnhancedMapTiles.NextLevelBox;
+import EnhancedMapTiles.JungleEnter;
+import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
 import Level.EnhancedMapTile;
+import Level.Hitbox;
 import Level.Map;
 
 import Tilesets.CommonTileset;
 import Utils.Point;
 
 public class LobbyMap extends Map {
-
-
 
     public LobbyMap(){
         super("lobby_map.txt", new CommonTileset());
@@ -23,11 +23,11 @@ public class LobbyMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        
-        NextLevelBox nextLevelBox = new NextLevelBox(getMapTile(2, 10).getLocation());
-        enhancedMapTiles.add(nextLevelBox);
+        JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
+        enhancedMapTiles.add(jungleEnter);
 
-        
+        SnowEnter snowEnter = new SnowEnter(getMapTile(19,11).getLocation());
+        enhancedMapTiles.add(snowEnter);
 
         return enhancedMapTiles;
     }
