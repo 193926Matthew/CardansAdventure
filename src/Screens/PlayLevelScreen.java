@@ -1,10 +1,12 @@
 package Screens;
 
-import Enemies.Hitbox;
 import Engine.GraphicsHandler;
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -34,10 +36,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         System.out.print("Start");
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        this.hitbox = new Hitbox(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y, player);
         this.player.setMap(map);
-        this.hitbox.setMap(map);
         this.player.addListener(this);
+        this.hitbox = new Hitbox(player.getLocation());
+        map.addHitbox(this.hitbox);
 
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
@@ -51,8 +53,21 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
-                map.update(player, hitbox);
-                hitbox.update();
+                map.update(player);
+                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                    if (hitbox == null) {
+                        hitbox = new Hitbox(player.getLocation());
+                        map.addHitbox(hitbox);
+                    }
+                }
+
+                if (hitbox != null) {
+                    hitbox.update(player);
+
+                    if (hitbox.isRemoved()) {
+                        hitbox = null;
+                    }
+                }
 
                 break;
             // if level has been completed, bring up level cleared screen
@@ -81,7 +96,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
-                hitbox.draw(graphicsHandler);
+                if (hitbox != null) {
+                    hitbox.draw(graphicsHandler);
+                }
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);

@@ -2,10 +2,10 @@ package Maps;
 
 import java.util.ArrayList;
 
-import Enemies.Hitbox;
 import EnhancedMapTiles.NextLevelBox;
 import Game.GameState;
 import Level.EnhancedMapTile;
+import Level.Hitbox;
 import Level.Map;
 
 import Tilesets.CommonTileset;

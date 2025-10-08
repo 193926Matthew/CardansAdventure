@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 import Builders.FrameBuilder;
+import Enemies.DinosaurEnemy.DinosaurState;
+import Enemies.Fireball;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
+import Level.Hitbox;
+import Level.HitboxR;
 import Level.Player;
-
+import Utils.Direction;
+import Utils.Point;
 
 import java.util.HashMap;
 
@@ -24,6 +29,7 @@ public class Cat extends Player {
         private static float yCardan = 8;
         private static int wCardan = 48;
         private static int hCardan = 48;
+        private static int attackDelay = 12;
         // private BufferedImage attackOverlay;
 
     public Cat(float x, float y) {
@@ -35,36 +41,17 @@ public class Cat extends Player {
         walkSpeed = 4.3f;
         momentumYIncrease = .5f;
 
-        System.out.println("c");
-
-        
-        // attackOverlay = ImageLoader.load("Attack.png");
-
     }
 
     public void update() {
+        
         super.update();
     }
 
         @Override
         public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-
-        // if (currentAnimationName.equals("ATTACK_RIGHT_SPIN") ||
-        //         currentAnimationName.equals("ATTACK_LEFT_SPIN")) {
-
-        //         // optional: draw hitbox for debugging
-                //  drawBounds(graphicsHandler, new Color(255, 255, 0, 170));
-
-        //         if (attackOverlay != null) {
-        //         graphicsHandler.drawImage(attackOverlay,
-        //                 Math.round(x),  
-        //                 Math.round(y), 
-        //                 getWidth(),
-        //                 getHeight()
-        //         );
-        //         }
-        // }
+        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
         }
 
     @Override
@@ -72,32 +59,32 @@ public class Cat extends Player {
         return new HashMap<String, Frame[]>() {{
 
             put("ATTACK_RIGHT_SPIN", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(7, 0), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
                             .withScale(1)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 1), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 1), attackDelay)
                             .withScale(1)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 2), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), attackDelay)
                             .withScale(1)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
 
                         put("ATTACK_LEFT_SPIN", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(7, 0), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 1), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 1), attackDelay)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 2), 7)
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), attackDelay)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
@@ -303,23 +290,23 @@ public class Cat extends Player {
             });
 
             put("TAIL_ATTACK_DASH_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(7, 0), 12) // example frame
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), attackDelay)
                         .withScale(1)
                         .withBounds(xCardan, yCardan, wCardan, hCardan)
                         .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 2), 12) // next frame
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
                         .withScale(1)
                         .withBounds(xCardan, yCardan, wCardan, hCardan)
                         .build()
             });
 
            put("TAIL_ATTACK_DASH_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(7, 0), 12)
+                    new FrameBuilder(spriteSheet.getSprite(7, 0), attackDelay)
                         .withScale(1)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .withBounds(xCardan, yCardan, wCardan, hCardan)
                         .build(),
-                    new FrameBuilder(spriteSheet.getSprite(7, 2), 12)
+                    new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
                         .withScale(1)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .withBounds(xCardan, yCardan, wCardan, hCardan)

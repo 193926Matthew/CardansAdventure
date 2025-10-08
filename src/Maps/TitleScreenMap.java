@@ -1,9 +1,9 @@
 package Maps;
 
-import Enemies.Hitbox;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Sprite;
+import Level.Hitbox;
 import Level.Map;
 import Tilesets.CommonTileset;
 import Utils.Colors;

@@ -2,7 +2,6 @@ package Maps;
 import EnhancedMapTiles.PowerUp;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
-import Enemies.Hitbox;
 import Engine.ImageLoader;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.HorizontalMovingPlatform;
@@ -12,6 +11,7 @@ import Level.*;
 import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
 

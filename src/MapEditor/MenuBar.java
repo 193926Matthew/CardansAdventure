@@ -9,6 +9,7 @@ public class MenuBar extends JMenuBar {
     JCheckBoxMenuItem showNpcs;
     JCheckBoxMenuItem showEnchancedMapTiles;
     JCheckBoxMenuItem showTriggers;
+    JCheckBoxMenuItem showHitboxes;
 
     public MenuBar(TileBuilder tileBuilder) {
         options = new JMenu("Options");
@@ -36,6 +37,16 @@ public class MenuBar extends JMenuBar {
             }
         });
         options.add(showTriggers);
+
+        showHitboxes = new JCheckBoxMenuItem("Show Hitboxes");
+        showHitboxes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tileBuilder.setShowHitboxes(!tileBuilder.getShowHitboxes());
+            }
+        });
+        options.add(showHitboxes);
+
         add(options);
     }
 }

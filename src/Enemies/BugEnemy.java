@@ -9,6 +9,7 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntity;
+import Level.MapEntityStatus;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -38,10 +39,10 @@ public class BugEnemy extends Enemy {
         if (isDead()) {
             if (health >= 0) {
                 health = health - 1;
-                System.out.println(health);
+                // System.out.println(health);
                 this.live();
             } else {
-            return;
+                this.mapEntityStatus = MapEntityStatus.REMOVED;
             }
         }
         super.draw(graphicsHandler);
@@ -62,7 +63,13 @@ public class BugEnemy extends Enemy {
     }
 
     @Override
-    public void update(Player player, Player hitbox) {
+    public void update(Player player) {
+
+        if (health <= 0) {
+            this.mapEntityStatus = MapEntityStatus.REMOVED;
+            super.update();
+            return;
+        }
 
         float moveAmountX = 0;
         float moveAmountY = 0;
@@ -83,7 +90,7 @@ public class BugEnemy extends Enemy {
         moveYHandleCollision(moveAmountY);
         moveXHandleCollision(moveAmountX);
 
-        super.update(player, hitbox);
+        super.update(player);
     }
 
     @Override

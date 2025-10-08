@@ -3,6 +3,7 @@ package Level;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import GameObject.Rectangle;
 import Utils.Point;
 
 import java.io.File;
@@ -11,8 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import Enemies.Hitbox;
 
 /*
     This class is for defining a map that is used for a specific level
@@ -55,6 +54,7 @@ public abstract class Map {
 
     // lists to hold map entities that are a part of the map
     protected ArrayList<Enemy> enemies;
+    protected ArrayList<HitboxR> hitboxes;
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
 
@@ -84,6 +84,11 @@ public abstract class Map {
         this.animatedMapTiles = new ArrayList<>();
 
         loadMapFile();
+
+        this.hitboxes = loadHitboxes();
+        for (HitboxR hitbox: this.hitboxes) {
+            hitbox.setMap(this);
+        }
 
         this.enemies = loadEnemies();
         for (Enemy enemy: this.enemies) {
@@ -264,6 +269,11 @@ public abstract class Map {
         return new ArrayList<>();
     }
 
+    // list of enemies defined to be a part of the map, should be overridden in a subclass
+    protected ArrayList<HitboxR> loadHitboxes() {
+        return new ArrayList<>();
+    }
+
     // list of enhanced map tiles defined to be a part of the map, should be overridden in a subclass
     protected ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         return new ArrayList<>();
@@ -281,6 +291,9 @@ public abstract class Map {
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
+    public ArrayList<HitboxR> getHitboxes() {
+        return hitboxes;
+    }
     public ArrayList<EnhancedMapTile> getEnhancedMapTiles() {
         return enhancedMapTiles;
     }
@@ -295,6 +308,11 @@ public abstract class Map {
     // returns all active enemies (enemies that are a part of the current update cycle) -- this changes every frame by the Camera class
     public ArrayList<Enemy> getActiveEnemies() {
         return camera.getActiveEnemies();
+    }
+
+        // returns all active enemies (enemies that are a part of the current update cycle) -- this changes every frame by the Camera class
+    public ArrayList<HitboxR> getActiveHitboxes() {
+        return camera.getActiveHitboxes();
     }
 
     // returns all active enhanced map tiles (enhanced map tiles that are a part of the current update cycle) -- this changes every frame by the Camera class
@@ -313,6 +331,11 @@ public abstract class Map {
         this.enemies.add(enemy);
     }
 
+    public void addHitbox(HitboxR hitbox) {
+        hitbox.setMap(this);
+        this.hitboxes.add(hitbox);
+    }
+
     // add an enhanced map tile to the map's list of enhanced map tiles
     public void addEnhancedMapTile(EnhancedMapTile enhancedMapTile) {
         enhancedMapTile.setMap(this);
@@ -329,12 +352,12 @@ public abstract class Map {
         this.adjustCamera = adjustCamera;
     }
 
-    public void update(Player player, Player hitbox) {
+    public void update(Player player) {
         if (adjustCamera) {
             adjustMovementY(player);
             adjustMovementX(player);
         }
-        camera.update(player, hitbox);
+        camera.update(player);
     }
 
     // based on the player's current X position (which in a level can potentially be updated each frame),

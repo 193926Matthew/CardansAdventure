@@ -8,6 +8,7 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntity;
+import Level.MapEntityStatus;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
@@ -29,7 +30,7 @@ public class DinosaurEnemy extends Enemy {
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
-    private int health = 10;
+    private int health = 30;
 
     // timer is used to determine how long dinosaur freezes in place before shooting fireball
     protected int shootWaitTimer;
@@ -71,10 +72,10 @@ public class DinosaurEnemy extends Enemy {
         if (isDead()) {
             if (health >= 0) {
                 health = health - 1;
-                System.out.println(health);
+                // System.out.println(health);
                 this.live();
             } else {
-                return;
+                this.mapEntityStatus = MapEntityStatus.REMOVED;
             }
         }
         super.draw(graphicsHandler);
@@ -82,11 +83,11 @@ public class DinosaurEnemy extends Enemy {
     }
 
     @Override
-    public void update(Player player, Player hitbox) {
+    public void update(Player player) {
 
 
         if (health <= 0) {
-            currentAnimationName = "DEAD";
+            this.mapEntityStatus = MapEntityStatus.REMOVED;
             super.update();
             return;
         }
@@ -170,7 +171,7 @@ public class DinosaurEnemy extends Enemy {
             shootWaitTimer = 130;
         }
 
-        super.update(player, hitbox);
+        super.update(player);
 
         previousDinosaurState = dinosaurState;
     }

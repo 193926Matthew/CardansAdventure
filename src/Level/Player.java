@@ -7,10 +7,9 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
+import Utils.Point;
 
 import java.util.ArrayList;
-
-import Enemies.Hitbox;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -70,6 +69,20 @@ public abstract class Player extends GameObject {
         levelState = LevelState.RUNNING;
 
         
+    }
+
+    private void spawnHitbox(HitboxState state) {
+        // determine spawn position relative to player
+        float hitboxX = getX();
+        float hitboxY = getY();
+
+        // create hitbox entity
+        HitboxR hitbox = new HitboxR(hitboxX, hitboxY);
+        hitbox.hitboxState = state;
+        hitbox.facingDirection = this.facingDirection;
+
+        // System.out.println(hitbox);
+        map.addHitbox(hitbox);
     }
 
     public void update() {
@@ -164,11 +177,13 @@ public abstract class Player extends GameObject {
         //should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
-        }
+        spawnHitbox(HitboxState.ATTACKING_DASH);
+            }
 
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
-        }
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
+            }
     }
 
     // player WALKING state logic
@@ -201,10 +216,12 @@ public abstract class Player extends GameObject {
         //should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
+        spawnHitbox(HitboxState.ATTACKING_DASH);
         }
 
         else if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
         playerState = PlayerState.ATTACKING_SPIN;
+        spawnHitbox(HitboxState.ATTACKING_SPIN);
         }
     }
 
@@ -225,10 +242,13 @@ public abstract class Player extends GameObject {
         }
         if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
             playerState = PlayerState.ATTACKING_SPIN;
+            spawnHitbox(HitboxState.ATTACKING_SPIN);
         }
     } 
 
     protected void playerAttackingSpin() {
+
+        // System.out.println("Attack");
 
         // if jump key is pressed, player enters JUMPING state
         if (Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)) {
