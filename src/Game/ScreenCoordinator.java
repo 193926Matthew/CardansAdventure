@@ -1,6 +1,8 @@
 package Game;
 
 import Screens.CreditsScreen;
+import Screens.JungleScreen;
+//import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
@@ -17,9 +19,10 @@ import SpriteFont.SpriteFont;
  */
 public class ScreenCoordinator extends Screen {
 
-	        public KeyLocker keyLocker = new KeyLocker();
-        protected ScreenCoordinator screenCoordinator;
-		int i = 0;
+	public KeyLocker keyLocker = new KeyLocker();
+    protected ScreenCoordinator screenCoordinator;
+	
+	int i = 0;
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
 
@@ -39,24 +42,28 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void initialize() {
 		// start game off with Menu Screen
+		gameState = GameState.MENU;
+
+		/* 
 		if (i == 0) {
-			gameState = GameState.LOBBY;
+			gameState = GameState.MENU;
 			i = i + 1;
 		} else {
-			gameState = GameState.LEVEL;
-			i = i - 1;
+			gameState = GameState.LOBBY;
 		}
-
+		*/
         
 	}
 
 	@Override
 	public void update() {
 
-			if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-                initialize();
-            }
-
+	/* 
+	System.out.println(gameState);
+	if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        initialize();
+    }
+	*/
 		do {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
@@ -73,6 +80,10 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case LOBBY:
 						currentScreen = new LobbyScreen(this);
+						break;
+					case JUNGLE:
+						currentScreen = new JungleScreen(this);
+						break;
 				}
 				currentScreen.initialize();
 			}

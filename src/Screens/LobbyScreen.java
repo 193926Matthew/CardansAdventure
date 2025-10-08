@@ -4,11 +4,14 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import EnhancedMapTiles.JungleEnter;
+import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Enemy;
 import Level.Hitbox;
 import Level.HitboxR;
+import Level.EnhancedMapTile;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -32,7 +35,7 @@ public class LobbyScreen extends Screen implements PlayerListener{
     }
 
     public void initialize() {
-        this.map = new LobbyMap();
+        map = new LobbyMap();
 
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -48,7 +51,7 @@ public class LobbyScreen extends Screen implements PlayerListener{
     }   
 
     public void update() {
-                // based on screen state, perform specific actions
+        // based on screen state, perform specific actions
         switch (lobbyScreenState) {
             // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
@@ -69,6 +72,24 @@ public class LobbyScreen extends Screen implements PlayerListener{
                     }
                 }
                 
+
+                //code for the level enter tiles. have for jungle and snow
+                //if want to add more, just add a new enhancedtile and copy from the other tiles
+                
+                for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
+                    if (tile instanceof JungleEnter) {
+                        JungleEnter jungleEnter = (JungleEnter) tile;
+                        if (jungleEnter.getTriggerCode() == 1) {
+                            screenCoordinator.setGameState(GameState.LEVEL); 
+                        }
+                    }
+                        if (tile instanceof SnowEnter) {
+                        SnowEnter levelEnter = (SnowEnter) tile;
+                        if (levelEnter.getTriggerCode() == 2) {
+                            screenCoordinator.setGameState(GameState.JUNGLE); 
+                        }
+                    }
+            }
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:

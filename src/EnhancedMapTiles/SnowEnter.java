@@ -24,17 +24,14 @@ import Level.TileType;
 import Utils.Point;
 
 
-public class NextLevelBox extends EnhancedMapTile {
+public class SnowEnter extends EnhancedMapTile {
 
-        public KeyLocker keyLocker = new KeyLocker();
-        protected ScreenCoordinator screenCoordinator;
-        
+    private int triggerCode = 0;
 
+    public KeyLocker keyLocker = new KeyLocker();
+    protected ScreenCoordinator screenCoordinator;
 
-
-
-
-    public NextLevelBox(Point location) {
+    public SnowEnter(Point location) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("GoldBox.png"), 16, 16), TileType.PASSABLE);
 
     }
@@ -42,6 +39,15 @@ public class NextLevelBox extends EnhancedMapTile {
     @Override
     public void update(Player player) {
         super.update(player);
+        if (intersects(player)) {
+            System.out.println(" Snow touched");
+            triggerCode = 2;
+            //gameState = GameState.MENU;
+        }
+    }
+
+    public int getTriggerCode() {
+        return triggerCode;
     }
     
 
