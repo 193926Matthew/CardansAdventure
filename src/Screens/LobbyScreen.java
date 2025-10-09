@@ -1,8 +1,11 @@
 package Screens;
 
+import java.awt.Color;
+
 import Engine.GraphicsHandler;
 
 import Engine.Screen;
+import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
@@ -13,8 +16,10 @@ import Level.Player;
 import Level.PlayerListener;
 import Maps.LobbyMap;
 import Players.Cat;
+import SpriteFont.SpriteFont;
+import Utils.Point;
 
-public class LobbyScreen extends Screen implements PlayerListener{
+public class LobbyScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -23,7 +28,8 @@ public class LobbyScreen extends Screen implements PlayerListener{
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
-
+    protected SpriteFont lives;
+    // private PlayerHealth playerHealth;
 
     public LobbyScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -38,36 +44,45 @@ public class LobbyScreen extends Screen implements PlayerListener{
         this.player.addListener(this);
 
         levelClearedScreen = new LevelClearedScreen();
-        //levelLoseScreen = new LevelLoseScreen(this);
+        // levelLoseScreen = new LevelLoseScreen(this);
+
+        // health item
+        HealthPowerUp hpItem = new HealthPowerUp(new Point(100, 500));
+        map.addEnhancedMapTile(hpItem);
 
         this.lobbyScreenState = LobbyScreenState.RUNNING;
-    }   
+        this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
+
+    }
 
     public void update() {
         // based on screen state, perform specific actions
         switch (lobbyScreenState) {
-            // if level is "running" update player and map to keep game logic for the platformer level going
+            // if level is "running" update player and map to keep game logic for the
+            // platformer level going
             case RUNNING:
                 player.update();
                 map.update(player);
+                // playerHealth.update();
 
-                //code for the level enter tiles. have for jungle and snow
-                //if want to add more, just add a new enhancedtile and copy from the other tiles
-                
+                // code for the level enter tiles. have for jungle and snow
+                // if want to add more, just add a new enhancedtile and copy from the other
+                // tiles
+
                 for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
                     if (tile instanceof JungleEnter) {
                         JungleEnter jungleEnter = (JungleEnter) tile;
                         if (jungleEnter.getTriggerCode() == 1) {
-                            screenCoordinator.setGameState(GameState.LEVEL); 
+                            screenCoordinator.setGameState(GameState.LEVEL);
                         }
                     }
-                        if (tile instanceof SnowEnter) {
+                    if (tile instanceof SnowEnter) {
                         SnowEnter levelEnter = (SnowEnter) tile;
                         if (levelEnter.getTriggerCode() == 2) {
-                            screenCoordinator.setGameState(GameState.JUNGLE); 
+                            screenCoordinator.setGameState(GameState.JUNGLE);
                         }
                     }
-            }
+                }
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
@@ -82,7 +97,8 @@ public class LobbyScreen extends Screen implements PlayerListener{
                     }
                 }
                 break;
-            // wait on level lose screen to make a decision (either resets level or sends player back to main menu)
+            // wait on level lose screen to make a decision (either resets level or sends
+            // player back to main menu)
             case LEVEL_LOSE:
                 levelLoseScreen.update();
                 break;
@@ -95,6 +111,8 @@ public class LobbyScreen extends Screen implements PlayerListener{
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
+
+                // playerHealth.draw(graphicsHandler);
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);
@@ -103,9 +121,11 @@ public class LobbyScreen extends Screen implements PlayerListener{
                 levelLoseScreen.draw(graphicsHandler);
                 break;
         }
+        lives.setText("Health: " + player.getHealth());
+        lives.draw(graphicsHandler);
     }
 
-        public LobbyScreenState getLobbyScreenState() {
+    public LobbyScreenState getLobbyScreenState() {
         return lobbyScreenState;
     }
 
@@ -136,6 +156,5 @@ public class LobbyScreen extends Screen implements PlayerListener{
     private enum LobbyScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
-
 
 }
