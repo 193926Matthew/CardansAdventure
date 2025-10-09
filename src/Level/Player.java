@@ -639,10 +639,16 @@ public abstract class Player extends GameObject {
         if (!isInvincible) {
             // if map entity is an enemy, kill player on touch
             if (mapEntity instanceof Enemy) {
-                    levelState = LevelState.PLAYER_DEAD;
-                }
+                health = health - 25;
+
+                isInvincible = true;
+                invincibleTimer = duration;
+            }
+            if (health <= 0) {
+                levelState = LevelState.PLAYER_DEAD;
             }
         }
+    }
 
     public void hurtHitbox(MapEntity mapEntity) {
         if (!isInvincible) {
