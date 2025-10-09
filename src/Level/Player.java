@@ -57,6 +57,7 @@ public abstract class Player extends GameObject {
     protected Key ICE_BALL_KEY = Key.I;
 
 
+
     // Attack variables
     private boolean isAttacking = false;
     private boolean isReturning = false;
@@ -73,6 +74,8 @@ public abstract class Player extends GameObject {
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
+    protected int invincibleTimer;
+    protected int duration = 60;
     protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
     public boolean isInTile = false; //checks to see if the player is in a quicksand tile
 
@@ -778,6 +781,14 @@ public abstract class Player extends GameObject {
 
     public void setJumpHeight(float jumpHeight){
         this.jumpHeight = jumpHeight;
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
