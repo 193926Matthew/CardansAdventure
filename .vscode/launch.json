@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Game",
+            "request": "launch",
+            "mainClass": "Game.Game",
+            "projectName": "CardansAdventure_7fd3023"
+        },
+        {
+            "type": "java",
             "name": "MapEditor",
             "request": "launch",
             "mainClass": "MapEditor.MapEditor",
@@ -17,10 +24,12 @@
             "request": "launch",
             "mainClass": "Game.Game",
 <<<<<<< HEAD
-            "projectName": "SER-225-Game-Platformer_88e2cf55"
+
+            "projectName": "CardansAdventure_7fd3023"
+
 =======
             "projectName": "CardansAdventure_7c3ee5a9"
->>>>>>> c11fd03cf3e973dd9ac66664f454811e37963e3c
+>>>>>>> b232cbe769c80133fcedb2dceab28d550ef390e2
         },
         {
             "type": "java",

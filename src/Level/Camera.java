@@ -24,6 +24,7 @@ public class Camera extends Rectangle {
 
     // current map entities that are to be included in this frame's update/draw cycle
     private ArrayList<Enemy> activeEnemies = new ArrayList<>();
+    private ArrayList<HitboxR> activeHitboxes = new ArrayList<>();
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
 
@@ -65,6 +66,7 @@ public class Camera extends Rectangle {
         activeEnemies = loadActiveEnemies();
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
+        activeHitboxes = loadActiveHitboxes();
 
         for (Enemy enemy : activeEnemies) {
             enemy.update(player);
@@ -97,6 +99,26 @@ public class Camera extends Rectangle {
             }
         }
         return activeEnemies;
+    }
+
+    // determine which enemies are active (exist and are within range of the camera)
+    private ArrayList<HitboxR> loadActiveHitboxes() {
+        ArrayList<HitboxR> activeHitboxes = new ArrayList<>();
+        for (int i = map.getHitboxes().size() - 1; i >= 0; i--) {
+            HitboxR hitbox = map.getHitboxes().get(i);
+
+            if (isMapEntityActive(hitbox)) {
+                activeHitboxes.add(hitbox);
+                if (hitbox.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                    hitbox.setMapEntityStatus(MapEntityStatus.ACTIVE);
+                }
+            } else if (hitbox.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+                hitbox.setMapEntityStatus(MapEntityStatus.INACTIVE);
+            } else if (hitbox.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+                map.getHitboxes().remove(i);
+            }
+        }
+        return activeHitboxes;
     }
 
     // determine which enhanced map tiles are active (exist and are within range of the camera)
@@ -209,6 +231,10 @@ public class Camera extends Rectangle {
         return activeEnemies;
     }
 
+        public ArrayList<HitboxR> getActiveHitboxes() {
+            return activeHitboxes;
+        }
+
     public ArrayList<EnhancedMapTile> getActiveEnhancedMapTiles() {
         return activeEnhancedMapTiles;
     }
@@ -240,5 +266,6 @@ public class Camera extends Rectangle {
     public boolean isAtLeftOfMap() {
         return this.getX() <= 0;
     }
+
 
 }

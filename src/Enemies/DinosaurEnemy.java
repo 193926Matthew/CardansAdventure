@@ -1,17 +1,20 @@
 package Enemies;
 
 import Builders.FrameBuilder;
+import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntity;
+import Level.MapEntityStatus;
 import Level.Player;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 // This class is for the green dinosaur enemy that shoots fireballs
@@ -27,6 +30,7 @@ public class DinosaurEnemy extends Enemy {
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
+    private int health = 30;
 
     // timer is used to determine how long dinosaur freezes in place before shooting fireball
     protected int shootWaitTimer;
@@ -63,8 +67,31 @@ public class DinosaurEnemy extends Enemy {
         shootWaitTimer = 65;
     }
 
+
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (isDead()) {
+            if (health >= 0) {
+                health = health - 1;
+                // System.out.println(health);
+                this.live();
+            } else {
+                this.mapEntityStatus = MapEntityStatus.REMOVED;
+            }
+        }
+        super.draw(graphicsHandler);
+        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
+    }
+
     @Override
     public void update(Player player) {
+
+
+        if (health <= 0) {
+            this.mapEntityStatus = MapEntityStatus.REMOVED;
+            super.update();
+            return;
+        }
+        
         float startBound = startLocation.x;
         float endBound = endLocation.x;
 
@@ -132,7 +159,7 @@ public class DinosaurEnemy extends Enemy {
             int fireballY = Math.round(getY()) + 4;
 
             // create Fireball enemy
-            Fireball fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 60);
+            Fireball fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 400);
 
             // add fireball enemy to the map for it to spawn in the level
             map.addEnemy(fireball);
@@ -199,6 +226,14 @@ public class DinosaurEnemy extends Enemy {
 
             put("SHOOT_RIGHT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(1, 0))
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 5, 13)
+                            .build(),
+            });
+
+            put("DEAD", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(1, 1))
                             .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 5, 13)

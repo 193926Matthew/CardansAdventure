@@ -2,6 +2,7 @@ package MapEditor;
 
 import Level.Map;
 import Maps.JungleMap;
+import Maps.DesertMap;
 import Maps.LobbyMap;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
@@ -14,6 +15,7 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("LobbyMap");
+            add("DesertMap");
             add("JungleMap");
         }};
     }
@@ -26,6 +28,8 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "LobbyMap":
                 return new LobbyMap();
+            case "DesertMap":
+                return new DesertMap();
             case "JungleMap":
                 return new JungleMap();
             default:

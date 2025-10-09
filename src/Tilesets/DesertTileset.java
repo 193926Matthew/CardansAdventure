@@ -12,26 +12,25 @@ import Utils.SlopeTileLayoutUtils;
 import java.util.ArrayList;
 
 // This class represents a "common" tileset of standard tiles defined in the CommonTileset.png file
-public class CommonTileset extends Tileset {
+public class DesertTileset extends Tileset {
 
-    public CommonTileset() {
-         super(ImageLoader.load("CommonTileset2.png"), 48, 48, 1);
-        // super(ImageLoader.load("CommonTileset2.png"), 72, 72, 1);
+    public DesertTileset() {
+        super(ImageLoader.load("DesertTileset.png"), 16, 16, 3);
     }
 
     @Override
     public ArrayList<MapTileBuilder> defineTiles() {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
-        // grass
-        Frame grassFrame = new FrameBuilder(getSubImage(0, 0))
+        // regular sand block
+        Frame sandFrame = new FrameBuilder(getSubImage(0, 0))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder grassTile = new MapTileBuilder(grassFrame)
+        MapTileBuilder sandTile = new MapTileBuilder(sandFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(grassTile);
+        mapTiles.add(sandTile);
 
         // sky
         Frame skyFrame = new FrameBuilder(getSubImage(0, 1))
@@ -42,15 +41,15 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(skyTile);
 
-        // dirt
-        Frame dirtFrame = new FrameBuilder(getSubImage(0, 2))
+        // left sand
+        Frame leftSandFrame = new FrameBuilder(getSubImage(0, 2))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder dirtTile = new MapTileBuilder(dirtFrame)
+        MapTileBuilder leftSandTile = new MapTileBuilder(leftSandFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(dirtTile);
+        mapTiles.add(leftSandTile);
 
         // sun
         Frame[] sunFrames = new Frame[]{
@@ -66,58 +65,56 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(sunTile);
 
-        // tree trunk with full hole
-        Frame treeTrunkWithFullHoleFrame = new FrameBuilder(getSubImage(2, 2))
+        // fully cracked sandstone
+        Frame fullyCrackedSandstoneFrame = new FrameBuilder(getSubImage(2, 2))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTrunkWithFullHoleTile = new MapTileBuilder(treeTrunkWithFullHoleFrame)
+        MapTileBuilder fullyCrackedSandstoneTile = new MapTileBuilder(fullyCrackedSandstoneFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(treeTrunkWithFullHoleTile);
+        mapTiles.add(fullyCrackedSandstoneTile);
 
-        // left end branch
-        Frame leftEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
+        // sandstone branch 
+        Frame sandstoneBranchFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
                 .withBounds(0, 6, 16, 4)
                 .build();
 
-        MapTileBuilder leftEndBranchTile = new MapTileBuilder(leftEndBranchFrame)
+        MapTileBuilder sandstoneBranchTile = new MapTileBuilder(sandstoneBranchFrame)
                 .withTileType(TileType.JUMP_THROUGH_PLATFORM);
 
-        mapTiles.add(leftEndBranchTile);
+        mapTiles.add(sandstoneBranchTile);
 
-        // right end branch
-        Frame rightEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
-                .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
-                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                .build();
-
-        MapTileBuilder rightEndBranchTile = new MapTileBuilder(rightEndBranchFrame)
-                .withTileType(TileType.JUMP_THROUGH_PLATFORM);
-
-        mapTiles.add(rightEndBranchTile);
-
-        // tree trunk
-        Frame treeTrunkFrame = new FrameBuilder(getSubImage(1, 0))
+        // sandstone block
+        Frame sandstoneBlockFrame = new FrameBuilder(getSubImage(1, 0))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTrunkTile = new MapTileBuilder(treeTrunkFrame)
+        MapTileBuilder sandstoneBlockTile = new MapTileBuilder(sandstoneBlockFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(treeTrunkTile);
+        mapTiles.add(sandstoneBlockTile);
 
-        // tree top leaves
-        Frame treeTopLeavesFrame = new FrameBuilder(getSubImage(1, 1))
+        // right sand 
+        Frame rightSandFrame = new FrameBuilder(getSubImage(1, 1))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTopLeavesTile = new MapTileBuilder(treeTopLeavesFrame)
+        MapTileBuilder rightSandTile = new MapTileBuilder(rightSandFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(treeTopLeavesTile);
+        mapTiles.add(rightSandTile);
+
+         // top sand 
+        Frame topSandFrame = new FrameBuilder(getSubImage(0, 5))
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder topSandTile = new MapTileBuilder(topSandFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(topSandTile);
 
         // yellow flower
         Frame[] yellowFlowerFrames = new Frame[] {
@@ -139,85 +136,102 @@ public class CommonTileset extends Tileset {
 
         mapTiles.add(yellowFlowerTile);
 
-        // purple flower
-        Frame[] purpleFlowerFrames = new Frame[] {
+        // cactus
+        Frame[] cactusFrames = new Frame[] {
                 new FrameBuilder(getSubImage(0, 3), 65)
                         .withScale(tileScale)
                         .build(),
                 new FrameBuilder(getSubImage(0, 4), 65)
                         .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(0, 3), 65)
-                        .withScale(tileScale)
-                        .build(),
-                new FrameBuilder(getSubImage(0, 5), 65)
-                        .withScale(tileScale)
                         .build()
         };
 
-        MapTileBuilder purpleFlowerTile = new MapTileBuilder(purpleFlowerFrames);
+        MapTileBuilder cactusTile = new MapTileBuilder(cactusFrames);
 
-        mapTiles.add(purpleFlowerTile);
+        mapTiles.add(cactusTile);
 
-        // middle branch
-        Frame middleBranchFrame = new FrameBuilder(getSubImage(2, 3))
+        // cracked sandstone branch
+        Frame crackedSandstoneBranchFrame = new FrameBuilder(getSubImage(2, 3))
                 .withScale(tileScale)
                 .withBounds(0, 6, 16, 4)
                 .build();
 
-        MapTileBuilder middleBranchTile = new MapTileBuilder(middleBranchFrame)
+        MapTileBuilder crackedSandstoneBranchTile = new MapTileBuilder(crackedSandstoneBranchFrame)
                 .withTileType(TileType.JUMP_THROUGH_PLATFORM);
 
-        mapTiles.add(middleBranchTile);
+        mapTiles.add(crackedSandstoneBranchTile);
 
-        // tree trunk hole top
-        Frame treeTrunkHoleTopFrame = new FrameBuilder(getSubImage(2, 4))
+        // slightly cracked sandstone block 1
+        Frame slightlyCrackedSandstoneBlock1Frame = new FrameBuilder(getSubImage(2, 4))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTrunkHoleTopTile = new MapTileBuilder(treeTrunkHoleTopFrame)
+        MapTileBuilder slightlyCrackedSandstoneBlock1Tile = new MapTileBuilder(slightlyCrackedSandstoneBlock1Frame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(treeTrunkHoleTopTile);
+        mapTiles.add(slightlyCrackedSandstoneBlock1Tile);
 
-        // tree trunk hole bottom
-        Frame treeTrunkHoleBottomFrame = new FrameBuilder(getSubImage(2, 5))
+        // slightly cracked sandstone block 2
+        Frame slightlyCrackedSandstoneBlock2Frame = new FrameBuilder(getSubImage(2, 5))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder treeTrunkHoleBottomTile = new MapTileBuilder(treeTrunkHoleBottomFrame)
+        MapTileBuilder slightlyCrackedSandstoneBlock2Tile = new MapTileBuilder(slightlyCrackedSandstoneBlock2Frame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(treeTrunkHoleBottomTile);
+        mapTiles.add(slightlyCrackedSandstoneBlock2Tile);
 
-        // top water
-        Frame topWaterFrame = new FrameBuilder(getSubImage(3, 0))
+        // quick sand top
+        Frame[] quickSandTopFrames = new Frame[] {
+                new FrameBuilder(getSubImage(3, 0), 65)
+                        .withScale(tileScale)
+                        .build(),
+                new FrameBuilder(getSubImage(4, 2), 65)
+                        .withScale(tileScale)
+                        .build(),
+        };
+
+        MapTileBuilder quickSandTopTile = new MapTileBuilder(quickSandTopFrames);
+
+
+        mapTiles.add(quickSandTopTile);
+
+        // qucik sand 
+        Frame[] quickSandFrames = new Frame[] {
+                new FrameBuilder(getSubImage(3, 1), 65)
+                        .withScale(tileScale)
+                        .build(),
+                new FrameBuilder(getSubImage(4, 3), 65)
+                        .withScale(tileScale)
+                        .build(),
+        };
+
+        MapTileBuilder quickSandTile = new MapTileBuilder(quickSandFrames);
+
+        quickSandTile.withTileType(TileType.WATER);
+
+        mapTiles.add(quickSandTile);
+        
+
+        // sand rock 1
+        Frame sandRock1Frame = new FrameBuilder(getSubImage(3, 2))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder topWaterTile = new MapTileBuilder(topWaterFrame);
-
-        mapTiles.add(topWaterTile);
-
-        // water
-        Frame waterFrame = new FrameBuilder(getSubImage(3, 1))
-                .withScale(tileScale)
-                .build();
-
-        MapTileBuilder waterTile = new MapTileBuilder(waterFrame)
-                .withTileType(TileType.WATER);
-
-        mapTiles.add(waterTile);
-
-        // grey rock
-        Frame greyRockFrame = new FrameBuilder(getSubImage(3, 2))
-                .withScale(tileScale)
-                .build();
-
-        MapTileBuilder greyRockTile = new MapTileBuilder(greyRockFrame)
+        MapTileBuilder sandRock1Tile = new MapTileBuilder(sandRock1Frame)
                 .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(greyRockTile);
+        mapTiles.add(sandRock1Tile);
+
+        // sand rock 2
+        Frame sandRock2Frame = new FrameBuilder(getSubImage(3, 5))
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder sandRock2Tile = new MapTileBuilder(sandRock2Frame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(sandRock2Tile);
 
         // left 45 degree slope
         Frame leftSlopeFrame = new FrameBuilder(getSubImage(3, 3))
