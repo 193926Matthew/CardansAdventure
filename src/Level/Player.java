@@ -9,7 +9,9 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
-import EnhancedMapTiles.PowerUp;import Utils.Point;
+import EnhancedMapTiles.PowerUp;
+import Level.IceBall;
+import Utils.Point;
 
 import java.util.ArrayList;
 import Utils.Point;
