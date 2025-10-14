@@ -27,6 +27,9 @@ public abstract class Player extends GameObject {
     protected float terminalVelocityY = 0;
     protected float momentumYIncrease = 0;
 
+    // values for player stats
+    public int health = 100;
+
     // values used to handle player movement
     protected float jumpForce = 0;
     protected float momentumY = 0;
@@ -56,7 +59,8 @@ public abstract class Player extends GameObject {
     protected Key ICE_BALL_KEY = Key.I;
 
 
-    //Attack variables
+
+    // Attack variables
     private boolean isAttacking = false;
     private boolean isReturning = false;
     private int attackStartX;
@@ -72,6 +76,8 @@ public abstract class Player extends GameObject {
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
+    protected int invincibleTimer;
+    protected int duration = 60;
     protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
     public boolean isInTile = false; //checks to see if the player is in a quicksand tile
 
@@ -110,7 +116,8 @@ public abstract class Player extends GameObject {
 
             applyGravity();
 
-            // update player's state and current actions, which includes things like determining how much it should move each frame and if its walking or jumping
+            // update player's state and current actions, which includes things like
+            // determining how much it should move each frame and if its walking or jumping
             do {
                 previousPlayerState = playerState;
                 handlePlayerState();
@@ -118,7 +125,8 @@ public abstract class Player extends GameObject {
 
             previousAirGroundState = airGroundState;
 
-            // move player with respect to map collisions based on how much player needs to move this frame
+            // move player with respect to map collisions based on how much player needs to
+            // move this frame
             lastAmountMovedX = super.moveXHandleCollision(moveAmountX);
             lastAmountMovedY = super.moveYHandleCollision(moveAmountY);
 
@@ -128,6 +136,13 @@ public abstract class Player extends GameObject {
 
             // update player's animation
             super.update();
+
+            if (isInvincible) {
+                invincibleTimer--;
+                if (invincibleTimer <= 0) {
+                    isInvincible = false;
+                }
+            }
         }
 
         // if player has beaten level
@@ -161,10 +176,11 @@ public abstract class Player extends GameObject {
 
     }
 
-    // based on player's current state, call appropriate player state handling method
+    // based on player's current state, call appropriate player state handling
+    // method
     protected void handlePlayerState() {
         switch (playerState) {
-            
+
             case STANDING:
                 playerStanding();
                 break;
@@ -211,7 +227,7 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.CROUCHING;
         }
 
-        //should check if the attack key is being pressed as well
+        // should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
         spawnHitbox(HitboxState.ATTACKING_DASH);
@@ -256,7 +272,7 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.CROUCHING;
         }
 
-        //should check if the attack key is being pressed as well
+        // should check if the attack key is being pressed as well
         else if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY) && !isAttacking && !isReturning) {
         playerState = PlayerState.ATTACKING_DASH;
         spawnHitbox(HitboxState.ATTACKING_DASH);
@@ -284,7 +300,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             playerState = PlayerState.JUMPING;
         }
-         if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY)) {
+        if (Keyboard.isKeyDown(TAIL_ATTACK_DASH_KEY)) {
             playerState = PlayerState.ATTACKING_DASH;
         }
         if (Keyboard.isKeyDown(TAIL_ATTACK_SPIN_KEY)) {
@@ -296,7 +312,7 @@ public abstract class Player extends GameObject {
         if(Keyboard.isKeyDown(ICE_BALL_KEY)){
             playerState = PlayerState.ICE_BALL;
         }
-    } 
+    }
 
     protected void playerAttackingSpin() {
 
@@ -417,7 +433,8 @@ public abstract class Player extends GameObject {
             }
         }
 
-        // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
+        // if player is in air (currently in a jump) and has more jumpForce, continue
+        // sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
             if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY)){
                 playerState = PlayerState.DOUBLE_JUMP;
@@ -438,7 +455,8 @@ public abstract class Player extends GameObject {
                 moveAmountX += walkSpeed;
             }
 
-            // if player is falling, increases momentum as player falls so it falls faster over time
+            // if player is falling, increases momentum as player falls so it falls faster
+            // over time
             if (moveAmountY > 0) {
                 increaseMomentum();
             }
@@ -447,7 +465,8 @@ public abstract class Player extends GameObject {
             
         }
 
-        // if player last frame was in air and this frame is now on ground, player enters STANDING state
+        // if player last frame was in air and this frame is now on ground, player
+        // enters STANDING state
         else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
             playerState = PlayerState.STANDING;
         }
@@ -464,54 +483,53 @@ public abstract class Player extends GameObject {
         isAttacking = true;
         attackStartX = (int) getX();
 
-        // set animation
-        currentAnimationName = facingDirection == Direction.RIGHT ? 
-                "TAIL_ATTACK_DASH_RIGHT" : "TAIL_ATTACK_DASH_LEFT";
-    }
+            // set animation
+            currentAnimationName = facingDirection == Direction.RIGHT ? "TAIL_ATTACK_DASH_RIGHT"
+                    : "TAIL_ATTACK_DASH_LEFT";
+        }
 
-    if (isAttacking) {
-        // dash forward
-        if (facingDirection == Direction.RIGHT) {
-            moveAmountX += attackSpeed;
-            if (getX() >= attackStartX + attackDistance) {
-                isAttacking = false;
-                isReturning = true;
+        if (isAttacking) {
+            // dash forward
+            if (facingDirection == Direction.RIGHT) {
+                moveAmountX += attackSpeed;
+                if (getX() >= attackStartX + attackDistance) {
+                    isAttacking = false;
+                    isReturning = true;
 
-                // flip around before returning
-                facingDirection = Direction.LEFT;
-                currentAnimationName = "TAIL_ATTACK_DASH_LEFT";
+                    // flip around before returning
+                    facingDirection = Direction.LEFT;
+                    currentAnimationName = "TAIL_ATTACK_DASH_LEFT";
+                }
+            } else {
+                moveAmountX -= attackSpeed;
+                if (getX() <= attackStartX - attackDistance) {
+                    isAttacking = false;
+                    isReturning = true;
+
+                    // flip around before returning
+                    facingDirection = Direction.RIGHT;
+                    currentAnimationName = "TAIL_ATTACK_DASH_RIGHT";
+                }
             }
-        } else {
-            moveAmountX -= attackSpeed;
-            if (getX() <= attackStartX - attackDistance) {
-                isAttacking = false;
-                isReturning = true;
-
-                // flip around before returning
-                facingDirection = Direction.RIGHT;
-                currentAnimationName = "TAIL_ATTACK_DASH_RIGHT";
+        } else if (isReturning) {
+            // dash back toward start position
+            if (facingDirection == Direction.LEFT) {
+                moveAmountX -= attackSpeed;
+                if (getX() <= attackStartX) {
+                    isReturning = false;
+                    playerState = PlayerState.STANDING;
+                    facingDirection = Direction.RIGHT; // restore original facing
+                }
+            } else {
+                moveAmountX += attackSpeed;
+                if (getX() >= attackStartX) {
+                    isReturning = false;
+                    playerState = PlayerState.STANDING;
+                    facingDirection = Direction.LEFT; // restore original facing
+                }
             }
         }
-    } 
-    else if (isReturning) {
-        // dash back toward start position
-        if (facingDirection == Direction.LEFT) {
-            moveAmountX -= attackSpeed;
-            if (getX() <= attackStartX) {
-                isReturning = false;
-                playerState = PlayerState.STANDING;
-                facingDirection = Direction.RIGHT; // restore original facing
-            }
-        } else {
-            moveAmountX += attackSpeed;
-            if (getX() >= attackStartX) {
-                isReturning = false;
-                playerState = PlayerState.STANDING;
-                facingDirection = Direction.LEFT; // restore original facing
-            }
-        }
     }
-}
 
 
     public void setHasDoubleJump(boolean value){
@@ -557,21 +575,18 @@ public abstract class Player extends GameObject {
             if (currentMapTile != null && currentMapTile.getTileType() == TileType.WATER) {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
-        }
-        else if (playerState == PlayerState.ATTACKING_SPIN) {
+        } else if (playerState == PlayerState.ATTACKING_SPIN) {
             // sets animation to a ATTACK SPIN animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT_SPIN" : "ATTACK_LEFT_SPIN";
-        }
-        else if (playerState == PlayerState.WALKING) {
+        } else if (playerState == PlayerState.WALKING) {
             // sets animation to a WALK animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_LEFT";
-        }
-        else if (playerState == PlayerState.CROUCHING) {
+        } else if (playerState == PlayerState.CROUCHING) {
             // sets animation to a CROUCH animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "CROUCH_RIGHT" : "CROUCH_LEFT";
-        }
-        else if (playerState == PlayerState.JUMPING) {
-            // if player is moving upwards, set player's animation to jump. if player moving downwards, set player's animation to fall
+        } else if (playerState == PlayerState.JUMPING) {
+            // if player is moving upwards, set player's animation to jump. if player moving
+            // downwards, set player's animation to fall
             if (lastAmountMovedY <= 0) {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
             } else {
@@ -581,18 +596,19 @@ public abstract class Player extends GameObject {
     }
 
     @Override
-    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) { 
-       // if (direction == Direction.RIGHT) {
-       //     if (hasCollided && isAttacking) {
-       //         isAttacking = false;
-       //         this.previousX = x - 10;
-       //     } 
-       // }
+    public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
+
+        if (direction == Direction.RIGHT || direction == Direction.RIGHT) {
+            if (hasCollided && isAttacking) {
+                isAttacking = false;
+                // Position = x - 10;
+            }
+        }
     }
 
     @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
-        // if player collides 5swith a map tile below it, it is now on the ground
+        // if player collides with a map tile below it, it is now on the ground
         // if player does not collide with a map tile below, it is in air
         if (direction == Direction.DOWN || isOnPlatform) {
             if (hasCollided) {
@@ -605,12 +621,14 @@ public abstract class Player extends GameObject {
              else{
                 playerState = PlayerState.JUMPING;
                 airGroundState = AirGroundState.AIR;
-                //System.out.println("Not On Platform"); uncomment to see if player is not on platform
-                isOnPlatform = false; //reset the isOnPlatform only if the player is falling
+                // System.out.println("Not On Platform"); uncomment to see if player is not on
+                // platform
+                isOnPlatform = false; // reset the isOnPlatform only if the player is falling
             }
         }
 
-        // if player collides with map tile upwards, it means it was jumping and then hit into a ceiling -- immediately stop upwards jump velocity
+        // if player collides with map tile upwards, it means it was jumping and then
+        // hit into a ceiling -- immediately stop upwards jump velocity
         else if (direction == Direction.UP) {
             if (hasCollided) {
                 jumpForce = 0;
@@ -623,10 +641,16 @@ public abstract class Player extends GameObject {
         if (!isInvincible) {
             // if map entity is an enemy, kill player on touch
             if (mapEntity instanceof Enemy) {
-                    levelState = LevelState.PLAYER_DEAD;
-                }
+                health = health - 25;
+
+                isInvincible = true;
+                invincibleTimer = duration;
+            }
+            if (health <= 0) {
+                levelState = LevelState.PLAYER_DEAD;
             }
         }
+    }
 
     public void hurtHitbox(MapEntity mapEntity) {
         if (!isInvincible) {
@@ -678,11 +702,13 @@ public abstract class Player extends GameObject {
             }
             super.update();
         }
-        // if death animation not on last frame yet, continue to play out death animation
+        // if death animation not on last frame yet, continue to play out death
+        // animation
         else if (currentFrameIndex != getCurrentAnimation().length - 1) {
-          super.update();
+            super.update();
         }
-        // if death animation on last frame (it is set up not to loop back to start), player should continually fall until it goes off screen
+        // if death animation on last frame (it is set up not to loop back to start),
+        // player should continually fall until it goes off screen
         else if (currentFrameIndex == getCurrentAnimation().length - 1) {
             if (map.getCamera().containsDraw(this)) {
                 moveY(3);
@@ -722,7 +748,7 @@ public abstract class Player extends GameObject {
         return facingDirection;
     }
 
-    public void setIsOnPlatform(boolean isOnPlatfrom){
+    public void setIsOnPlatform(boolean isOnPlatfrom) {
         this.isOnPlatform = isOnPlatfrom;
     }
 
@@ -763,6 +789,14 @@ public abstract class Player extends GameObject {
 
     public void setJumpHeight(float jumpHeight){
         this.jumpHeight = jumpHeight;
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
