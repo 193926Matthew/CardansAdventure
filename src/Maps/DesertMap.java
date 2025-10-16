@@ -6,6 +6,8 @@ import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Enemies.Fireball;
 import Engine.ImageLoader;
+import EnhancedMapTiles.BackToLobby;
+import EnhancedMapTiles.CheckPoint;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.FallingPlatform;
 import EnhancedMapTiles.HorizontalMovingPlatform;
@@ -78,6 +80,12 @@ public class DesertMap extends Map {
 
         PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","ICEPOWER.png");
         PowerUp doubleJump = new PowerUp(getMapTile(45,16).getLocation(),"Double Jump","doubleJump.png");
+        // checkpoint added to map
+        CheckPoint checkPoint1 = new CheckPoint(getMapTile(42, 19).getLocation());
+        enhancedMapTiles.add(checkPoint1);
+        CheckPoint checkPoint2 = new CheckPoint(getMapTile(84, 15).getLocation());
+        enhancedMapTiles.add(checkPoint2);
+
 
         FallingPlatform fp = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),

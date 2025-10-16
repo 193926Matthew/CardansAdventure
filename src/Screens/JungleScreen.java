@@ -68,13 +68,6 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-
-                for (EnhancedMapTile tile : map.getEnhancedMapTiles()){
-                    BackToLobby backToLobby = (BackToLobby) tile;   
-                    if (backToLobby.getTriggerCode() == 3) {
-                        screenCoordinator.setGameState(GameState.LOBBY);
-                    }
-                }
                 break;
         
             default:

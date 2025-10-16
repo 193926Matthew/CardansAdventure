@@ -61,7 +61,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
@@ -75,6 +75,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                         hitbox = null;
                     }
                 }
+                
 
                 break;
             // if level has been completed, bring up level cleared screen
@@ -93,7 +94,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             // wait on level lose screen to make a decision (either resets level or sends
             // player back to main menu)
             case LEVEL_LOSE:
-                levelLoseScreen.update();
+                resetcheckTEST();
                 break;
         }
     }
@@ -140,6 +141,29 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void resetLevel() {
         initialize();
+    }
+
+    public void resetToCheckpoint() {
+        playLevelScreenState = PlayLevelScreenState.RUNNING;
+    }
+
+    //this does what initialize but it works with checkpoint
+    public void resetcheckTEST() {
+            map = new DesertMap();
+
+            System.out.print("Start again");
+            // setup player
+            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.hitbox = new Hitbox(player.getLocation());
+            map.addHitbox(this.hitbox);
+
+            levelClearedScreen = new LevelClearedScreen();
+            levelLoseScreen = new LevelLoseScreen(this);
+
+            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+            this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
     public void goBackToMenu() {

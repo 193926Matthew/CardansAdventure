@@ -79,6 +79,9 @@ public abstract class Player extends GameObject {
     protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
     public boolean isInTile = false; //checks to see if the player is in a quicksand tile
 
+    // checkpoint variables
+    public Point respawnPoint;
+
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
         facingDirection = Direction.RIGHT;
@@ -87,9 +90,29 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         levelState = LevelState.RUNNING;
-
-        
     }
+
+    // set spawn point for player
+    public void setRespawnPoint(Point respawnPoint) {
+        this.respawnPoint = respawnPoint;
+    }
+
+    // respawn player at last checkpoint
+    public void respawn() {
+        if (respawnPoint != null){
+            this.setLocation(respawnPoint.x, respawnPoint.y);
+            health = 100;
+            levelState = LevelState.RUNNING;
+
+        } else {
+            this.setLocation(0, 0);
+            health = 100;
+            levelState = LevelState.RUNNING;
+        }
+
+
+    }
+
 
     private void spawnHitbox(HitboxState state) {
         // determine spawn position relative to player
@@ -151,6 +174,7 @@ public abstract class Player extends GameObject {
         // if player has lost level
         else if (levelState == LevelState.PLAYER_DEAD) {
             updatePlayerDead();
+            //respawn();
         }
     }
 
@@ -711,10 +735,15 @@ public abstract class Player extends GameObject {
             if (map.getCamera().containsDraw(this)) {
                 moveY(3);
             } else {
+                respawn();
                 // tell all player listeners that the player has died in the level
+                
                 for (PlayerListener listener : listeners) {
                     listener.onDeath();
                 }
+                 
+                //respawn();
+                
             }
         }
     }
