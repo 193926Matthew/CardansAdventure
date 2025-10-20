@@ -72,7 +72,12 @@ public class HitboxR extends MapEntity {
         // Check if hitbox hits an enemy
         for (MapEntity entity : map.getEnemies()) {
             if (entity instanceof Enemy && this.intersects(entity)) {
-                ((Enemy) entity).kill();
+                if (hitboxState == HitboxState.ATTACKING_DASH) {
+                    ((Enemy) entity).kill(2);
+                }
+                if (hitboxState == HitboxState.ATTACKING_SPIN) {
+                    ((Enemy) entity).kill(1);
+                }
             }
         }
     }

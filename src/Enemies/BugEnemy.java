@@ -38,7 +38,7 @@ public class BugEnemy extends Enemy {
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead()) {
             if (health >= 0) {
-                health = health - 1;
+                health = health - damageValue();
                 // System.out.println(health);
                 this.live();
             } else {
@@ -86,7 +86,27 @@ public class BugEnemy extends Enemy {
             }
         }
 
+        /* Knockback Attempt
+        System.out.println(isDead());
+        if (player.getX() >= getX()) {
+            if (isDead()) {
+                moveAmountX = -25;
+                System.out.println("right");
+            }
+            // System.out.println("right");
+        }
+
+        if (player.getX() <= getX()) {
+            if (isDead()) {
+                moveAmountX = 25;
+                System.out.println("left");
+            }
+            // System.out.println("left");
+        }
+            */
+
         // move bug
+        
         moveYHandleCollision(moveAmountY);
         moveXHandleCollision(moveAmountX);
 

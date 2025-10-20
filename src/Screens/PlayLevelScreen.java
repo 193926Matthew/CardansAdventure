@@ -12,7 +12,6 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.DesertMap;
-import Maps.TestMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 

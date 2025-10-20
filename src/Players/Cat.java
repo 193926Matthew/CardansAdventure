@@ -1,21 +1,13 @@
 package Players;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import Builders.FrameBuilder;
-import Enemies.DinosaurEnemy.DinosaurState;
-import Enemies.Fireball;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
-import Level.Hitbox;
-import Level.HitboxR;
 import Level.Player;
-import Utils.Direction;
-import Utils.Point;
+
 
 import java.util.HashMap;
 

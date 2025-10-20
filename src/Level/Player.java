@@ -9,11 +9,8 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
-import EnhancedMapTiles.PowerUp;import Utils.Point;
-
 import java.util.ArrayList;
 import Utils.Point;
-import java.util.List;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -69,7 +66,7 @@ public abstract class Player extends GameObject {
     private boolean hasDoubleJump = false;
     private boolean usedDoubleJump = false;
     private boolean hasIceBall = false;
-    private boolean hasJumped = false;
+    // private boolean hasJumped = false;
     private int doubleJumpKeyCount = 0;
 
     // flags
@@ -335,7 +332,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             //enters jumping state
             playerState = PlayerState.JUMPING;
-            hasJumped = true;
+            // hasJumped = true;
         }
         //if Cardan is in the air, and the Double Jump key is not locked
         if(previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.AIR && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY)){
@@ -646,15 +643,6 @@ public abstract class Player extends GameObject {
             }
             if (health <= 0) {
                 levelState = LevelState.PLAYER_DEAD;
-            }
-        }
-    }
-
-    public void hurtHitbox(MapEntity mapEntity) {
-        if (!isInvincible) {
-            // if map entity is an enemy, kill player on touch
-            if (mapEntity instanceof Enemy) {
-                    mapEntity.kill();
             }
         }
     }
