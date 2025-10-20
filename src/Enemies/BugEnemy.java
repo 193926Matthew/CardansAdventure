@@ -26,6 +26,7 @@ public class BugEnemy extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
+    private boolean hurt = false;
     private int health = 25;
 
     public BugEnemy(Point location, Direction facingDirection) {
@@ -34,11 +35,15 @@ public class BugEnemy extends Enemy {
         this.initialize();
     }
 
+    public boolean isHurt() {
+        return hurt;
+    }
 
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead()) {
             if (health >= 0) {
                 health = health - damageValue();
+                hurt = true;
                 // System.out.println(health);
                 this.live();
             } else {
@@ -86,24 +91,24 @@ public class BugEnemy extends Enemy {
             }
         }
 
-        /* Knockback Attempt
-        System.out.println(isDead());
+        // System.out.println(isDead());
         if (player.getX() >= getX()) {
-            if (isDead()) {
+            if (isHurt()) {
                 moveAmountX = -25;
                 System.out.println("right");
+                hurt = false;
             }
             // System.out.println("right");
         }
 
         if (player.getX() <= getX()) {
-            if (isDead()) {
+            if (isHurt()) {
                 moveAmountX = 25;
                 System.out.println("left");
+                hurt = false;
             }
             // System.out.println("left");
         }
-            */
 
         // move bug
         
