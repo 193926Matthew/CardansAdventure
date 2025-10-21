@@ -116,6 +116,9 @@ public class MapCollisionHandler {
                 case SLOPE:
                     // slopes have special collision logic that is handled elsewhere -- they are technically not considered "solid" by the game
                     return false;
+                case SPIKE:
+
+                    return false;
                 default:
                     return false;
             }

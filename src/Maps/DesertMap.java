@@ -41,16 +41,13 @@ public class DesertMap extends Map {
         DinosaurEnemy dinosaurEnemy4 = new DinosaurEnemy(getMapTile(162, 19).getLocation().addY(2), getMapTile(173, 19).getLocation().addY(2), Direction.LEFT);
         enemies.add(dinosaurEnemy4);
 
-         BugEnemy bugEnemy = new BugEnemy(getMapTile(33, 19).getLocation().subtractY(25), Direction.LEFT);
-        enemies.add(bugEnemy);
-
         BugEnemy bugEnemy2 = new BugEnemy(getMapTile(69, 15).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy2);
 
         BugEnemy bugEnemy3 = new BugEnemy(getMapTile(84, 15).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy3);
 
-        BugEnemy bugEnemy4 = new BugEnemy(getMapTile(99, 19).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy4 = new BugEnemy(getMapTile(98, 19).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy4);
 
         BugEnemy bugEnemy5 = new BugEnemy(getMapTile(106, 18).getLocation().subtractY(25), Direction.RIGHT);

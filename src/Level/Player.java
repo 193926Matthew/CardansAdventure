@@ -110,7 +110,7 @@ public abstract class Player extends GameObject {
         if (levelState == LevelState.RUNNING) {
 
             applyGravity();
-
+            isTouchingSpikes();
             // update player's state and current actions, which includes things like
             // determining how much it should move each frame and if its walking or jumping
             do {
@@ -711,12 +711,21 @@ public abstract class Player extends GameObject {
     protected boolean isInQuicksand() {
     for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
         if ((tile instanceof QuicksandTile || tile instanceof QuicksandTopTile) && getBounds().intersects(tile.getBounds())) {
-            return true;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    protected void isTouchingSpikes(){
+        for (MapTile tile : map.getMapTiles()) {
+            if (tile.getTileType() == TileType.SPIKE && getBounds().intersects(tile.getBounds())) {
+                this.setHealth(0);
+                levelState = LevelState.PLAYER_DEAD;
+                updatePlayerDead();
+            }
         }
     }
-    return false;
-    
-}
 
     public PlayerState getPlayerState() {
         return playerState;

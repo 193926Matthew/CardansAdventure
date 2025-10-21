@@ -21,7 +21,7 @@ import Utils.Point;
 public class QuicksandTile extends EnhancedMapTile {
 
     public QuicksandTile(Point location) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("DesertTileset.png"), 16, 16), TileType.PASSABLE);
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("DesertTileset2.png"), 48, 48), TileType.PASSABLE);
     } 
 
     @Override
@@ -34,11 +34,11 @@ public class QuicksandTile extends EnhancedMapTile {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(3, 1), 65)
-                        .withScale(3)
+                        .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(4, 3), 65)
-                        .withScale(3)
+                        .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build()
             });
