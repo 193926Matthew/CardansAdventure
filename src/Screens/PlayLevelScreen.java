@@ -87,7 +87,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     levelClearedScreen.update();
                     screenTimer--;
                     if (screenTimer == 0) {
-                        goBackToMenu();
+                        GoBackToLobby();
                     }
                 }
                 break;
@@ -168,6 +168,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void goBackToMenu() {
         screenCoordinator.setGameState(GameState.MENU);
+    }
+
+    public void GoBackToLobby(){
+        screenCoordinator.setGameState(GameState.LOBBY);
     }
 
     // This enum represents the different states this screen can be in

@@ -11,6 +11,7 @@ import EnhancedMapTiles.CheckPoint;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.FallingPlatform;
 import EnhancedMapTiles.HorizontalMovingPlatform;
+import EnhancedMapTiles.NewEndLevel;
 import EnhancedMapTiles.VerticalMovingPlatform;
 import GameObject.Rectangle;
 import java.util.Timer;
@@ -85,6 +86,7 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(checkPoint1);
         CheckPoint checkPoint2 = new CheckPoint(getMapTile(84, 15).getLocation());
         enhancedMapTiles.add(checkPoint2);
+
 
 
         FallingPlatform fp = new FallingPlatform(
@@ -302,10 +304,14 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop5);
         enhancedMapTiles.add(qsTop6);
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
-        enhancedMapTiles.add(endLevelBox);
+        //EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
+        //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
+
+        //The new end level box
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(197, 18).getLocation());
+        enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
         
