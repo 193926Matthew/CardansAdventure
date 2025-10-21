@@ -3,8 +3,6 @@ package Maps;
 import java.util.ArrayList;
 
 import EnhancedMapTiles.BackToLobby;
-import EnhancedMapTiles.JungleEnter;
-import EnhancedMapTiles.SnowEnter;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Tilesets.CommonTileset;
