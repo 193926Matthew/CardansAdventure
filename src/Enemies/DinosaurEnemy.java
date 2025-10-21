@@ -16,6 +16,7 @@ import Utils.Point;
 
 import java.awt.Color;
 import java.util.HashMap;
+import Level.IceBall;
 
 // This class is for the green dinosaur enemy that shoots fireballs
 // It walks back and forth between two set points (startLocation and endLocation)
@@ -43,7 +44,7 @@ public class DinosaurEnemy extends Enemy {
     protected DinosaurState previousDinosaurState;
 
     public DinosaurEnemy(Point startLocation, Point endLocation, Direction facingDirection) {
-        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("DinosaurEnemy.png"), 14, 17), "WALK_RIGHT");
+        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("Dinosaur.png"), 14, 17), "WALK_RIGHT");
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
@@ -53,6 +54,7 @@ public class DinosaurEnemy extends Enemy {
     @Override
     public void initialize() {
         super.initialize();
+        setMovementSpeed(movementSpeed);
         dinosaurState = DinosaurState.WALK;
         previousDinosaurState = dinosaurState;
         facingDirection = startFacingDirection;
@@ -84,8 +86,14 @@ public class DinosaurEnemy extends Enemy {
 
     @Override
     public void update(Player player) {
-
-
+        if(getIceBallHitStatus() == true){
+            if(facingDirection == Direction.RIGHT){
+                currentAnimationName = "FROZEN_WALK_RIGHT";
+            }else{
+                currentAnimationName = "FROZEN_WALK_RIGHT";
+            }
+        }
+       
         if (health <= 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
             super.update();
@@ -105,11 +113,21 @@ public class DinosaurEnemy extends Enemy {
 
         // if dinosaur is walking, determine which direction to walk in based on facing direction
         if (dinosaurState == DinosaurState.WALK) {
-            if (facingDirection == Direction.RIGHT) {
+            if (facingDirection == Direction.RIGHT && getIceBallHitStatus() == false) {
+                System.out.println(movementSpeed);
                 currentAnimationName = "WALK_RIGHT";
                 moveXHandleCollision(movementSpeed);
-            } else {
+            } else if(facingDirection == Direction.LEFT && getIceBallHitStatus() == false) {
                 currentAnimationName = "WALK_LEFT";
+                System.out.println(movementSpeed);
+                moveXHandleCollision(-movementSpeed);
+            }else if(facingDirection == Direction.RIGHT && getIceBallHitStatus() == true){
+                currentAnimationName = "FROZEN_WALK_RIGHT";
+                //movementSpeed -= 0.8;
+                moveXHandleCollision(movementSpeed);
+            }else{
+                //movementSpeed -= 0.8;
+                currentAnimationName = "FROZEN_WALK_LEFT";
                 moveXHandleCollision(-movementSpeed);
             }
 
@@ -180,12 +198,18 @@ public class DinosaurEnemy extends Enemy {
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
         // if dinosaur enemy collides with something on the x axis, it turns around and walks the other way
         if (hasCollided) {
-            if (direction == Direction.RIGHT) {
+            if (direction == Direction.RIGHT && getIceBallHitStatus() == false) {
                 facingDirection = Direction.LEFT;
                 currentAnimationName = "WALK_LEFT";
-            } else {
+            } else if(direction == Direction.LEFT && getIceBallHitStatus() == false){
                 facingDirection = Direction.RIGHT;
                 currentAnimationName = "WALK_RIGHT";
+            }else if(direction == Direction.RIGHT && getIceBallHitStatus() == true){
+                facingDirection = Direction.LEFT;
+                currentAnimationName = "FROZEN_WALK_RIGHT";
+            }else{
+                facingDirection = Direction.RIGHT;
+                currentAnimationName = "FROZEN_WALK_LEFT";
             }
         }
     }
@@ -216,10 +240,33 @@ public class DinosaurEnemy extends Enemy {
                             .withBounds(4, 2, 5, 13)
                             .build()
             });
+             put("FROZEN_WALK_LEFT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(1,1 ), 14)
+                            .withScale(3)
+                            .withBounds(4, 2, 5, 13)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
+                            .withScale(3)
+                            .withBounds(4, 2, 5, 13)
+                            .build()
+            });
+
+            put("FROZEN_WALK_RIGHT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 5, 13)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(3)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 5, 13)
+                            .build()
+            });
 
             put("SHOOT_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(1, 0))
-                            .withScale(3)
+                            .withScale(3) 
                             .withBounds(4, 2, 5, 13)
                             .build(),
             });
@@ -241,7 +288,16 @@ public class DinosaurEnemy extends Enemy {
             });
         }};
     }
+    
+    @Override
+    public float getMovementSpeed(){
+        return this.movementSpeed;
+    }
 
+    @Override
+    public void setMovementSpeed(float x){
+        movementSpeed = x;
+    }
     public enum DinosaurState {
         WALK, SHOOT_WAIT, SHOOT
     }

@@ -47,13 +47,13 @@ public abstract class Player extends GameObject {
 
     // define keys
     protected KeyLocker keyLocker = new KeyLocker();
-    protected Key JUMP_KEY = Key.UP;
-    protected Key MOVE_LEFT_KEY = Key.LEFT;
-    protected Key MOVE_RIGHT_KEY = Key.RIGHT;
-    protected Key CROUCH_KEY = Key.DOWN;
-    protected Key TAIL_ATTACK_DASH_KEY = Key.T;
-    protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
-    protected Key DOUBLE_JUMP_KEY = Key.D;
+    protected Key JUMP_KEY = Key.W;
+    protected Key MOVE_LEFT_KEY = Key.A;
+    protected Key MOVE_RIGHT_KEY = Key.D;
+    protected Key CROUCH_KEY = Key.S;
+    protected Key TAIL_ATTACK_DASH_KEY = Key.RIGHT;
+    protected Key TAIL_ATTACK_SPIN_KEY = Key.LEFT;
+    protected Key DOUBLE_JUMP_KEY = Key.W;
     protected Key ICE_BALL_KEY = Key.I;
 
 
@@ -71,6 +71,8 @@ public abstract class Player extends GameObject {
     private boolean hasIceBall = false;
     private boolean hasJumped = false;
     private int doubleJumpKeyCount = 0;
+    private int doubleJumpDelay;
+    private boolean enemyHitByIceBall;
 
     // flags
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
@@ -141,6 +143,20 @@ public abstract class Player extends GameObject {
                     isInvincible = false;
                 }
             }
+            if(usedDoubleJump == true){
+                //System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
+                doubleJumpDelay = 90;
+                //System.out.println(usedDoubleJump + " " + doubleJumpDelay);
+                usedDoubleJump = false;
+            }else if (usedDoubleJump == false && hasDoubleJump == true && doubleJumpDelay <= 90 && doubleJumpDelay != 0){
+                //System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
+                doubleJumpDelay--;
+               // System.out.println(usedDoubleJump + " " + doubleJumpDelay);
+            }
+            //Make it so Cardan cannot pass the negative bounds of the start position 
+            //So he cannot go before (0,0) and past the actual bounds of the last tile 
+
+
         }
 
         // if player has beaten level
@@ -330,39 +346,48 @@ public abstract class Player extends GameObject {
 
     protected void playerDoubleJump(){
         //if jump key is pressed and the key is not locked
+        
         if(Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)){
             //locks the jump key
             keyLocker.lockKey(JUMP_KEY);
             //enters jumping state
             playerState = PlayerState.JUMPING;
             hasJumped = true;
+            keyLocker.unlockKey(JUMP_KEY);
+            
         }
+            
         //if Cardan is in the air, and the Double Jump key is not locked
         if(previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.AIR && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY)){
             //If Double jump key is pressed
-              if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY) && hasDoubleJump() == true){ 
+              if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && !keyLocker.isKeyLocked(DOUBLE_JUMP_KEY)){ 
                     keyLocker.lockKey(DOUBLE_JUMP_KEY);
                     usedDoubleJump = false;
                     doubleJumpKeyCount +=1;
-                if(doubleJumpKeyCount == 2 && Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && usedDoubleJump == false){
+                    /* 
+                     if(doubleJumpDelay != 0){
+                        doubleJumpDelay--;
+                    }
+                    */
+                if(doubleJumpKeyCount == 2 && Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && usedDoubleJump == false && hasDoubleJump() == true && doubleJumpDelay == 0){
+                    //System.out.println("current delay: " + doubleJumpDelay);
                     usedDoubleJump = true;
-                //keyLocker.unlockKey(DOUBLE_JUMP_KEY);
-                currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+                    //keyLocker.unlockKey(DOUBLE_JUMP_KEY);
+                    currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
-                airGroundState = AirGroundState.AIR;
-                jumpForce = jumpHeight * 2;
-                jumpForce -= 10;
-                if (jumpForce > 0) {
-                moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
-                if (jumpForce < 0) {
-                    jumpForce = 0;
-                }
-                doubleJumpKeyCount = 0;
-                usedDoubleJump = false;
+                    airGroundState = AirGroundState.AIR;
+                    jumpForce = jumpHeight * 2;
+                    jumpForce -= 10;
+                    if (jumpForce > 0) {
+                        moveAmountY -= jumpForce;
+                        jumpForce -= jumpDegrade;
+                        if (jumpForce < 0) {
+                            jumpForce = 0;
+                        }
+                    }
+                    doubleJumpKeyCount = 0;
                 }
             }
-              }
         }
 
         if(Keyboard.isKeyUp(DOUBLE_JUMP_KEY)){
@@ -393,6 +418,9 @@ public abstract class Player extends GameObject {
                 Point spawn = new Point(Math.round(getX() + getWidth()), getY() + (i * 10));
                 speed = 1.5f;
                 IceBall iceBall = new IceBall(spawn,speed + (i*1.2f),240,map.getEnemies());
+                this.enemyHitByIceBall = iceBall.enemyHit();
+                //System.out.println("IceBall" + enemyHitByIceBall);
+
                 map.addEnhancedMapTile(iceBall);
             }
 
@@ -401,6 +429,9 @@ public abstract class Player extends GameObject {
                 Point spawn = new Point(Math.round(getX() - 21), getY() + (i * 10));
                 speed = -1.5f;
                 IceBall iceBall = new IceBall(spawn,speed + (i*0.5f),240,map.getEnemies());
+                this.enemyHitByIceBall = iceBall.enemyHit();
+                //System.out.println("IceBall" + enemyHitByIceBall);
+
                 map.addEnhancedMapTile(iceBall);
             }
 
@@ -434,10 +465,10 @@ public abstract class Player extends GameObject {
         // if player is in air (currently in a jump) and has more jumpForce, continue
         // sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
-            if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY)){
+            if(Keyboard.isKeyDown(DOUBLE_JUMP_KEY) && hasDoubleJump() == true && doubleJumpDelay == 0){
                 playerState = PlayerState.DOUBLE_JUMP;
             }
-
+            
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
@@ -728,7 +759,11 @@ public abstract class Player extends GameObject {
     }
     return false;
     
-}
+    }
+
+    public boolean enemyHits(){
+        return this.enemyHitByIceBall;
+    }
 
     public PlayerState getPlayerState() {
         return playerState;
@@ -796,6 +831,7 @@ public abstract class Player extends GameObject {
     public void setHealth(int health) {
         this.health = health;
     }
+
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
     /* 

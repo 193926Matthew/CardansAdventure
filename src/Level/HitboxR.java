@@ -25,8 +25,8 @@ public class HitboxR extends MapEntity {
         protected int existTimer = 36;
 
 
-    protected Key TAIL_ATTACK_DASH_KEY = Key.T;
-    protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
+    protected Key TAIL_ATTACK_DASH_KEY = Key.RIGHT;
+    protected Key TAIL_ATTACK_SPIN_KEY = Key.LEFT;
 
     public HitboxR(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);

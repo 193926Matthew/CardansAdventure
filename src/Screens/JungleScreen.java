@@ -53,7 +53,7 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                                if (Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.RIGHT)) {
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
