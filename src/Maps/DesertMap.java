@@ -29,7 +29,7 @@ public class DesertMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(114, 19).getLocation().addY(2), getMapTile(129, 19).getLocation().addY(2), Direction.RIGHT);
+        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(5, 19).getLocation().addY(2), getMapTile(129, 19).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy1);
 
         DinosaurEnemy dinosaurEnemy2 = new DinosaurEnemy(getMapTile(162, 6).getLocation().addY(2), getMapTile(164, 6).getLocation().addY(2), Direction.LEFT);
