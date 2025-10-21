@@ -26,11 +26,6 @@ public class DinosaurEnemy extends Enemy {
     protected Point startLocation;
     protected Point endLocation;
 
-    private int wSnake = 48;
-    private int hSnake = 48;
-    private int xSnake = 48;
-    private int ySnake = 48;
-
     private Fireball fireball;
 
     protected float movementSpeed = 1f;
@@ -85,8 +80,9 @@ public class DinosaurEnemy extends Enemy {
                 this.mapEntityStatus = MapEntityStatus.REMOVED;
             }
         }
+        
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
+        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
 
     @Override
@@ -207,19 +203,19 @@ public class DinosaurEnemy extends Enemy {
             put("WALK_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
                             .withScale(1)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                             .withScale(1)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
                             .withScale(1)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
                             .withScale(1)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build()
             });
 
@@ -227,29 +223,29 @@ public class DinosaurEnemy extends Enemy {
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build()
             });
 
             put("SHOOT_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 3))
                             .withScale(1)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
             });
 
@@ -257,7 +253,7 @@ public class DinosaurEnemy extends Enemy {
                     new FrameBuilder(spriteSheet.getSprite(0, 3))
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, wSnake, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
             });
         }};
