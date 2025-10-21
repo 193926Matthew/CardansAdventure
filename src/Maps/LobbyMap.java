@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
-import Game.GameState;
 import Level.EnhancedMapTile;
-import Level.Hitbox;
 import Level.Map;
 
 import Tilesets.CommonTileset;
 import Utils.Point;
-import EnhancedMapTiles.PowerUp;
 
 public class LobbyMap extends Map {
 

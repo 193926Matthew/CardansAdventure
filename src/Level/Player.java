@@ -9,11 +9,8 @@ import GameObject.GameObject;
 import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
-import EnhancedMapTiles.PowerUp;import Utils.Point;
-
 import java.util.ArrayList;
 import Utils.Point;
-import java.util.List;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -69,7 +66,7 @@ public abstract class Player extends GameObject {
     private boolean hasDoubleJump = false;
     private boolean usedDoubleJump = false;
     private boolean hasIceBall = false;
-    private boolean hasJumped = false;
+    // private boolean hasJumped = false;
     private int doubleJumpKeyCount = 0;
     private int doubleJumpDelay;
     private boolean enemyHitByIceBall;
@@ -115,7 +112,7 @@ public abstract class Player extends GameObject {
         if (levelState == LevelState.RUNNING) {
 
             applyGravity();
-
+            isTouchingSpikes();
             // update player's state and current actions, which includes things like
             // determining how much it should move each frame and if its walking or jumping
             do {
@@ -677,15 +674,6 @@ public abstract class Player extends GameObject {
             }
             if (health <= 0) {
                 levelState = LevelState.PLAYER_DEAD;
-            }
-        }
-    }
-
-    public void hurtHitbox(MapEntity mapEntity) {
-        if (!isInvincible) {
-            // if map entity is an enemy, kill player on touch
-            if (mapEntity instanceof Enemy) {
-                    mapEntity.kill();
             }
         }
     }

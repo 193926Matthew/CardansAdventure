@@ -73,7 +73,7 @@ public class DinosaurEnemy extends Enemy {
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead()) {
             if (health >= 0) {
-                health = health - 1;
+                health = health - damageValue();
                 // System.out.println(health);
                 this.live();
             } else {

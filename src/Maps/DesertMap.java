@@ -4,7 +4,6 @@ import EnhancedMapTiles.QuicksandTile;
 import EnhancedMapTiles.QuicksandTopTile;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
-import Enemies.Fireball;
 import Engine.ImageLoader;
 import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.EndLevelBox;
@@ -12,10 +11,7 @@ import EnhancedMapTiles.FallingPlatform;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import EnhancedMapTiles.VerticalMovingPlatform;
 import GameObject.Rectangle;
-import java.util.Timer;
-import java.util.TimerTask;
 import Level.*;
-import NPCs.Walrus;
 import Tilesets.DesertTileset;
 import Utils.Direction;
 

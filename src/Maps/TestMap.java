@@ -11,8 +11,7 @@ import Level.*;
 import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
-import Utils.Point;
-import EnhancedMapTiles.BarrierBlock;
+
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level

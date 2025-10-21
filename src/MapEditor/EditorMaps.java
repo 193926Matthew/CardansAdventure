@@ -2,7 +2,7 @@ package MapEditor;
 
 import Level.Map;
 import Maps.JungleMap;
-import Maps.DesertMap;
+import Maps.DesertMap; // Ensure DesertMap.java exists in src/Maps/
 import Maps.LobbyMap;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
