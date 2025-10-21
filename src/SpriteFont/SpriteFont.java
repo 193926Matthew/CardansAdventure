@@ -3,6 +3,7 @@ package SpriteFont;
 import Engine.GraphicsHandler;
 
 import java.awt.*;
+import java.io.File;
 
 // This class represents a sprite font, which is graphic text (text drawn to the screen as if it were an image)
 public class SpriteFont {
@@ -16,10 +17,25 @@ public class SpriteFont {
 
 	public SpriteFont(String text, float x, float y, String fontName, int fontSize, Color color) {
 		this.text = text;
-		font = new Font(fontName, Font.PLAIN, fontSize);
 		this.x = x;
 		this.y = y;
 		this.color = color;
+		try {
+        	// Try loading from a .ttf file
+        	if (fontName.toLowerCase().endsWith(".ttf")) {
+            	File fontFile = new File("Resources\\" + fontName);
+				System.out.println(fontFile.getAbsolutePath());
+            	Font newFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+            	this.font = newFont.deriveFont(Font.PLAIN, (float) fontSize);
+        	} else {
+            	// Fallback: assume it's a system-installed font name
+            	this.font = new Font(fontName, Font.PLAIN, fontSize);
+        	}
+    	} catch (Exception e) {
+        	e.printStackTrace();
+        	// Fallback if loading fails
+        	this.font = new Font("Arial", Font.PLAIN, fontSize);
+    	}
 	}
 
 	public SpriteFont(String text, float x, float y, Font font, Color color) {
