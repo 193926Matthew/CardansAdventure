@@ -2,7 +2,6 @@ package Game;
  
 import Engine.GameWindow;
 import Engine.ScreenManager;
-
 /*
  * The game starts here
  * This class just starts up a GameWindow and attaches the ScreenCoordinator to the ScreenManager instance in the GameWindow

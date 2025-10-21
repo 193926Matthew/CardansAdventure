@@ -2,6 +2,8 @@ package Screens;
 
 import Engine.Screen;
 import EnhancedMapTiles.BackToLobby;
+import EnhancedMapTiles.JungleEnter;
+import EnhancedMapTiles.SnowEnter;
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
@@ -53,7 +55,7 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
@@ -65,6 +67,15 @@ public class JungleScreen extends Screen implements PlayerListener {
 
                     if (hitbox.isRemoved()) {
                         hitbox = null;
+                    }
+                }
+
+                for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
+                    if (tile instanceof BackToLobby) {
+                        BackToLobby lobby = (BackToLobby) tile;
+                        if (lobby.getTriggerCode() == 3) {
+                            screenCoordinator.setGameState(GameState.LOBBY);
+                        }
                     }
                 }
 
