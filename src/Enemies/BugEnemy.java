@@ -26,19 +26,24 @@ public class BugEnemy extends Enemy {
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
+    private boolean hurt = false;
     private int health = 25;
 
     public BugEnemy(Point location, Direction facingDirection) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 24, 15), "WALK_LEFT");
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 100, 64), "WALK_LEFT");
         this.startFacingDirection = facingDirection;
         this.initialize();
     }
 
+    public boolean isHurt() {
+        return hurt;
+    }
 
     public void draw(GraphicsHandler graphicsHandler) {
         if (isDead()) {
             if (health >= 0) {
-                health = health - 1;
+                health = health - damageValue();
+                hurt = true;
                 // System.out.println(health);
                 this.live();
             } else {
@@ -86,7 +91,44 @@ public class BugEnemy extends Enemy {
             }
         }
 
+        if (player.getX() >= getX()) {
+            if (isHurt()) {
+                if (facingDirection == Direction.RIGHT) {
+                    currentAnimationName = "HURT_WALK_RIGHT";
+                } else {
+                    currentAnimationName = "HURT_WALK_LEFT";
+                }
+                moveAmountX = -15;
+                if (movementSpeed < 2) {
+                    movementSpeed += movementSpeed + 0.1;
+                }
+                // System.out.println("right");
+                hurt = false;
+            }
+            // System.out.println("right");
+        }
+
+        if (player.getX() <= getX()) {
+            if (isHurt()) {
+                if (facingDirection == Direction.RIGHT) {
+                    currentAnimationName = "HURT_WALK_RIGHT";
+                } else {
+                    currentAnimationName = "HURT_WALK_LEFT";
+                }
+                moveAmountX = 15;
+                if (movementSpeed < 2) {
+                    movementSpeed += movementSpeed + 0.1;
+                }
+                // System.out.println("left");
+                hurt = false;
+            }
+            // System.out.println("left");
+        }
+
         // move bug
+
+        
+        
         moveYHandleCollision(moveAmountY);
         moveXHandleCollision(moveAmountX);
 
@@ -101,9 +143,11 @@ public class BugEnemy extends Enemy {
             if (direction == Direction.RIGHT) {
                 facingDirection = Direction.LEFT;
                 currentAnimationName = "WALK_LEFT";
+                movementSpeed = 1f;
             } else {
                 facingDirection = Direction.RIGHT;
                 currentAnimationName = "WALK_RIGHT";
+                movementSpeed = 1f;
             }
         }
     }
@@ -126,25 +170,85 @@ public class BugEnemy extends Enemy {
         return new HashMap<String, Frame[]>() {{
             put("WALK_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                            .withScale(3)
-                            .withBounds(2, 4, 20, 10)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
-                            .withScale(3)
-                            .withBounds(2, 4, 20, 10)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
                             .build()
             });
 
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(2, 4, 20, 10)
+                            .withBounds(2, 4, 90, 56)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(2, 4, 20, 10)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build()
+            });
+
+            put("HURT_WALK_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build()
+            });
+
+            put("HURT_WALK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
                             .build()
             });
         }};

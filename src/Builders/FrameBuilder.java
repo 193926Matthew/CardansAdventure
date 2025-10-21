@@ -40,9 +40,9 @@ public class FrameBuilder {
         return this;
     }
 
-    public FrameBuilder withScale(float scale) {
+    public FrameBuilder withScale(double scale) {
         if (this.scale >= 0) {
-            this.scale = scale;
+            this.scale = (float) scale;
         } else {
             this.scale = 1;
         }

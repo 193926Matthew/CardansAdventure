@@ -18,6 +18,7 @@ public class TitleScreenMap extends Map {
     private Sprite iceBall1, iceBall2, iceBall3;
     private Sprite dinosaurEnemy;
     private Sprite fireBall;
+    private Sprite pandaCage;
 
     public TitleScreenMap() {
         super("title_screen_map.txt", new CommonTileset());
@@ -29,9 +30,9 @@ public class TitleScreenMap extends Map {
         cat.setScale(1);
         cat.setLocation(catLocation.x, catLocation.y);
 
-        Point skunkLocation = getMapTile(10, 8).getLocation().subtractX(70).subtractY(-8);
-        skunk = new Sprite(ImageLoader.loadSubImage("Skunk.png", Colors.MAGENTA, 0, 0, 24, 15));
-        skunk.setScale(3);
+        Point skunkLocation = getMapTile(10, 7).getLocation().subtractX(70).subtractY(-40);
+        skunk = new Sprite(ImageLoader.loadSubImage("Skunk.png", Colors.MAGENTA, 0, 0, 99, 64));
+        skunk.setScale(1);
         skunk.setLocation(skunkLocation.x, skunkLocation.y);
 
         Point iceBall1Location = getMapTile(10, 8).getLocation().subtractX(70).subtractY(10);
@@ -55,11 +56,15 @@ public class TitleScreenMap extends Map {
         dinosaurEnemy.setScale(3);
         dinosaurEnemy.setLocation(dinosaurEnemyLocation.x, dinosaurEnemyLocation.y);
 
-        //ADD FIRE BALL MAKE SURE TO DRAW IT 
         Point fireBallLocation = getMapTile(12, 7).getLocation().subtractX(0).subtractY(0);
         fireBall = new Sprite(ImageLoader.loadSubImage("Fireball.png", Colors.MAGENTA, 0, 0, 7, 7));
         fireBall.setScale(3);
         fireBall.setLocation(fireBallLocation.x, fireBallLocation.y);
+
+        Point pandaCageLocation = getMapTile(14,6).getLocation().subtractX(0).subtractY(30);
+        pandaCage = new Sprite(ImageLoader.loadSubImage("PandaCage.png", Colors.MAGENTA, 0, 0, 63,63));
+        pandaCage.setScale(0.8f);
+        pandaCage.setLocation(pandaCageLocation.x, pandaCageLocation.y);
 
     }
 
@@ -73,6 +78,7 @@ public class TitleScreenMap extends Map {
         iceBall3.draw(graphicsHandler);
         dinosaurEnemy.draw(graphicsHandler);
         fireBall.draw(graphicsHandler);
+        pandaCage.draw(graphicsHandler);
     }
 
 
