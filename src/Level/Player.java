@@ -820,6 +820,16 @@ public abstract class Player extends GameObject {
         this.health = health;
     }
 
+    protected void isTouchingSpikes(){
+        for(MapTile tile: map.getMapTiles()){
+            if(tile.getTileType() == TileType.SPIKE && getBounds().intersects(tile.getBounds())){
+                this.setHealth(0);
+                levelState = LevelState.PLAYER_DEAD;
+                updatePlayerDead();
+            }
+        }
+    }
+
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
     /* 
