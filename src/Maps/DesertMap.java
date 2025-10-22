@@ -305,8 +305,8 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
 
-        //The new end level box
-        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(197, 18).getLocation());
+        //The new end level box OG POINT: 198 19
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(198, 19).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
