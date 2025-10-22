@@ -16,8 +16,8 @@ public class TitleScreenMap extends Map {
     private Sprite cat;
     private Sprite skunk;
     private Sprite iceBall1, iceBall2, iceBall3;
-    private Sprite dinosaurEnemy;
-    private Sprite fireBall;
+    private Sprite snakeEnemy;
+    private Sprite snakeSpit;
     private Sprite pandaCage;
 
     public TitleScreenMap() {
@@ -51,15 +51,15 @@ public class TitleScreenMap extends Map {
         iceBall3.setLocation(iceBall3Location.x, iceBall3Location.y);
 
         
-        Point dinosaurEnemyLocation = getMapTile(13, 7).getLocation().subtractX(0).subtractY(0);
-        dinosaurEnemy = new Sprite(ImageLoader.loadSubImage("DinosaurEnemy.png", Colors.MAGENTA, 0, 18, 14, 17));
-        dinosaurEnemy.setScale(3);
-        dinosaurEnemy.setLocation(dinosaurEnemyLocation.x, dinosaurEnemyLocation.y);
+        Point snakeEnemyLocation = getMapTile(13, 8).getLocation().subtractX(0).subtractY(45);
+        snakeEnemy = new Sprite(ImageLoader.loadSubImage("Snake.png", Colors.MAGENTA, 147, 0, 48, 47));
+        snakeEnemy.setScale(1);
+        snakeEnemy.setLocation(snakeEnemyLocation.x, snakeEnemyLocation.y);
 
-        Point fireBallLocation = getMapTile(12, 7).getLocation().subtractX(0).subtractY(0);
-        fireBall = new Sprite(ImageLoader.loadSubImage("Fireball.png", Colors.MAGENTA, 0, 0, 7, 7));
-        fireBall.setScale(3);
-        fireBall.setLocation(fireBallLocation.x, fireBallLocation.y);
+        Point snakeSpitLocation = getMapTile(12, 7).getLocation().subtractX(0).subtractY(0);
+        snakeSpit = new Sprite(ImageLoader.loadSubImage("SnakeSpit.png", Colors.MAGENTA, 0, 0, 23, 23));
+        snakeSpit.setScale(1);
+        snakeSpit.setLocation(snakeSpitLocation.x, snakeSpitLocation.y);
 
         Point pandaCageLocation = getMapTile(14,6).getLocation().subtractX(0).subtractY(30);
         pandaCage = new Sprite(ImageLoader.loadSubImage("PandaCage.png", Colors.MAGENTA, 0, 0, 63,63));
@@ -76,8 +76,8 @@ public class TitleScreenMap extends Map {
         iceBall1.draw(graphicsHandler);
         iceBall2.draw(graphicsHandler);
         iceBall3.draw(graphicsHandler);
-        dinosaurEnemy.draw(graphicsHandler);
-        fireBall.draw(graphicsHandler);
+        snakeEnemy.draw(graphicsHandler);
+        snakeSpit.draw(graphicsHandler);
         pandaCage.draw(graphicsHandler);
     }
 
