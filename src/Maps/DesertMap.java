@@ -5,6 +5,7 @@ import EnhancedMapTiles.QuicksandTopTile;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
+import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.FallingPlatform;
 import EnhancedMapTiles.HorizontalMovingPlatform;
@@ -29,7 +30,7 @@ public class DesertMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(114, 19).getLocation().addY(2), getMapTile(129, 19).getLocation().addY(2), Direction.RIGHT);
+        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(15, 19).getLocation().addY(2), getMapTile(129, 19).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy1);
 
         DinosaurEnemy dinosaurEnemy2 = new DinosaurEnemy(getMapTile(162, 6).getLocation().addY(2), getMapTile(164, 6).getLocation().addY(2), Direction.LEFT);
@@ -70,7 +71,8 @@ public class DesertMap extends Map {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
         PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","ICEPOWER.png");
-        PowerUp doubleJump = new PowerUp(getMapTile(45,16).getLocation(),"Double Jump","doubleJump.png");
+        PowerUp doubleJump = new PowerUp(getMapTile(8,16).getLocation(),"Double Jump","doubleJump.png");
+
 
         FallingPlatform fp = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),
@@ -106,6 +108,7 @@ public class DesertMap extends Map {
         );
 
         enhancedMapTiles.add(fp3);
+
 
         FallingPlatform fp4 = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),
@@ -268,7 +271,31 @@ public class DesertMap extends Map {
         QuicksandTopTile qsTop5 = new QuicksandTopTile(getMapTile(133, 11).getLocation());
         QuicksandTopTile qsTop6 = new QuicksandTopTile(getMapTile(134, 11).getLocation());
 
+        for(int i = 0; i < this.getWidth(); i++){
+        
+            MapTile tile = getMapTile(i, this.getEndBoundY());
+            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
+            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
+            int barrierNum = this.getHeight() - 1;
+            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
+                BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+            // this.addBarrierBlock(barrierY);
+                enhancedMapTiles.add(barrierY);
+                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
 
+         for(int j = 0; j < this.getHeight(); j++){
+        
+        MapTile newTile = getMapTile(this.getEndBoundX(), j);
+        MapTile newTileBelow = getMapTile(this.getEndBoundX() + 4, j);
+        if( newTile != null && newTileBelow.getTileType() == TileType.PASSABLE){
+            BarrierBlock barrierX = new BarrierBlock(newTile.getLocation(), "CommonTileset.png");
+           // this.addBarrierBlock(barrierY);
+            enhancedMapTiles.add(barrierX);
+            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
         
         enhancedMapTiles.add(qs31);
         enhancedMapTiles.add(qs32);
@@ -288,6 +315,8 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop6);
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
+        BarrierBlock endLevelBarrier = new BarrierBlock(getMapTile(198,15).getLocation(),"CommonTileset.png");
+        enhancedMapTiles.add(endLevelBarrier);
         enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
@@ -302,4 +331,45 @@ public class DesertMap extends Map {
 
         return npcs;
     }
+
+    /* 
+      @Override
+    public ArrayList<BarrierBlock> loadBarrierBlocks(){
+        ArrayList<BarrierBlock> barrierBlocks = new ArrayList<>();
+        
+        for(int i = 0; i < this.getWidth(); i++){
+        
+        MapTile tile = getMapTile(i, this.getEndBoundY());
+        MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
+        MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
+        int barrierNum = this.getHeight() - 1;
+        if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
+            BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+           // this.addBarrierBlock(barrierY);
+            barrierBlocks.add(barrierY);
+            enhancedMapTiles.add(barrierY);
+            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
+
+    
+
+        for(int j = 0; j < this.getHeight(); j++){
+        
+        MapTile newTile = getMapTile(this.getEndBoundX(), j);
+        MapTile newTileBelow = getMapTile(this.getEndBoundX() + 4, j);
+        if( newTile != null && newTileBelow.getTileType() == TileType.PASSABLE){
+            BarrierBlock barrierX = new BarrierBlock(newTile.getLocation(), "CommonTileset.png");
+           // this.addBarrierBlock(barrierY);
+            barrierBlocks.add(barrierX);
+            enhancedMapTiles.add(barrierX);
+            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+
+        
+    }
+     return barrierBlocks;
+    }
+     */
 }
+    
