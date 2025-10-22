@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import EnhancedMapTiles.BarrierBlock;
 
 /*
     This class is for defining a map that is used for a specific level
@@ -26,6 +27,7 @@ import java.util.Scanner;
 public abstract class Map {
     // the tile map (map tiles that make up the entire map image)
     protected MapTile[] mapTiles;
+    
 
     // width and height of the map in terms of the number of tiles width-wise and height-wise
     protected int width;
@@ -57,6 +59,7 @@ public abstract class Map {
     protected ArrayList<HitboxR> hitboxes;
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
+    protected ArrayList<BarrierBlock> barrierBlocks;
 
     // if set to false, camera will not move as player moves
     protected boolean adjustCamera = true;
@@ -104,7 +107,12 @@ public abstract class Map {
         for (NPC npc: this.npcs) {
             npc.setMap(this);
         }
-
+        
+        
+        this.barrierBlocks = loadBarrierBlocks();
+        for(BarrierBlock barrierBlock: this.barrierBlocks){
+            barrierBlock.setMap(this);
+        }
         this.camera = new Camera(0, 0, tileset.getScaledSpriteWidth(), tileset.getScaledSpriteHeight(), this);
     }
 
@@ -284,6 +292,10 @@ public abstract class Map {
         return new ArrayList<>();
     }
 
+    protected ArrayList<BarrierBlock> loadBarrierBlocks(){
+        return new ArrayList<>();
+    }
+
     public Camera getCamera() {
         return camera;
     }
@@ -299,6 +311,10 @@ public abstract class Map {
     }
     public ArrayList<NPC> getNPCs() {
         return npcs;
+    }
+
+    public ArrayList<BarrierBlock> getBarrierBlocks(){
+        return barrierBlocks;
     }
 
     public ArrayList<MapTile> getAnimatedMapTiles() {
@@ -320,10 +336,18 @@ public abstract class Map {
         return camera.getActiveEnhancedMapTiles();
     }
 
+     public ArrayList<BarrierBlock> getActiveBarrier() {
+        return camera.getActiveBarrierBlocks();
+    }
+
     // returns all active npcs (npcs that are a part of the current update cycle) -- this changes every frame by the Camera class
     public ArrayList<NPC> getActiveNPCs() {
         return camera.getActiveNPCs();
     }
+
+
+
+
 
     // add an enemy to the map's list of enemies
     public void addEnemy(Enemy enemy) {
@@ -346,6 +370,11 @@ public abstract class Map {
     public void addNPC(NPC npc) {
         npc.setMap(this);
         this.npcs.add(npc);
+    }
+
+    public void addBarrierBlock(BarrierBlock block){
+        block.setMap(this);
+        this.barrierBlocks.add(block);
     }
 
     public void setAdjustCamera(boolean adjustCamera) {
@@ -420,6 +449,49 @@ public abstract class Map {
 
     public void draw(GraphicsHandler graphicsHandler) {
         camera.draw(graphicsHandler);
+    }
+
+    public void spawnBarriersY(String imageName){
+        /* 
+       for(int i = 0; i < this.getWidth(); i++){
+        MapTile tile = getMapTile(i, this.getHeight());
+        int barrierNum = this.getHeight() - 1;
+        if( tile != null){
+            BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), imageName);
+            this.addBarrierBlock(barrierY);
+            this.enhancedMapTiles.add(barrierY);
+            barrierBlocks.add(barrierY);
+            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+
+
+        }else{
+           // System.out.println("ile at ( " + i + ", " + this.getHeight() + " is null");
+           // System.out.println("Map height in tiles" + this.getHeight());
+
+        }
+       }
+        */
+
+    final int BARRIER_DEPTH = 4;
+    final String BARRIER_IMAGE = "Cat.png";
+
+    int startX = this.getEndBoundX();
+    int endX = this.getEndBoundX() + this.getWidth() - 1;
+    int startY = this.getEndBoundY() - this.getHeight() + 1;
+    int endY = this.getEndBoundY();
+
+    // Horizontal barrier along bottom edge
+    for (int x = startX; x <= endX; x++) {
+        MapTile tile = getMapTile(x, endY);
+        MapTile tileBelow = getMapTile(x, endY + BARRIER_DEPTH);
+
+        if (tile != null && tileBelow != null && tileBelow.getTileType() == TileType.PASSABLE) {
+            BarrierBlock barrier = new BarrierBlock(tile.getLocation(), BARRIER_IMAGE);
+            barrierBlocks.add(barrier);
+            enhancedMapTiles.add(barrier);
+            addEnhancedMapTile(barrier);
+        }
+    }
     }
 
     public int getEndBoundX() { return endBoundX; }

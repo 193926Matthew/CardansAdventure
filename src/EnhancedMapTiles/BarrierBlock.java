@@ -18,31 +18,49 @@ import Utils.Direction;
 import Utils.Point;
 
 
-public class QuicksandTile extends EnhancedMapTile {
+public class BarrierBlock extends EnhancedMapTile{
 
-    public QuicksandTile(Point location) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("DesertTileset2.png"), 48, 48), TileType.PASSABLE);
+    public BarrierBlock(Point location, String imageName) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load(imageName), 16, 16), TileType.NOT_PASSABLE);
+        this.isAnimated();
     } 
 
     @Override
     public void update(Player player) {
-        super.update(player);
+        if(player.touching(this)){
+            System.out.println("Cannot pass!");    
+        }
+        
+        super.update();
+
     }
+
+
+
     
-        @Override
+    @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(3, 1), 65)
-                        .withScale(1)
+                new FrameBuilder(spriteSheet.getSprite(0, 0), 0)
+                        .withScale(3)
                         .withBounds(1, 1, 14, 14)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 3), 65)
-                        .withScale(1)
+                /* 
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 65)
+                        .withScale(3)
                         .withBounds(1, 1, 14, 14)
                         .build()
+                */
             });
         }};
     }
-}
+        
 
+
+
+
+
+
+
+}

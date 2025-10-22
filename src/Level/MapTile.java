@@ -3,7 +3,7 @@ package Level;
 import Engine.GraphicsHandler;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
-
+import java.awt.Color;
 import java.util.HashMap;
 
 // Represents a map tile in a Map's tile map
@@ -65,10 +65,11 @@ public class MapTile extends MapEntity {
         super.draw(graphicsHandler);
 
         // uncomment this to draw bounds of all non passable tiles (useful for debugging)
-        /*
+        /* 
         if (tileType == TileType.NOT_PASSABLE) {
             drawBounds(graphicsHandler, new Color(0, 0, 255, 100));
         }
-        */
+            */
+        
     }
 }
