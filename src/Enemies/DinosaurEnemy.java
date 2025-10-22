@@ -27,7 +27,13 @@ public class DinosaurEnemy extends Enemy {
     protected Point startLocation;
     protected Point endLocation;
 
+    private Fireball fireball;
+    private int wSnake = 48;
+    private int hSnake = 48;
+    private int xSnake = 48;
+    private int ySnake = 48;
     protected float movementSpeed = 1f;
+
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
@@ -44,7 +50,7 @@ public class DinosaurEnemy extends Enemy {
     protected DinosaurState previousDinosaurState;
 
     public DinosaurEnemy(Point startLocation, Point endLocation, Direction facingDirection) {
-        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("Dinosaur.png"), 14, 17), "WALK_RIGHT");
+        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("updatedSnakes.png"), 48, 48), "WALK_RIGHT");
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
@@ -80,7 +86,9 @@ public class DinosaurEnemy extends Enemy {
                 this.mapEntityStatus = MapEntityStatus.REMOVED;
             }
         }
+        
         super.draw(graphicsHandler);
+        //drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
         // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
 
@@ -114,12 +122,12 @@ public class DinosaurEnemy extends Enemy {
         // if dinosaur is walking, determine which direction to walk in based on facing direction
         if (dinosaurState == DinosaurState.WALK) {
             if (facingDirection == Direction.RIGHT && getIceBallHitStatus() == false) {
-                System.out.println(movementSpeed);
+                //System.out.println(movementSpeed);
                 currentAnimationName = "WALK_RIGHT";
                 moveXHandleCollision(movementSpeed);
             } else if(facingDirection == Direction.LEFT && getIceBallHitStatus() == false) {
                 currentAnimationName = "WALK_LEFT";
-                System.out.println(movementSpeed);
+                //System.out.println(movementSpeed);
                 moveXHandleCollision(-movementSpeed);
             }else if(facingDirection == Direction.RIGHT && getIceBallHitStatus() == true){
                 currentAnimationName = "FROZEN_WALK_RIGHT";
@@ -177,7 +185,11 @@ public class DinosaurEnemy extends Enemy {
             int fireballY = Math.round(getY()) + 4;
 
             // create Fireball enemy
-            Fireball fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 400);
+            if (facingDirection == Direction.LEFT) {
+                fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 400, "LEFT");
+            } else {
+                fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 400, "RIGHT");
+            }
 
             // add fireball enemy to the map for it to spawn in the level
             map.addEnemy(fireball);
@@ -218,72 +230,120 @@ public class DinosaurEnemy extends Enemy {
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("WALK_LEFT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
                             .build()
             });
 
             put("WALK_RIGHT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
-                            .build()
-            });
-             put("FROZEN_WALK_LEFT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(1,1 ), 14)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build()
+            });    
+             put("FROZEN_WALK_LEFT", new Frame[]{
+                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
                             .build()
             });
 
             put("FROZEN_WALK_RIGHT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 2), 14)
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
                             .build()
             });
 
             put("SHOOT_LEFT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+            });
+
+             put("SHOOT_RIGHT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+            });
+/* 
+            put("SHOOT_LEFT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(1, 0))
                             .withScale(3) 
                             .withBounds(4, 2, 5, 13)
-                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build()
             });
 
+
+*/
             put("SHOOT_RIGHT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(1, 0))
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
-                            .build(),
-            });
-
-            put("DEAD", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(1, 1))
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 5, 13)
+                            .withBounds(4, 2, 45, 40)
                             .build(),
             });
         }};

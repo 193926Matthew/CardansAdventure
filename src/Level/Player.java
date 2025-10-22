@@ -349,7 +349,7 @@ public abstract class Player extends GameObject {
             keyLocker.lockKey(JUMP_KEY);
             //enters jumping state
             playerState = PlayerState.JUMPING;
-            hasJumped = true;
+            boolean hasJumped = true;
             keyLocker.unlockKey(JUMP_KEY);
             
         }

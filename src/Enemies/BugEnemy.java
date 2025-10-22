@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage;
 // enemy behaves like a Mario goomba -- walks forward until it hits a solid map tile, and then turns around
 // if it ends up in the air from walking off a cliff, it will fall down until it hits the ground again, and then will continue walking
 public class BugEnemy extends Enemy {
-    private float gravity = .5f;
+      private float gravity = .5f;
     private float movementSpeed = 1f;
     private Direction startFacingDirection;
     private Direction facingDirection;
@@ -31,7 +31,7 @@ public class BugEnemy extends Enemy {
     private int health = 25;
 
     public BugEnemy(Point location, Direction facingDirection) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Skunk.png"), 100, 64), "WALK_LEFT");
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("updatedSkunk.png"), 100, 64), "WALK_LEFT");
         this.startFacingDirection = facingDirection;
         this.initialize();
     }
@@ -58,16 +58,11 @@ public class BugEnemy extends Enemy {
     @Override
     public void initialize() {
         super.initialize();
-        setMovementSpeed(movementSpeed);
         facingDirection = startFacingDirection;
-        if (facingDirection == Direction.RIGHT && this.getIceBallHitStatus() == false) {
+        if (facingDirection == Direction.RIGHT) {
             currentAnimationName = "WALK_RIGHT";
-        } else if (facingDirection == Direction.LEFT && this.getIceBallHitStatus() == false) {
+        } else if (facingDirection == Direction.LEFT) {
             currentAnimationName = "WALK_LEFT";
-        }else if(facingDirection == Direction.RIGHT && this.getIceBallHitStatus() == true){
-            currentAnimationName = "FROZEN_WALK_RIGHT";
-        }else if(facingDirection == Direction.LEFT && this.getIceBallHitStatus() == true){
-            currentAnimationName = "FROZEN_WALK_LEFT";
         }
         airGroundState = AirGroundState.GROUND;
         
@@ -75,23 +70,6 @@ public class BugEnemy extends Enemy {
 
     @Override
     public void update(Player player) {
-            
-        if (getIceBallHitStatus() == true) {
-                if (facingDirection == Direction.RIGHT) {
-                    currentAnimationName = "FROZEN_WALK_RIGHT";
-                    //System.out.println("FROZEN WALK RIGHT");
-                } else {
-                    currentAnimationName = "FROZEN_WALK_LEFT";
-                    //System.out.println("FROZEN WALK LEFT");
-
-                }
-        } else {
-            if (facingDirection == Direction.RIGHT) {
-                currentAnimationName = "WALK_RIGHT";
-            } else {
-                currentAnimationName = "WALK_LEFT";
-            }
-        }
 
         if (health <= 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
@@ -115,6 +93,16 @@ public class BugEnemy extends Enemy {
         }
 
         if (player.getX() >= getX()) {
+
+            if(this.getIceBallHitStatus() == true){
+                 if (facingDirection == Direction.RIGHT) {
+                    currentAnimationName = "FROZEN_WALK_RIGHT";
+                 }else{
+                    currentAnimationName = "FROZEN_WALK_LEFT";
+                 }
+
+            }
+    
             if (isHurt()) {
                 if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "HURT_WALK_RIGHT";
@@ -132,6 +120,14 @@ public class BugEnemy extends Enemy {
         }
 
         if (player.getX() <= getX()) {
+            if(this.getIceBallHitStatus() == true){
+                 if (facingDirection == Direction.RIGHT) {
+                    currentAnimationName = "FROZEN_WALK_RIGHT";
+                 }else{
+                    currentAnimationName = "FROZEN_WALK_LEFT";
+                 }
+
+            }
             if (isHurt()) {
                 if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "HURT_WALK_RIGHT";
@@ -176,32 +172,6 @@ public class BugEnemy extends Enemy {
     }
 
     @Override
-    public float getMovementSpeed(){
-        return this.movementSpeed;
-    }
-
-    @Override
-    public void setMovementSpeed(float x){
-        movementSpeed = x;
-        float moveAmountX = 0;
-        float moveAmountY = 0;
-
-        // add gravity (if in air, this will cause bug to fall)
-        moveAmountY += gravity;
-
-        // if on ground, walk forward based on facing direction
-        if (airGroundState == AirGroundState.GROUND) {
-            if (facingDirection == Direction.RIGHT) {
-                moveAmountX += movementSpeed;
-            } else {
-                moveAmountX -= movementSpeed;
-            }
-        }
-        moveYHandleCollision(moveAmountY);
-        moveXHandleCollision(moveAmountX);
-
-    }
-    @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
         // if bug is colliding with the ground, change its air ground state to GROUND
         // if it is not colliding with the ground, it means that it's currently in the air, so its air ground state is changed to AIR
@@ -237,23 +207,10 @@ public class BugEnemy extends Enemy {
             });
 
             put("WALK_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 24, 15)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(0, 1), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 24, 15)
-                            .build()
-            });
-            put("FROZEN_WALK_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                            .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 90, 56)
-                            .withBounds(4, 2, 5, 13)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
                             .withScale(1)
@@ -311,17 +268,47 @@ public class BugEnemy extends Enemy {
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 90, 56)
-                            .withBounds(4, 2, 5, 13)
                             .build()
             });
             put("FROZEN_WALK_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
-                            .withScale(3)
-                            .withBounds(4, 2, 5, 13)
+                    new FrameBuilder(spriteSheet.getSprite(2, 1), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 2), 8)
+                            .withScale(1)
+                            .withBounds(2, 4, 90, 56)
+                            .build()
+            });
+
+            put("FROZEN_WALK_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 1), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 2), 8)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(2, 4, 90, 56)
                             .build()
             });
         }};

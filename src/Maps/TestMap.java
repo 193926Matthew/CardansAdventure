@@ -11,6 +11,7 @@ import Level.*;
 import NPCs.Walrus;
 import Tilesets.CommonTileset;
 import Utils.Direction;
+import EnhancedMapTiles.BarrierBlock;
 
 import java.util.ArrayList;
 

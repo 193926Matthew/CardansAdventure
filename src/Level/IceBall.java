@@ -62,14 +62,13 @@ public class IceBall extends EnhancedMapTile{
                     
                     for (MapEntity entity : map.getEnemies()) {
                         if (entity instanceof Enemy && this.intersects(entity)) {
-                            System.out.println(enemy.getMovementSpeed());
+                            //System.out.println(enemy.getMovementSpeed());
                             float movementSpeed = enemy.getMovementSpeed();
                             //System.out.println("Iceball class state: " + enemyHitByIceBall);
 
                             movementSpeed *= 0.75f;
                             enemy.setMovementSpeed(movementSpeed);
                             //System.out.println("Ice state" + enemyHitByIceBall);
-                            ((Enemy) entity).kill();
                     }
                     //enemy.mapEntityStatus = MapEntityStatus.REMOVED;
                     this.mapEntityStatus = MapEntityStatus.REMOVED;
@@ -128,7 +127,7 @@ public class IceBall extends EnhancedMapTile{
 
     public boolean enemyHit(){
         if(enemyHitByIceBall == true){
-            System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
+            //System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
            // System.out.println("Iceball class! running: " + enemyHitByIceBall);
             return true;
 
