@@ -296,6 +296,8 @@ public class DesertMap extends Map {
             //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
         }
     }
+
+
         
         enhancedMapTiles.add(qs31);
         enhancedMapTiles.add(qs32);
@@ -315,8 +317,22 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop6);
 
         EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
-        BarrierBlock endLevelBarrier = new BarrierBlock(getMapTile(198,15).getLocation(),"CommonTileset.png");
-        enhancedMapTiles.add(endLevelBarrier);
+        
+
+        int endLevelX = 199;
+        int targetY = 17;
+
+        for(int m = 1; m <= targetY; m++){
+            MapTile finalTile = getMapTile(endLevelX, m);
+            MapTile finalTileBelow = getMapTile(endLevelX, m + 1);
+            if( finalTile != null && finalTileBelow.getTileType() == TileType.PASSABLE){
+                BarrierBlock barriers = new BarrierBlock(finalTile.getLocation(), "CommonTileset.png");
+            // this.addBarrierBlock(barrierY);
+                enhancedMapTiles.add(barriers);
+                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+            }
+        }
+       
         enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
