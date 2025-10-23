@@ -75,6 +75,10 @@ public class DesertMap extends Map {
 
         PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","ICEPOWER.png");
         PowerUp doubleJump = new PowerUp(getMapTile(45,16).getLocation(),"Double Jump","doubleJump.png");
+        CheckPoint checkpoint1 = new CheckPoint(getMapTile(57,19).getLocation());
+        enhancedMapTiles.add(checkpoint1);
+        CheckPoint checkpoint2 = new CheckPoint(getMapTile(136,10).getLocation());
+        enhancedMapTiles.add(checkpoint2);
 
         FallingPlatform fp = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),
@@ -316,8 +320,8 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop5);
         enhancedMapTiles.add(qsTop6);
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
-        enhancedMapTiles.add(endLevelBox);
+        //EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
+        //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
 

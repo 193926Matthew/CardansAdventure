@@ -98,18 +98,22 @@ public abstract class Player extends GameObject {
 
     // respawn player at last checkpoint
     public void respawn() {
-        if (respawnPoint != null){
+        System.out.println("Respawn triggered.");
+        System.out.println("Respawn point: " + respawnPoint);
+        System.out.println("Level state before respawn: " + levelState);
+
+        if (respawnPoint != null) {
+            System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
             this.setLocation(respawnPoint.x, respawnPoint.y);
-            health = 100;
-            levelState = LevelState.RUNNING;
-
         } else {
-            this.setLocation(0, 0);
-            health = 100;
-            levelState = LevelState.RUNNING;
-        }
+            System.out.println("Respawning at starting point (2,21)");
+            setRespawnPoint(new Point(2*32, 21*32)); // Default respawn point at start
+            System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
+            this.setLocation(respawnPoint.x, respawnPoint.y);
+    }
 
-
+    health = 100;
+    levelState = LevelState.RUNNING;
     }
 
 

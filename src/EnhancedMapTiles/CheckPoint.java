@@ -22,12 +22,13 @@ public class CheckPoint extends EnhancedMapTile{
 
     public void update(Player player) {
         super.update(player);
+        //player.setRespawnPoint(new Point(2, 21)); // Default respawn point at start
         if (intersects(player)) {
             // checkpoint stuff here
-            System.out.println("Checkpoint reached!");
+            //System.out.println("Checkpoint reached!");
             activated = true;
             player.setRespawnPoint(new Point(this.getX(), this.getY())); // Set respawn point above the checkpoint
-            System.out.println("Respawn point set to: (" + this.getX() + ", " + this.getY() + ")");
+            //System.out.println("Respawn point set to: (" + this.getX() + ", " + this.getY() + ")");
 
         }
     }
