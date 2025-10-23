@@ -322,7 +322,7 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop5);
         enhancedMapTiles.add(qsTop6);
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 19).getLocation());
+        //EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 19).getLocation());
         
 
         int endLevelX = 199;
@@ -339,7 +339,7 @@ public class DesertMap extends Map {
             }
         }
        
-        enhancedMapTiles.add(endLevelBox);
+        //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
 
