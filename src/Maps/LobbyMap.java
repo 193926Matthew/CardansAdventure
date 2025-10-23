@@ -17,7 +17,7 @@ public class LobbyMap extends Map {
 
     public LobbyMap(){
         super("lobby_map.txt", new CommonTileset());
-        this.playerStartPosition = new Point(-5, 1);
+        this.playerStartPosition = new Point(160, 1);
     }
 
     @Override
