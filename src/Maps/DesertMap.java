@@ -48,7 +48,7 @@ public class DesertMap extends Map {
         BugEnemy bugEnemy3 = new BugEnemy(getMapTile(84, 15).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy3);
 
-        BugEnemy bugEnemy4 = new BugEnemy(getMapTile(98, 19).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy4 = new BugEnemy(getMapTile(94, 19).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy4);
 
         BugEnemy bugEnemy5 = new BugEnemy(getMapTile(106, 18).getLocation().subtractY(25), Direction.RIGHT);
@@ -316,7 +316,7 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(qsTop5);
         enhancedMapTiles.add(qsTop6);
 
-        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 18).getLocation());
+        EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 19).getLocation());
         
 
         int endLevelX = 199;

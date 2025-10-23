@@ -58,7 +58,7 @@ public class JungleScreen extends Screen implements PlayerListener {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
                     }
-                }
+                
 
                 if (hitbox != null) {
                     hitbox.update(player);

@@ -15,6 +15,8 @@ import Utils.Point;
 public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
+    public boolean complete = false;
+
     protected float walkSpeed = 0;
     protected float gravity = 0;
     protected float jumpHeight = 0;
@@ -685,6 +687,7 @@ public abstract class Player extends GameObject {
 
     // if player has beaten level, this will be the update cycle
     public void updateLevelCompleted() {
+        complete = true;
         // if player is not on ground, player should fall until it touches the ground
         if (airGroundState != AirGroundState.GROUND && map.getCamera().containsDraw(this) && !isOnPlatform) {
             currentAnimationName = "FALL_RIGHT";
@@ -699,7 +702,7 @@ public abstract class Player extends GameObject {
         else if (map.getCamera().containsDraw(this)) {
             currentAnimationName = "WALK_RIGHT";
             super.update();
-            moveXHandleCollision(walkSpeed);
+            moveXHandleCollision(walkSpeed - 1);
         } else {
             // tell all player listeners that the player has finished the level
             for (PlayerListener listener : listeners) {

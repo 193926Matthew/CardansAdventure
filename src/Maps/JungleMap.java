@@ -29,7 +29,7 @@ public class JungleMap extends Map{
         return enhancedMapTiles;
     }
 
-    
+    /*
       @Override
     public ArrayList<BarrierBlock> loadBarrierBlocks(){
         ArrayList<BarrierBlock> barrierBlocks = new ArrayList<>();
@@ -67,4 +67,5 @@ public class JungleMap extends Map{
     }
      return barrierBlocks;
     }
+    */
 }
