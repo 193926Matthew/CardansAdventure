@@ -36,7 +36,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         // define/setup map
         map = new DesertMap();
 
-        System.out.print("Start");
+        // System.out.print("Start");
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);

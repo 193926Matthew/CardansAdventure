@@ -112,7 +112,9 @@ public class MenuScreen extends Screen {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        background.draw(graphicsHandler);
+        if (this.background != null) {
+            background.draw(graphicsHandler);
+        }
         playGame.draw(graphicsHandler);
         credits.draw(graphicsHandler);
         //cardansAdventuSpriteFont.draw(graphicsHandler);
