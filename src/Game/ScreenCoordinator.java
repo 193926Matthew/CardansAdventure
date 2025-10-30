@@ -6,6 +6,7 @@ import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.TutorialScreen;
 
 import Engine.*;
 import Game.ScreenCoordinator;
@@ -89,6 +90,8 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case JUNGLE:
 						currentScreen = new JungleScreen(this);
+					case TUTORIAL:
+						currentScreen = new TutorialScreen(this);
 						break;
 				}
 				currentScreen.initialize();

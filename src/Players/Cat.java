@@ -8,7 +8,7 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
 
-
+import java.awt.Color;
 import java.util.HashMap;
 
 // This is the class for the Cat player character

@@ -71,6 +71,7 @@ public abstract class Player extends GameObject {
     // private boolean hasJumped = false;
     private int doubleJumpKeyCount = 0;
     private int doubleJumpDelay;
+    private int dashDelay = 18;
     private boolean enemyHitByIceBall;
 
     // flags
@@ -567,6 +568,12 @@ public abstract class Player extends GameObject {
                     currentAnimationName = "TAIL_ATTACK_DASH_RIGHT";
                 }
             }
+            --dashDelay;
+            if (dashDelay == 0) {
+                dashDelay = 18;
+                playerState = PlayerState.STANDING;
+            }
+            // System.out.println(dashDelay);
         } else if (isReturning) {
             // dash back toward start position
             if (facingDirection == Direction.LEFT) {
@@ -575,6 +582,8 @@ public abstract class Player extends GameObject {
                     isReturning = false;
                     playerState = PlayerState.STANDING;
                     facingDirection = Direction.RIGHT; // restore original facing
+                } else {
+
                 }
             } else {
                 moveAmountX += attackSpeed;
@@ -584,6 +593,8 @@ public abstract class Player extends GameObject {
                     facingDirection = Direction.LEFT; // restore original facing
                 }
             }
+            dashDelay = 18;
+
         }
     }
 
