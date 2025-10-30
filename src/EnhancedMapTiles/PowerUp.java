@@ -31,7 +31,7 @@ public class PowerUp extends EnhancedMapTile{
 
 
     public PowerUp(Point location, String powerName, String imageName){
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load(imageName), 15, 15), TileType.PASSABLE);
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load(imageName), 48, 48), TileType.PASSABLE);
         currentPowerName = powerName;
     }
 
@@ -68,11 +68,12 @@ public class PowerUp extends EnhancedMapTile{
                         .withScale(1)
                         .withBounds(3, 3, 9, 9)
                         .build(),
-                /* 
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
+                
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 0)
                         .withScale(1)
-                        .withBounds(1, 1, 14, 14)
+                        .withBounds(3, 3, 9, 9)
                         .build(),
+                /* 
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 40)
                         .withScale(1)
                         .withBounds(1, 1, 14, 14)

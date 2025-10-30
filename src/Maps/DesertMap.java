@@ -73,8 +73,9 @@ public class DesertMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","ICEPOWER.png");
-        PowerUp doubleJump = new PowerUp(getMapTile(45,16).getLocation(),"Double Jump","doubleJump.png");
+        PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","updatedIce.png");
+        PowerUp doubleJump = new PowerUp(getMapTile(15,16).getLocation(),"Double Jump","updatedDoubleJump.png");
+        enhancedMapTiles.add(doubleJump);
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(57,19).getLocation());
         enhancedMapTiles.add(checkpoint1);
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(136,10).getLocation());

@@ -67,9 +67,9 @@ public class TestMap extends Map {
         );
         enhancedMapTiles.add(hmp);
         
-        PowerUp doubleJump = new PowerUp(getMapTile(15,9).getLocation(),"Double Jump","doubleJump.png");
+        PowerUp doubleJump = new PowerUp(getMapTile(15,9).getLocation(),"Double Jump","updatedDoubleJump.png");
 
-        PowerUp iceBall = new PowerUp(getMapTile(10,9).getLocation(),"Ice Ball","ICEPOWER.png");
+        PowerUp iceBall = new PowerUp(getMapTile(10,9).getLocation(),"Ice Ball","updatedIce.png");
 
         //PowerUp tester = new PowerUp(getMapTile(15,9).getLocation(),"tester","Cat.png");
 

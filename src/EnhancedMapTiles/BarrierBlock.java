@@ -42,9 +42,9 @@ public class BarrierBlock extends EnhancedMapTile{
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 0)
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 0)
                         .withScale(3)
-                        .withBounds(1, 1, 14, 14)
+                        .withBounds(1, 1, 12, 12)
                         .build(),
                 /* 
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 65)
