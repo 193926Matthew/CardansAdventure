@@ -770,7 +770,7 @@ public abstract class Player extends GameObject {
         // player should continually fall until it goes off screen
         else if (currentFrameIndex == getCurrentAnimation().length - 1) {
             if (map.getCamera().containsDraw(this)) {
-                moveY(3);
+                moveY(20);
             } else {
                 respawn();
                 // tell all player listeners that the player has died in the level
