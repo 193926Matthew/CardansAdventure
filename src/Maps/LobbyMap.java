@@ -2,7 +2,7 @@ package Maps;
 
 import java.util.ArrayList;
 
-import Enemies.ArticFox;
+import Enemies.ArcticFox;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import EnhancedMapTiles.JungleEnter;
@@ -29,7 +29,7 @@ public class LobbyMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
     ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArticFox fox1 = new ArticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
+        ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(fox1);
 
         return enemies;

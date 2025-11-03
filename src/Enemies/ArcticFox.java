@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 // This class is for the black bug enemy
 // enemy behaves like a Mario goomba -- walks forward until it hits a solid map tile, and then turns around
 // if it ends up in the air from walking off a cliff, it will fall down until it hits the ground again, and then will continue walking
-public class ArticFox extends Enemy {
+public class ArcticFox extends Enemy {
       private float gravity = 10f;
     private float movementSpeed = 1f;
     private Direction startFacingDirection;
@@ -33,8 +33,8 @@ public class ArticFox extends Enemy {
     private int jumpTime = 0;
     private double jumpRandom = Math.random() * (300) + 1;
 
-    public ArticFox(Point location, Direction facingDirection) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("ArticFox.png"), 200, 100), "WALK_LEFT");
+    public ArcticFox(Point location, Direction facingDirection) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("ArcticFox.png"), 200, 100), "WALK_LEFT");
         this.startFacingDirection = facingDirection;
         this.initialize();
     }
