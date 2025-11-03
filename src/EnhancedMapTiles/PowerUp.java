@@ -6,6 +6,7 @@ import GameObject.SpriteSheet;
 import Level.EnhancedMapTile;
 import Level.Player;
 import Level.TileType;
+import Screens.PlayLevelScreen;
 import Utils.Point;
 import java.util.HashMap;
 import Builders.FrameBuilder;
@@ -27,28 +28,33 @@ public class PowerUp extends EnhancedMapTile{
 
 //tracks how many times user has made contact, so when touched once will disappear
     private int counter = 0;
-    
-
 
     public PowerUp(Point location, String powerName, String imageName){
         super(location.x, location.y, new SpriteSheet(ImageLoader.load(imageName), 15, 15), TileType.PASSABLE);
         currentPowerName = powerName;
     }
 
-    
-
-
     @Override
     public void update(Player player) {
         super.update(player);
         if (!madeContact && intersects(player)) {
             madeContact = true;
+            String message = "";
+
             if(currentPowerName.equals("Double Jump")){
                 player.setHasDoubleJump(true);
+                message = "Got Double Jump";
+
             }else if(currentPowerName.equals("Ice Ball")){
                 player.setHasIceBall(true);
+                message = "Got Ice Ball";
+
             }
-            counter++;
+
+            if (ScreenCoordinator.getCurrentScreen() instanceof PlayLevelScreen) {
+                PlayLevelScreen pls = (PlayLevelScreen) ScreenCoordinator.getCurrentScreen();
+                pls.showPowerUpText(message);
+            }
         }
         if(counter == 1){
             //System.out.println("Checking collision for: " + currentPowerName + " | MadeContact: " + madeContact + " | Intersects: " + intersects(player));
@@ -86,6 +92,8 @@ public class PowerUp extends EnhancedMapTile{
     public void draw(GraphicsHandler graphicsHandler){
         if(!madeContact){
             super.draw(graphicsHandler);
+
+
         }
     }
 

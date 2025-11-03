@@ -28,6 +28,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
 
+    // popup
+    // --- Power-up display text ---
+    private SpriteFont powerUpText;
+    private SpriteFont JumppowerUpText;
+    private long powerUpTextStartTime;
+    private boolean showPowerUpText = false;
+    private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
+
+
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
@@ -75,6 +84,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     }
                 }
                 
+                if (showPowerUpText && System.currentTimeMillis() - powerUpTextStartTime > POWERUP_TEXT_DURATION) {
+                    showPowerUpText = false;
+                }
 
                 break;
             // if level has been completed, bring up level cleared screen
@@ -117,6 +129,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         }
         lives.setText("Health: " + player.getHealth());
         lives.draw(graphicsHandler);
+
+        //powerup popup
+        if (showPowerUpText && powerUpText != null) {
+            powerUpText.draw(graphicsHandler);
+        }
     }
 
     public PlayLevelScreenState getPlayLevelScreenState() {
@@ -172,6 +189,44 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void GoBackToLobby(){
         screenCoordinator.setGameState(GameState.LOBBY);
     }
+
+    public void showPowerUpText(String message) {
+        if (message.contains("Double Jump")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                100,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.ORANGE
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+            
+        } else if (message.contains("Ice Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.CYAN
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }
+
+        
+
+
+
+        
+}
+
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
