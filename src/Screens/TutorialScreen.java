@@ -1,43 +1,43 @@
 package Screens;
-
-import java.awt.Color;
+import Engine.Screen;
+import EnhancedMapTiles.JungleEnter;
+import EnhancedMapTiles.SnowEnter;
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
-import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import Level.PlayerListener;
+import Level.EnhancedMapTile;
 import Level.Hitbox;
 import Level.Map;
 import Level.Player;
-import Level.PlayerListener;
-import Maps.DesertMap;
+import Maps.TutorialMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
+import java.awt.Color;
+import Utils.Point;
 
-// This class is for when the platformer game is actually being played
-public class PlayLevelScreen extends Screen implements PlayerListener {
+
+public class TutorialScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
-    protected static Map map;
+    protected Map map;
     protected Player player;
     protected Hitbox hitbox;
-    protected PlayLevelScreenState playLevelScreenState;
+    protected TutorialScreenState tutorialscreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
 
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
+    public TutorialScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
+    @Override
     public void initialize() {
-        // define/setup map
-        map = new DesertMap();
-
-        // System.out.print("Start");
-        // setup player
+        map = new Maps.TutorialMap();
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
@@ -45,16 +45,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         map.addHitbox(this.hitbox);
 
         levelClearedScreen = new LevelClearedScreen();
-        levelLoseScreen = new LevelLoseScreen(this);
+        //levelLoseScreen = new LevelLoseScreen(this);
 
-        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        this.tutorialscreenState = TutorialScreenState.RUNNING;
         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
 
     }
 
+    @Override
     public void update() {
-        // based on screen state, perform specific actions
-        switch (playLevelScreenState) {
+        switch (tutorialscreenState) {
             // if level is "running" update player and map to keep game logic for the
             // platformer level going
             case RUNNING:
@@ -76,6 +76,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 }
                 
 
+                // code for the level enter tiles. have for jungle and snow
+                // if want to add more, just add a new enhancedtile and copy from the other
+                // tiles
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
@@ -93,14 +96,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             // wait on level lose screen to make a decision (either resets level or sends
             // player back to main menu)
             case LEVEL_LOSE:
-                resetcheckTEST();
-            break;
+                levelLoseScreen.update();
+                break;
         }
     }
 
+    @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        // based on screen state, draw appropriate graphics
-        switch (playLevelScreenState) {
+        switch (tutorialscreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
@@ -119,50 +122,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         lives.draw(graphicsHandler);
     }
 
-    public PlayLevelScreenState getPlayLevelScreenState() {
-        return playLevelScreenState;
-    }
-
     @Override
     public void onLevelCompleted() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_COMPLETED) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
+        if (tutorialscreenState != TutorialScreenState.LEVEL_COMPLETED) {
+            tutorialscreenState = TutorialScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
         }
     }
 
     @Override
     public void onDeath() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_LOSE) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE;
+        if (tutorialscreenState != TutorialScreenState.LEVEL_LOSE) {
+            tutorialscreenState = TutorialScreenState.LEVEL_LOSE;
         }
-    }
-
-    public void resetLevel() {
-        initialize();
-    }
-
-    public void resetToCheckpoint() {
-        playLevelScreenState = PlayLevelScreenState.RUNNING;
-    }
-
-    //this does what initialize but it works with checkpoint
-    public void resetcheckTEST() {
-            map = new DesertMap();
-
-            System.out.print("Start again");
-            // setup player
-            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
-            this.player.setMap(map);
-            this.player.addListener(this);
-            this.hitbox = new Hitbox(player.getLocation());
-            map.addHitbox(this.hitbox);
-
-            levelClearedScreen = new LevelClearedScreen();
-            levelLoseScreen = new LevelLoseScreen(this);
-
-            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
-            this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
     public void goBackToMenu() {
@@ -173,8 +145,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.LOBBY);
     }
 
-    // This enum represents the different states this screen can be in
-    private enum PlayLevelScreenState {
+    private enum TutorialScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
 }
