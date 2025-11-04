@@ -26,7 +26,7 @@ public class DesertMap extends Map {
 
     public DesertMap() {
         super("desert_map.txt", new DesertTileset());
-        this.playerStartPosition = getMapTile(2, 18).getLocation();
+        this.playerStartPosition = getMapTile(2, 21).getLocation();
     }
 
     @Override
