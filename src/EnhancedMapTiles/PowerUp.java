@@ -57,9 +57,6 @@ public class PowerUp extends EnhancedMapTile{
             }
         }
         if(counter == 1){
-            //System.out.println("Checking collision for: " + currentPowerName + " | MadeContact: " + madeContact + " | Intersects: " + intersects(player));
-            //System.out.println("Collected PowerUp: " + currentPowerName);
-            //System.out.println("Current GameState " + currentGameState);
             counter+=1;
         }
     }

@@ -31,7 +31,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     // popup
     // --- Power-up display text ---
     private SpriteFont powerUpText;
-    private SpriteFont JumppowerUpText;
+    private SpriteFont powerUpTextLine2;
+
     private long powerUpTextStartTime;
     private boolean showPowerUpText = false;
     private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
@@ -133,7 +134,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         //powerup popup
         if (showPowerUpText && powerUpText != null) {
             powerUpText.draw(graphicsHandler);
+        if (powerUpTextLine2 != null) {
+            powerUpTextLine2.draw(graphicsHandler);
+            }
         }
+
     }
 
     public PlayLevelScreenState getPlayLevelScreenState() {
@@ -190,18 +195,32 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.LOBBY);
     }
 
+    // method to show power-up text popup
     public void showPowerUpText(String message) {
         if (message.contains("Double Jump")){
             powerUpText = new SpriteFont(
                 message,
-                300,  // X position (adjust to center for your resolution)
-                100,  // Y position (near top of screen)
+                300,  
+                100,  
                 "Arial",
                 30,
                 Color.ORANGE
             );
             powerUpText.setOutlineColor(Color.BLACK);
             powerUpText.setOutlineThickness(3);
+
+            // SECOND LINE
+            powerUpTextLine2 = new SpriteFont(
+                "Press UP arrow again to double jump!",
+                300,
+                140,  
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
             powerUpTextStartTime = System.currentTimeMillis();
             showPowerUpText = true;
             
@@ -216,17 +235,22 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             );
             powerUpText.setOutlineColor(Color.BLACK);
             powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press I to shoot ice balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
             powerUpTextStartTime = System.currentTimeMillis();
             showPowerUpText = true;
-        }
-
-        
-
-
-
-        
-}
-
+        }   
+    }
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
