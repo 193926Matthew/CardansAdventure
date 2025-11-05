@@ -41,7 +41,7 @@ public class DesertEnter extends EnhancedMapTile {
         super.update(player);
         if (intersects(player)) {
             // System.out.println(" Snow touched");
-            triggerCode = 3;
+            triggerCode = 4;
             //gameState = GameState.MENU;
         }
     }

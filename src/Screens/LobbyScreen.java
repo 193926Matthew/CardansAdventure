@@ -6,6 +6,7 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import EnhancedMapTiles.DesertEnter;
 import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
@@ -92,15 +93,23 @@ public class LobbyScreen extends Screen implements PlayerListener {
                     if (tile instanceof JungleEnter) {
                         JungleEnter jungleEnter = (JungleEnter) tile;
                         if (jungleEnter.getTriggerCode() == 1) {
-                            screenCoordinator.setGameState(GameState.LEVEL);
+                            screenCoordinator.setGameState(GameState.JUNGLE);
                         }
                     }
                     if (tile instanceof SnowEnter) {
                         SnowEnter levelEnter = (SnowEnter) tile;
-                        if (levelEnter.getTriggerCode() == 2) {
-                            screenCoordinator.setGameState(GameState.JUNGLE);
+                        if (levelEnter.getTriggerCode() == 10) {
+                            screenCoordinator.setGameState(GameState.SNOW);
                         }
                     }
+
+                    if (tile instanceof DesertEnter) {
+                        DesertEnter levelEnter = (DesertEnter) tile;
+                        if (levelEnter.getTriggerCode() == 4) {
+                            screenCoordinator.setGameState(GameState.LEVEL);
+                        }
+                    }
+                    
                 }
                 break;
             // if level has been completed, bring up level cleared screen
