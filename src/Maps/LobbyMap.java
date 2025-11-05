@@ -44,8 +44,8 @@ public class LobbyMap extends Map {
          for(int i =1; i <= this.getHeight() - 4; i++){
             MapTile newTile = getMapTile(this.getEndBoundX(), i);
             if(newTile != null){
-                BarrierBlock verticalBarrier = new BarrierBlock(newTile.getLocation(),"CommonTileset.png");
-                enhancedMapTiles.add(verticalBarrier);
+                BarrierBlock horizontalBarrier = new BarrierBlock(newTile.getLocation(),"CommonTileset.png");
+                enhancedMapTiles.add(horizontalBarrier);
             }
         }
 /* 

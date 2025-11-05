@@ -429,9 +429,9 @@ public class DesertMap extends Map {
             MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
             int barrierNum = this.getHeight() - 1;
             if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
-                BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+                BarrierBlock barrierHorizontal = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
             // this.addBarrierBlock(barrierY);
-                enhancedMapTiles.add(barrierY);
+                enhancedMapTiles.add(barrierHorizontal);
                 //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
         }
     }
