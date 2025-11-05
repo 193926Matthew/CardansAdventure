@@ -78,7 +78,7 @@ public class DesertTileset extends Tileset {
         // sandstone branch 
         Frame sandstoneBranchFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 6, 48, 4)
                 .build();
 
         MapTileBuilder sandstoneBranchTile = new MapTileBuilder(sandstoneBranchFrame)
@@ -153,7 +153,7 @@ public class DesertTileset extends Tileset {
         // cracked sandstone branch
         Frame crackedSandstoneBranchFrame = new FrameBuilder(getSubImage(2, 3))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 6, 48, 4)
                 .build();
 
         MapTileBuilder crackedSandstoneBranchTile = new MapTileBuilder(crackedSandstoneBranchFrame)

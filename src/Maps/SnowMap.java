@@ -2,6 +2,7 @@ package Maps;
 import EnhancedMapTiles.PowerUp;
 import EnhancedMapTiles.QuicksandTile;
 import EnhancedMapTiles.QuicksandTopTile;
+import Enemies.ArcticFox;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import Engine.ImageLoader;
@@ -27,13 +28,21 @@ public class SnowMap extends Map {
 
     public SnowMap() {
         super("snow_map.txt", new SnowTileset());
-         this.playerStartPosition = getMapTile(2, 2).getLocation();
+         this.playerStartPosition = getMapTile(2, 20).getLocation();
     }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
+        ArcticFox fox1 = new ArcticFox(getMapTile(85, 18).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(fox1);
+
+        ArcticFox fox2 = new ArcticFox(getMapTile(137, 14).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(fox2);
+
+        ArcticFox fox3 = new ArcticFox(getMapTile(178, 14).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(fox3);
 
         return enemies;
     }
@@ -41,6 +50,15 @@ public class SnowMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+
+        CheckPoint checkpoint1 = new CheckPoint(getMapTile(100,18).getLocation());
+        enhancedMapTiles.add(checkpoint1);
+
+        CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
+        enhancedMapTiles.add(checkpoint2);
+
+        BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
+        enhancedMapTiles.add(backToLobby);
 
         return enhancedMapTiles;
         

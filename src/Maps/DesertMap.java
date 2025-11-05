@@ -79,6 +79,8 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(checkpoint1);
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(136,10).getLocation());
         enhancedMapTiles.add(checkpoint2);
+        CheckPoint checkpoint3 = new CheckPoint(getMapTile(5,19).getLocation());
+        enhancedMapTiles.add(checkpoint3);
 
         FallingPlatform fp = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),

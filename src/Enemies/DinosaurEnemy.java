@@ -34,11 +34,15 @@ public class DinosaurEnemy extends Enemy {
     private int xSnake = 48;
     private int ySnake = 48;
     protected float movementSpeed = 1f;
+    private boolean hurt = false;
+    private int hurtTimer = 0;
+
 
     private Direction startFacingDirection;
     protected Direction facingDirection;
     protected AirGroundState airGroundState;
     private int health = 30;
+    private int setHealth = 29;
 
     // timer is used to determine how long dinosaur freezes in place before shooting fireball
     protected int shootWaitTimer;
@@ -51,11 +55,15 @@ public class DinosaurEnemy extends Enemy {
     protected DinosaurState previousDinosaurState;
 
     public DinosaurEnemy(Point startLocation, Point endLocation, Direction facingDirection) {
-        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("updatedSnakes.png"), 48, 48), "WALK_RIGHT");
+        super(startLocation.x, startLocation.y, new SpriteSheet(ImageLoader.load("Snake.png"), 48, 48), "WALK_RIGHT");
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.startFacingDirection = facingDirection;
         this.initialize();
+    }
+
+    public boolean isHurt() {
+        return hurt;
     }
 
     @Override
@@ -123,13 +131,33 @@ public class DinosaurEnemy extends Enemy {
         // if dinosaur is walking, determine which direction to walk in based on facing direction
         if (dinosaurState == DinosaurState.WALK) {
             if (facingDirection == Direction.RIGHT && getIceBallHitStatus() == false) {
-                //System.out.println(movementSpeed);
-                currentAnimationName = "WALK_RIGHT";
-                moveXHandleCollision(movementSpeed);
+                if (health < setHealth) {
+                    currentAnimationName = "HURT_WALK_RIGHT";
+                    moveXHandleCollision(movementSpeed);
+                    hurtTimer++;
+                    if (hurtTimer > 20) {
+                        setHealth = health;
+                        hurtTimer = 0;
+                    }
+                } else {
+                    //System.out.println(movementSpeed);
+                    currentAnimationName = "WALK_RIGHT";
+                    moveXHandleCollision(movementSpeed);
+                }
             } else if(facingDirection == Direction.LEFT && getIceBallHitStatus() == false) {
-                currentAnimationName = "WALK_LEFT";
-                //System.out.println(movementSpeed);
-                moveXHandleCollision(-movementSpeed);
+                if (health < setHealth) {
+                    currentAnimationName = "HURT_WALK_LEFT";
+                    moveXHandleCollision(-movementSpeed);
+                    hurtTimer++;
+                    if (hurtTimer > 20) {
+                        setHealth = health;
+                        hurtTimer = 0;
+                    }
+                } else {
+                    //System.out.println(movementSpeed);
+                    currentAnimationName = "WALK_LEFT";
+                    moveXHandleCollision(-movementSpeed);
+                }
             }else if(facingDirection == Direction.RIGHT && getIceBallHitStatus() == true){
                 currentAnimationName = "FROZEN_WALK_RIGHT";
                 //movementSpeed -= 0.8;
@@ -280,7 +308,51 @@ public class DinosaurEnemy extends Enemy {
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 45, 40)
                             .build()
-            });    
+            });   
+                        
+            put("HURT_WALK_LEFT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 5), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 4), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 5), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 6), 14)
+                            .withScale(1)
+                            .withBounds(4, 2, 45, 40)
+                            .build()
+            });
+
+            put("HURT_WALK_RIGHT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 5), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 4), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 5), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 6), 14)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(4, 2, 45, 40)
+                            .build()
+            });
+            
+
              put("FROZEN_WALK_LEFT", new Frame[]{
                      new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
                             .withScale(1)
@@ -324,14 +396,14 @@ public class DinosaurEnemy extends Enemy {
             });
 
             put("SHOOT_LEFT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                    new FrameBuilder(spriteSheet.getSprite(0, 2))
                             .withScale(1)
                             .withBounds(4, 2, 45, 40)
                             .build(),
             });
 
              put("SHOOT_RIGHT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 3))
+                    new FrameBuilder(spriteSheet.getSprite(0, 2))
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(4, 2, 45, 40)
@@ -350,13 +422,7 @@ public class DinosaurEnemy extends Enemy {
 
 
 */
-            put("SHOOT_RIGHT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 3))
-                            .withScale(1)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(4, 2, 45, 40)
-                            .build(),
-            });
+
         }};
     }
     

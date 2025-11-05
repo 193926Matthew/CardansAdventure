@@ -17,7 +17,7 @@ public class CheckPoint extends EnhancedMapTile{
     private boolean activated;
 
     public CheckPoint(Point location){
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("GoldBox.png"), 16, 16), TileType.PASSABLE);
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("CheckPointFlag.png"), 24, 24), TileType.PASSABLE);
     }
 
     public void update(Player player) {
@@ -37,15 +37,19 @@ public class CheckPoint extends EnhancedMapTile{
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 40)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
-                        .withScale(3)
+                        .withScale(2)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 40)
-                        .withScale(3)
+                        .withScale(2)
+                        .withBounds(1, 1, 14, 14)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 3), 40)
+                        .withScale(2)
                         .withBounds(1, 1, 14, 14)
                         .build()
             });

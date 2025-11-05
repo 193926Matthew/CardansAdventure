@@ -29,6 +29,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
 
+    // popup
+    // --- Power-up display text ---
+    private SpriteFont powerUpText;
+    private SpriteFont powerUpTextLine2;
+
+    private long powerUpTextStartTime;
+    private boolean showPowerUpText = false;
+    private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
+
+
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
@@ -76,6 +86,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                     }
                 }
                 
+                if (showPowerUpText && System.currentTimeMillis() - powerUpTextStartTime > POWERUP_TEXT_DURATION) {
+                    showPowerUpText = false;
+                }
 
                 break;
             // if level has been completed, bring up level cleared screen
@@ -95,7 +108,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             // player back to main menu)
             case LEVEL_LOSE:
                 resetcheckTEST();
-                break;
+            break;
         }
     }
 
@@ -118,6 +131,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         }
         lives.setText("Health: " + player.getHealth());
         lives.draw(graphicsHandler);
+
+        //powerup popup
+        if (showPowerUpText && powerUpText != null) {
+            powerUpText.draw(graphicsHandler);
+        if (powerUpTextLine2 != null) {
+            powerUpTextLine2.draw(graphicsHandler);
+            }
+        }
+
     }
 
     public PlayLevelScreenState getPlayLevelScreenState() {
@@ -172,6 +194,63 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void GoBackToLobby(){
         screenCoordinator.setGameState(GameState.LOBBY);
+    }
+
+    // method to show power-up text popup
+    public void showPowerUpText(String message) {
+        if (message.contains("Double Jump")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  
+                100,  
+                "Arial",
+                30,
+                Color.ORANGE
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            // SECOND LINE
+            powerUpTextLine2 = new SpriteFont(
+                "Press UP arrow again to double jump!",
+                300,
+                140,  
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+            
+        } else if (message.contains("Ice Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.CYAN
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press I to shoot ice balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }   
     }
 
     // This enum represents the different states this screen can be in

@@ -7,6 +7,8 @@ import Maps.LobbyMap;
 import Maps.TestMap;
 import Maps.SnowMap;
 import Maps.TitleScreenMap;
+import Maps.TutorialMap;
+
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ public class EditorMaps {
             add("DesertMap");
             add("JungleMap");
             add("SnowMap");
+            add("TutorialMap");
         }};
     }
 
@@ -36,6 +39,8 @@ public class EditorMaps {
                 return new JungleMap();
             case "SnowMap":
                 return new SnowMap();
+            case "TutorialMap":
+                return new TutorialMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
