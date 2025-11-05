@@ -182,6 +182,7 @@ public abstract class Player extends GameObject {
 
             if (this.x < 0) {
                 this.x = 0;
+                System.out.println("Cannot go beyond x bounds");
             }
 
             
@@ -193,6 +194,8 @@ public abstract class Player extends GameObject {
 
             if(this.getX2() > map.getWidthPixels()){
                 this.x = map.getWidthPixels() - this.getWidth();
+                System.out.println("Cannot go beyond x bounds");
+
             }
 
 

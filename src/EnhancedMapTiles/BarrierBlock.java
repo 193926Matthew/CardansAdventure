@@ -28,7 +28,7 @@ public class BarrierBlock extends EnhancedMapTile{
     @Override
     public void update(Player player) {
         if(player.touching(this)){
-            //System.out.println("Cannot pass!");    
+            System.out.println("Cannot pass!");    
         }
         
         super.update();

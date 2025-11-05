@@ -17,6 +17,7 @@ import GameObject.Rectangle;
 import Level.*;
 import Tilesets.DesertTileset;
 import Utils.Direction;
+import EnhancedMapTiles.HealthPowerUp;
 
 import java.util.ArrayList;
 
@@ -36,14 +37,14 @@ public class DesertMap extends Map {
         DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(15, 18).getLocation().addY(2), getMapTile(15, 18).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy1);
 
-        DinosaurEnemy dinosaurEnemy2 = new DinosaurEnemy(getMapTile(123, 19).getLocation().addY(2), getMapTile(123, 19).getLocation().addY(2), Direction.RIGHT);
-        enemies.add(dinosaurEnemy2);
-
         DinosaurEnemy dinosaurEnemy3 = new DinosaurEnemy(getMapTile(63, 15).getLocation().addY(2), getMapTile(63, 15).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy3);
 
-        DinosaurEnemy dinosaurEnemy4 = new DinosaurEnemy(getMapTile(125, 19).getLocation().addY(2), getMapTile(125, 19).getLocation().addY(2), Direction.LEFT);
+        DinosaurEnemy dinosaurEnemy4 = new DinosaurEnemy(getMapTile(97, 19).getLocation().addY(2), getMapTile(125, 19).getLocation().addY(2), Direction.LEFT);
         enemies.add(dinosaurEnemy4);
+        
+        DinosaurEnemy dinosaurEnemy5 = new DinosaurEnemy(getMapTile(161, 22).getLocation().addY(2), getMapTile(161, 22).getLocation().addY(2), Direction.LEFT);
+        enemies.add(dinosaurEnemy5);
 
         BugEnemy bugEnemy2 = new BugEnemy(getMapTile(66, 15).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy2);
@@ -54,11 +55,14 @@ public class DesertMap extends Map {
         BugEnemy bugEnemy4 = new BugEnemy(getMapTile(94, 19).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy4);
 
-        BugEnemy bugEnemy5 = new BugEnemy(getMapTile(108, 18).getLocation().subtractY(25), Direction.LEFT);
+        BugEnemy bugEnemy5 = new BugEnemy(getMapTile(161, 22).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy5);
 
         BugEnemy bugEnemy6 = new BugEnemy(getMapTile(111, 17).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy6);
+
+        BugEnemy bugEnemy10 = new BugEnemy(getMapTile(122, 19).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(bugEnemy10);
 
         BugEnemy bugEnemy7 = new BugEnemy(getMapTile(78, 15).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy7);
@@ -78,13 +82,18 @@ public class DesertMap extends Map {
 
         PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","updatedIce.png");
         PowerUp doubleJump = new PowerUp(getMapTile(15,16).getLocation(),"Double Jump","updatedDoubleJump.png");
+        HealthPowerUp extraHealth = new HealthPowerUp(getMapTile(126,17).getLocation());
         enhancedMapTiles.add(doubleJump);
+        enhancedMapTiles.add(extraHealth);
+
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(57,19).getLocation());
         enhancedMapTiles.add(checkpoint1);
-        CheckPoint checkpoint2 = new CheckPoint(getMapTile(136,10).getLocation());
+        CheckPoint checkpoint2 = new CheckPoint(getMapTile(135,10).getLocation());
         enhancedMapTiles.add(checkpoint2);
-        CheckPoint checkpoint3 = new CheckPoint(getMapTile(30,18).getLocation());
+        CheckPoint checkpoint3 = new CheckPoint(getMapTile(31,19).getLocation());
         enhancedMapTiles.add(checkpoint3);
+        CheckPoint checkpoint4 = new CheckPoint(getMapTile(121,15).getLocation());
+        enhancedMapTiles.add(checkpoint4);
 
         FallingPlatform fp = new FallingPlatform(
                 ImageLoader.load("FallingPlatform.png"),
@@ -300,42 +309,95 @@ public class DesertMap extends Map {
         QuicksandTile qs40 = new QuicksandTile(getMapTile(134, 15).getLocation());
         QuicksandTile qs41 = new QuicksandTile(getMapTile(134, 16).getLocation());
         QuicksandTile qs42 = new QuicksandTile(getMapTile(134, 17).getLocation());
-
+        
+        QuicksandTopTile qsTop5 = new QuicksandTopTile(getMapTile(133, 11).getLocation());
+        QuicksandTopTile qsTop6 = new QuicksandTopTile(getMapTile(134, 11).getLocation());
        
         
 
-        QuicksandTopTile qsTop5 = new QuicksandTopTile(getMapTile(133, 11).getLocation());
-        QuicksandTopTile qsTop6 = new QuicksandTopTile(getMapTile(134, 11).getLocation());
-
-        /* 
-        for(int i = 0; i < this.getWidth(); i++){
+        QuicksandTopTile qsTop7 = new QuicksandTopTile(getMapTile(149, 11).getLocation());
+        QuicksandTopTile qsTop8 = new QuicksandTopTile(getMapTile(150, 11).getLocation());
+        QuicksandTopTile qsTop9 = new QuicksandTopTile(getMapTile(151, 11).getLocation());
         
-            MapTile tile = getMapTile(i, this.getEndBoundY());
-            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
-            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
-            int barrierNum = this.getHeight() - 1;
-            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
-                BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
-            // this.addBarrierBlock(barrierY);
-                enhancedMapTiles.add(barrierY);
-                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-        }
-    }
 
-         for(int j = 0; j < this.getHeight(); j++){
+        QuicksandTile qs43 = new QuicksandTile(getMapTile(149, 12).getLocation());
+        QuicksandTile qs44 = new QuicksandTile(getMapTile(149, 13).getLocation());
+        QuicksandTile qs45 = new QuicksandTile(getMapTile(149, 14).getLocation());
+        QuicksandTile qs46 = new QuicksandTile(getMapTile(149, 14).getLocation());
+        QuicksandTile qs47 = new QuicksandTile(getMapTile(149, 15).getLocation());
+        QuicksandTile qs48 = new QuicksandTile(getMapTile(149, 16).getLocation());
+        QuicksandTile qs49 = new QuicksandTile(getMapTile(149, 17).getLocation());
+        QuicksandTile qs50 = new QuicksandTile(getMapTile(149, 18).getLocation());
+        QuicksandTile qs51 = new QuicksandTile(getMapTile(149, 19).getLocation());
+        QuicksandTile qs52 = new QuicksandTile(getMapTile(149, 20).getLocation());
+        QuicksandTile qs53 = new QuicksandTile(getMapTile(149, 21).getLocation());
         
-        MapTile newTile = getMapTile(this.getEndBoundX(), j);
-        MapTile newTileBelow = getMapTile(this.getEndBoundX() + 4, j);
-        if( newTile != null && newTileBelow.getTileType() == TileType.PASSABLE){
-            BarrierBlock barrierX = new BarrierBlock(newTile.getLocation(), "CommonTileset.png");
-           // this.addBarrierBlock(barrierY);
-            enhancedMapTiles.add(barrierX);
-            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-        }
-    }
-        */
+        enhancedMapTiles.add(qs43);
+        enhancedMapTiles.add(qs44);
+        enhancedMapTiles.add(qs45);
+        enhancedMapTiles.add(qs46);
+        enhancedMapTiles.add(qs47);
+        enhancedMapTiles.add(qs48);
+        enhancedMapTiles.add(qs49);
+        enhancedMapTiles.add(qs50);
+        enhancedMapTiles.add(qs51);
+        enhancedMapTiles.add(qs52);
+        enhancedMapTiles.add(qs53);
+        enhancedMapTiles.add(qsTop7);
+        enhancedMapTiles.add(qsTop8);
+        enhancedMapTiles.add(qsTop9);
+
+        
 
 
+
+        QuicksandTile qs54 = new QuicksandTile(getMapTile(150, 12).getLocation());
+        QuicksandTile qs55 = new QuicksandTile(getMapTile(150, 13).getLocation());
+        QuicksandTile qs56 = new QuicksandTile(getMapTile(150, 14).getLocation());
+        QuicksandTile qs57 = new QuicksandTile(getMapTile(150, 14).getLocation());
+        QuicksandTile qs58 = new QuicksandTile(getMapTile(150, 15).getLocation());
+        QuicksandTile qs59 = new QuicksandTile(getMapTile(150, 16).getLocation());
+        QuicksandTile qs60 = new QuicksandTile(getMapTile(150, 17).getLocation());
+        QuicksandTile qs61 = new QuicksandTile(getMapTile(150, 18).getLocation());
+        QuicksandTile qs62 = new QuicksandTile(getMapTile(150, 19).getLocation());
+        QuicksandTile qs63 = new QuicksandTile(getMapTile(150, 20).getLocation());
+        QuicksandTile qs64 = new QuicksandTile(getMapTile(150, 21).getLocation());
+        
+        enhancedMapTiles.add(qs54);
+        enhancedMapTiles.add(qs55);
+        enhancedMapTiles.add(qs56);
+        enhancedMapTiles.add(qs57);
+        enhancedMapTiles.add(qs58);
+        enhancedMapTiles.add(qs59);
+        enhancedMapTiles.add(qs60);
+        enhancedMapTiles.add(qs61);
+        enhancedMapTiles.add(qs62);
+        enhancedMapTiles.add(qs63);
+        enhancedMapTiles.add(qs64);
+
+        QuicksandTile qs65 = new QuicksandTile(getMapTile(151, 12).getLocation());
+        QuicksandTile qs66 = new QuicksandTile(getMapTile(151, 13).getLocation());
+        QuicksandTile qs67 = new QuicksandTile(getMapTile(151, 14).getLocation());
+        QuicksandTile qs68 = new QuicksandTile(getMapTile(151, 14).getLocation());
+        QuicksandTile qs69 = new QuicksandTile(getMapTile(151, 15).getLocation());
+        QuicksandTile qs70 = new QuicksandTile(getMapTile(151, 16).getLocation());
+        QuicksandTile qs71 = new QuicksandTile(getMapTile(151, 17).getLocation());
+        QuicksandTile qs72 = new QuicksandTile(getMapTile(151, 18).getLocation());
+        QuicksandTile qs73 = new QuicksandTile(getMapTile(151, 19).getLocation());
+        QuicksandTile qs74 = new QuicksandTile(getMapTile(151, 20).getLocation());
+        QuicksandTile qs75 = new QuicksandTile(getMapTile(151, 21).getLocation());
+        
+        enhancedMapTiles.add(qs65);
+        enhancedMapTiles.add(qs66);
+        enhancedMapTiles.add(qs67);
+        enhancedMapTiles.add(qs68);
+        enhancedMapTiles.add(qs69);
+        enhancedMapTiles.add(qs70);
+        enhancedMapTiles.add(qs71);
+        enhancedMapTiles.add(qs72);
+        enhancedMapTiles.add(qs73);
+        enhancedMapTiles.add(qs74);
+        enhancedMapTiles.add(qs75);
         
         enhancedMapTiles.add(qs31);
         enhancedMapTiles.add(qs32);
@@ -359,25 +421,13 @@ public class DesertMap extends Map {
 
         int endLevelX = 149;
         int targetY = 17;
-        /* 
-        for(int m = 1; m <= targetY; m++){
-            MapTile finalTile = getMapTile(endLevelX, m);
-            MapTile finalTileBelow = getMapTile(endLevelX, m + 1);
-            if( finalTile != null && finalTileBelow.getTileType() == TileType.PASSABLE){
-                BarrierBlock barriers = new BarrierBlock(finalTile.getLocation(), "CommonTileset.png");
-            // this.addBarrierBlock(barrierY);
-                enhancedMapTiles.add(barriers);
-                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-            }
-        }
-            */
        
         //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
 
         //The new end level box OG POINT: 198 19
-        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(169, 10).getLocation());
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(169, 22).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
@@ -391,44 +441,6 @@ public class DesertMap extends Map {
         return npcs;
     }
 
-    /* 
-      @Override
-    public ArrayList<BarrierBlock> loadBarrierBlocks(){
-        ArrayList<BarrierBlock> barrierBlocks = new ArrayList<>();
-        
-        for(int i = 0; i < this.getWidth(); i++){
-        
-        MapTile tile = getMapTile(i, this.getEndBoundY());
-        MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
-        MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
-        int barrierNum = this.getHeight() - 1;
-        if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
-            BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
-           // this.addBarrierBlock(barrierY);
-            barrierBlocks.add(barrierY);
-            enhancedMapTiles.add(barrierY);
-            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-        }
-    }
-
     
-
-        for(int j = 0; j < this.getHeight(); j++){
-        
-        MapTile newTile = getMapTile(this.getEndBoundX(), j);
-        MapTile newTileBelow = getMapTile(this.getEndBoundX() + 4, j);
-        if( newTile != null && newTileBelow.getTileType() == TileType.PASSABLE){
-            BarrierBlock barrierX = new BarrierBlock(newTile.getLocation(), "CommonTileset.png");
-           // this.addBarrierBlock(barrierY);
-            barrierBlocks.add(barrierX);
-            enhancedMapTiles.add(barrierX);
-            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-        }
-
-        
-    }
-     return barrierBlocks;
-    }
-     */
 }
     
