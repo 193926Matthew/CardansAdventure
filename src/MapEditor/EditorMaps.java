@@ -5,6 +5,7 @@ import Maps.JungleMap;
 import Maps.DesertMap; // Ensure DesertMap.java exists in src/Maps/
 import Maps.LobbyMap;
 import Maps.TestMap;
+import Maps.SnowMap;
 import Maps.TitleScreenMap;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class EditorMaps {
             add("LobbyMap");
             add("DesertMap");
             add("JungleMap");
+            add("SnowMap");
         }};
     }
 
@@ -32,6 +34,8 @@ public class EditorMaps {
                 return new DesertMap();
             case "JungleMap":
                 return new JungleMap();
+            case "SnowMap":
+                return new SnowMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

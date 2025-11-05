@@ -108,6 +108,8 @@ public class MapCollisionHandler {
                     return false;
                 case NOT_PASSABLE:
                     return gameObject.intersects(mapTile);
+                case ICE:
+                    return gameObject.intersects(mapTile);
                 case JUMP_THROUGH_PLATFORM:
                     return direction == Direction.DOWN && gameObject.intersects(mapTile) &&
                             Math.round(gameObject.getBounds().getY2()) == Math.round(mapTile.getBounds().getY1());

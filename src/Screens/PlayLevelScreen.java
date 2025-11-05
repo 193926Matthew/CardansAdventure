@@ -12,6 +12,7 @@ import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
 import Maps.DesertMap;
+import Maps.SnowMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 
@@ -34,7 +35,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     public void initialize() {
         // define/setup map
-        map = new DesertMap();
+        map = new SnowMap();
 
         // System.out.print("Start");
         // setup player
@@ -148,7 +149,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     //this does what initialize but it works with checkpoint
     public void resetcheckTEST() {
-            map = new DesertMap();
+            map = new SnowMap();
 
             System.out.print("Start again");
             // setup player

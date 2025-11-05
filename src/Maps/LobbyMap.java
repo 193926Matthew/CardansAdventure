@@ -8,6 +8,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Level.MapTile;
 import EnhancedMapTiles.BarrierBlock;
+import EnhancedMapTiles.DesertEnter;
 import Tilesets.CommonTileset;
 import Utils.Point;
 import Level.TileType;
@@ -50,6 +51,8 @@ public class LobbyMap extends Map {
         }
     
         
+        DesertEnter desertEnter = new DesertEnter(getMapTile(10,11).getLocation());
+        enhancedMapTiles.add(desertEnter);
 
         JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
         enhancedMapTiles.add(jungleEnter);

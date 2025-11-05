@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 public class BugEnemy extends Enemy {
       private float gravity = .5f;
     private float movementSpeed = 1f;
+    private float forzenSpeed = movementSpeed / 4;
     private Direction startFacingDirection;
     private Direction facingDirection;
     private AirGroundState airGroundState;
@@ -97,8 +98,10 @@ public class BugEnemy extends Enemy {
             if(this.getIceBallHitStatus() == true){
                  if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "FROZEN_WALK_RIGHT";
+                    movementSpeed = forzenSpeed;
                  }else{
                     currentAnimationName = "FROZEN_WALK_LEFT";
+                    movementSpeed = forzenSpeed;
                  }
 
             }
@@ -123,8 +126,10 @@ public class BugEnemy extends Enemy {
             if(this.getIceBallHitStatus() == true){
                  if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "FROZEN_WALK_RIGHT";
+                    movementSpeed = forzenSpeed;
                  }else{
                     currentAnimationName = "FROZEN_WALK_LEFT";
+                    movementSpeed = forzenSpeed;
                  }
 
             }
