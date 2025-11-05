@@ -40,34 +40,13 @@ public class LobbyMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
         
-        
-        for(int i =1; i <= this.getHeight() - 4; i++){
-            MapTile newTile = getMapTile(this.getEndBoundX(), i);
-            if(newTile != null){
-                BarrierBlock verticalBarrier = new BarrierBlock(newTile.getLocation(),"CommonTileset.png");
-                enhancedMapTiles.add(verticalBarrier);
-            }
-        }
-
-        for(int m =0; m <= this.getHeight() - 4; m++){
-            MapTile anotherTile = getMapTile(34, m);
-            if(anotherTile != null){
-                BarrierBlock verticalBarrier2 = new BarrierBlock(anotherTile.getLocation(),"CommonTileset.png");
-                enhancedMapTiles.add(verticalBarrier2);
-            }
-        }
-
-        for(int j =10; j <= this.getWidth() - 4; j++){
-            MapTile thirdTile = getMapTile(j, this.getEndBoundY());
-            if(thirdTile != null){
-                BarrierBlock verticalBarrier2 = new BarrierBlock(thirdTile.getLocation(),"CommonTileset.png");
-                enhancedMapTiles.add(verticalBarrier2);
-            }
-        }
-    
+        BarrierBlock testBarrier = new BarrierBlock(getMapTile(0,11 ).getLocation(), "CommonTileset.png");
+        enhancedMapTiles.add(testBarrier);
+       
         
         DesertEnter desertEnter = new DesertEnter(getMapTile(10,11).getLocation());
         enhancedMapTiles.add(desertEnter);
+
 
         JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
         enhancedMapTiles.add(jungleEnter);

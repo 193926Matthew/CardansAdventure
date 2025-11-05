@@ -7,7 +7,7 @@ import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 import Screens.TutorialScreen;
-
+import Screens.ControlsScreen;
 import Engine.*;
 import Game.ScreenCoordinator;
 import Level.Map;
@@ -103,6 +103,9 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new JungleScreen(this);
 					case TUTORIAL:
 						currentScreen = new TutorialScreen(this);
+						break;
+					case CONTROLS:
+						currentScreen = new ControlsScreen(this);
 						break;
 				}
 				staticCurrentScreen = currentScreen;

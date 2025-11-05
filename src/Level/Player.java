@@ -180,6 +180,29 @@ public abstract class Player extends GameObject {
             lastAmountMovedX = super.moveXHandleCollision(moveAmountX);
             lastAmountMovedY = super.moveYHandleCollision(moveAmountY);
 
+            if (this.x < 0) {
+                this.x = 0;
+                System.out.println("Cannot go beyond x bounds");
+            }
+
+            
+            /* 
+            if(this.y < 0){
+                this.y = 0;
+            }
+                */
+
+            if(this.getX2() > map.getWidthPixels()){
+                this.x = map.getWidthPixels() - this.getWidth();
+                System.out.println("Cannot go beyond x bounds");
+
+            }
+
+
+
+
+            //map.getWidthPixels() // this gets the last x position on the map that is valid
+
             handlePlayerAnimation();
 
             updateLockedKeys();
