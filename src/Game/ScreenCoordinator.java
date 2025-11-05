@@ -9,6 +9,7 @@ import Screens.PlayLevelScreen;
 import Screens.TutorialScreen;
 import Screens.SnowScreen;
 
+import Screens.ControlsScreen;
 import Engine.*;
 import Game.ScreenCoordinator;
 import Level.Map;
@@ -108,6 +109,9 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case TUTORIAL:
 						currentScreen = new TutorialScreen(this);
+						break;
+					case CONTROLS:
+						currentScreen = new ControlsScreen(this);
 						break;
 				}
 				staticCurrentScreen = currentScreen;
