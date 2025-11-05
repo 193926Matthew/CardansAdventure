@@ -57,8 +57,14 @@ public class SnowMap extends Map {
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
         enhancedMapTiles.add(checkpoint2);
 
+        /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
         enhancedMapTiles.add(backToLobby);
+        */
+
+        //This is what we use to end the level, ignore BackToLobby thing. that was a test.
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(196, 20).getLocation());
+        enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
         
