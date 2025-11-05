@@ -419,9 +419,36 @@ public class DesertMap extends Map {
         //EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 19).getLocation());
         
 
-        int endLevelX = 149;
+        int endLevelX = 169;
         int targetY = 17;
-       
+//sets barrierBlocks along y axis 
+         for(int i = 0; i < this.getWidth(); i++){
+        
+            MapTile tile = getMapTile(i, this.getEndBoundY());
+            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
+            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
+            int barrierNum = this.getHeight() - 1;
+            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
+                BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+            // this.addBarrierBlock(barrierY);
+                enhancedMapTiles.add(barrierY);
+                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
+/* 
+         for(int j = 0; j < this.getHeight(); j++){
+        
+        MapTile newTile = getMapTile(this.getEndBoundX(), j);
+        MapTile newTileBelow = getMapTile(this.getEndBoundX() + 4, j);
+        if( newTile != null && newTileBelow.getTileType() == TileType.PASSABLE){
+            BarrierBlock barrierX = new BarrierBlock(newTile.getLocation(), "CommonTileset.png");
+           // this.addBarrierBlock(barrierY);
+            enhancedMapTiles.add(barrierX);
+            //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
+*/
+
         //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);

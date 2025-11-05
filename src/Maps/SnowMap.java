@@ -60,6 +60,23 @@ public class SnowMap extends Map {
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
         enhancedMapTiles.add(backToLobby);
 
+         int endLevelX = 169;
+        int targetY = 17;
+        //sets barrierBlocks along y axis 
+         for(int i = 0; i < this.getWidth(); i++){
+        
+            MapTile tile = getMapTile(i, this.getEndBoundY());
+            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
+            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
+            int barrierNum = this.getHeight() - 1;
+            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
+                BarrierBlock barrierY = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+            // this.addBarrierBlock(barrierY);
+                enhancedMapTiles.add(barrierY);
+                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
+
         return enhancedMapTiles;
         
     }
