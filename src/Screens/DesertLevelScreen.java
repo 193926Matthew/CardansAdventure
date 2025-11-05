@@ -18,7 +18,7 @@ import Players.Cat;
 import Maps.SnowMap;
 import Game.GameState;
 
-public class JungleScreen extends Screen implements PlayerListener {
+public class DesertLevelScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
@@ -29,7 +29,7 @@ public class JungleScreen extends Screen implements PlayerListener {
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
 
-    public JungleScreen(ScreenCoordinator screenCoordinator) {
+    public DesertLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
@@ -71,17 +71,6 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-                for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
-                    if (tile instanceof BackToLobby) {
-                        BackToLobby lobby = (BackToLobby) tile;
-                        if (lobby.getTriggerCode() == 3) {
-                            screenCoordinator.setGameState(GameState.LOBBY);
-                        }
-                    }
-                }
-
-                break;
-        
             
         }
     }

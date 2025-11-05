@@ -46,8 +46,12 @@ public class Fireball extends Enemy {
         if (existenceFrames == 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         } else {
-            // move fireball forward
-            moveXHandleCollision(movementSpeed);
+            // move fireball forward at different speeds depending on if it gets hit with the iceball
+            if(this.getIceBallHitStatus() == true){
+                moveXHandleCollision(movementSpeed/2);
+            }else{
+                moveXHandleCollision(movementSpeed);
+            }
             super.update(player);
         }
         existenceFrames--;

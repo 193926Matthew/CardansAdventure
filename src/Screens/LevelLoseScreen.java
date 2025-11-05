@@ -11,9 +11,15 @@ public class LevelLoseScreen extends Screen {
     protected SpriteFont instructions;
     protected KeyLocker keyLocker = new KeyLocker();
     protected PlayLevelScreen playLevelScreen;
+    protected DesertLevelScreen desertLevelScreen;
 
     public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
+        initialize();
+    }
+
+    public LevelLoseScreen(DesertLevelScreen DesertLevelScreen) {
+        this.desertLevelScreen = desertLevelScreen;
         initialize();
     }
 
@@ -36,9 +42,17 @@ public class LevelLoseScreen extends Screen {
 
         // if space is pressed, reset level. if escape is pressed, go back to main menu
         if (Keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)) {
-            playLevelScreen.resetLevel();
+            if(!playLevelScreen.equals(null)){
+                playLevelScreen.resetLevel();
+            }else if(!desertLevelScreen.equals(null)){
+                desertLevelScreen.resetLevel();
+            }
         } else if (Keyboard.isKeyDown(Key.ESC) && !keyLocker.isKeyLocked(Key.ESC)) {
-            playLevelScreen.goBackToMenu();
+            if(!playLevelScreen.equals(null)){
+                playLevelScreen.goBackToMenu();
+            }else if(!desertLevelScreen.equals(null)){
+                desertLevelScreen.goBackToMenu();
+            }
         }
     }
 

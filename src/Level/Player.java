@@ -11,6 +11,8 @@ import Utils.AirGroundState;
 import Utils.Direction;
 import java.util.ArrayList;
 import Utils.Point;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public abstract class Player extends GameObject {
     // values that affect player movement
@@ -22,7 +24,9 @@ public abstract class Player extends GameObject {
     protected float jumpHeight = 0;
     protected float jumpDegrade = 0;
     protected float terminalVelocityY = 0;
+     protected float terminalVelocityX = 0;
     protected float momentumYIncrease = 0;
+    protected float momentumXDecrase = 0;
 
     // values for player stats
     public int health = 100;
@@ -30,6 +34,7 @@ public abstract class Player extends GameObject {
     // values used to handle player movement
     protected float jumpForce = 0;
     protected float momentumY = 0;
+    protected float momentumX = 1;
     protected float moveAmountX, moveAmountY;
     protected float lastAmountMovedX, lastAmountMovedY;
 
@@ -55,6 +60,10 @@ public abstract class Player extends GameObject {
     protected Key DOUBLE_JUMP_KEY = Key.W;
     protected Key ICE_BALL_KEY = Key.I;
 
+    //ice slider
+    int iceSlideAmmount = 1;
+    float iceFriction = 0.5f;
+
 
 
     // Attack variables
@@ -74,12 +83,18 @@ public abstract class Player extends GameObject {
     private int dashDelay = 18;
     private boolean enemyHitByIceBall;
 
+    //Timer for spikes
+    private Timer spikeTimer = new Timer();
+
     // flags
+    protected boolean onIce = false;
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
     protected int invincibleTimer;
     protected int duration = 60;
     protected boolean isOnPlatform = false; //checks to see if the player is standing on a moving platform (used for vertical moving platforms)
     public boolean isInTile = false; //checks to see if the player is in a quicksand tile
+    public boolean canTakeSpikeDamage = false; //checks to see if the player can take spike damage
+    public boolean canSwitchMomentum = false; // checks to see if ice can switch the players x momentum 
 
     // checkpoint variables
     public Point respawnPoint;
@@ -141,8 +156,16 @@ public abstract class Player extends GameObject {
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
 
+            spikeTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    canTakeSpikeDamage = true;
+                }
+            }, 1500);
+
+            isTouchingSpike();
             applyGravity();
-            isTouchingSpikes();
+            isTouchingIce();
             // update player's state and current actions, which includes things like
             // determining how much it should move each frame and if its walking or jumping
             do {
@@ -377,7 +400,6 @@ public abstract class Player extends GameObject {
     }
 
     protected void playerAttackingSpin() {
-
         // System.out.println("Attack");
 
         // if jump key is pressed, player enters JUMPING state
@@ -394,7 +416,6 @@ public abstract class Player extends GameObject {
 
     protected void playerDoubleJump(){
         //if jump key is pressed and the key is not locked
-        
         if(Keyboard.isKeyDown(JUMP_KEY) && !keyLocker.isKeyLocked(JUMP_KEY)){
             //locks the jump key
             keyLocker.lockKey(JUMP_KEY);
@@ -490,7 +511,6 @@ public abstract class Player extends GameObject {
     
     // player JUMPING state logic
     protected void playerJumping() {
-
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
@@ -642,6 +662,14 @@ public abstract class Player extends GameObject {
         }
     }
 
+    protected void decreaseXMomentum() {
+        momentumX += momentumXDecrase;
+        if (momentumX > terminalVelocityX) {
+            momentumX = terminalVelocityX;
+        }
+        
+    }
+
     protected void updateLockedKeys() {
         if (Keyboard.isKeyUp(JUMP_KEY)) {
             keyLocker.unlockKey(JUMP_KEY);
@@ -790,7 +818,7 @@ public abstract class Player extends GameObject {
         // player should continually fall until it goes off screen
         else if (currentFrameIndex == getCurrentAnimation().length - 1) {
             if (map.getCamera().containsDraw(this)) {
-                moveY(3);
+                moveY(20);
             } else {
                 respawn();
                 // tell all player listeners that the player has died in the level
@@ -815,6 +843,23 @@ public abstract class Player extends GameObject {
     return false;
     
     }
+
+    protected void isTouchingSpike() {
+    for (MapTile tile : map.getMapTiles()) {
+        if ((tile.getTileType() == TileType.SPIKE && getBounds().intersects(tile.getBounds()))) {
+            if(canTakeSpikeDamage){
+                this.setHealth(this.getHealth()-50);
+                this.updatePlayerDead();
+                this.resetSpikeTimer();
+                if(this.getHealth() <= 0){
+                    setLevelState(LevelState.PLAYER_DEAD);
+                }
+            }
+        }
+    }
+    
+    }
+    
 
     public boolean enemyHits(){
         return this.enemyHitByIceBall;
@@ -887,15 +932,69 @@ public abstract class Player extends GameObject {
         this.health = health;
     }
 
-    protected void isTouchingSpikes(){
+    public void resetSpikeTimer(){
+        spikeTimer.cancel();
+        spikeTimer = new Timer();
+        spikeTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                canTakeSpikeDamage = true;
+                }
+        }, 1500);
+        canTakeSpikeDamage = false;
+    }
+
+    protected void isTouchingIce(){
         for(MapTile tile: map.getMapTiles()){
-            if(tile.getTileType() == TileType.SPIKE && getBounds().intersects(tile.getBounds())){
-                this.setHealth(0);
-                levelState = LevelState.PLAYER_DEAD;
-                updatePlayerDead();
+            if(tile.getTileType() == TileType.ICE && this.getBounds().getY2() <= tile.getBounds().getY1() + 1 &&
+                this.getBounds().getY2() >= tile.getBounds().getY1() - 1 && 
+                this.getBounds().getX2() > tile.getBounds().getX1() &&
+                this.getBounds().getX1() < tile.getBounds().getX2())
+                {
+                   onIce = true;
+            }else if(tile.getTileType() != TileType.ICE && this.getBounds().getY2() <= tile.getBounds().getY1() + 1 &&
+                this.getBounds().getY2() >= tile.getBounds().getY1() - 1 && 
+                this.getBounds().getX2() > tile.getBounds().getX1() &&
+                this.getBounds().getX1() < tile.getBounds().getX2() &&
+                this.playerState != playerState.JUMPING )
+                {
+                    onIce = false;
             }
         }
+
+        float iceSlideAmmount = 0.1f;
+        float decreaseSlideAmmount = 0.03f;
+
+        if(onIce){
+
+            if(Keyboard.isKeyDown(MOVE_LEFT_KEY)){
+                momentumX -= iceSlideAmmount;
+            }
+            if(Keyboard.isKeyDown(MOVE_RIGHT_KEY)){
+                momentumX += iceSlideAmmount;
+            }
+
+            if (momentumX > 5) momentumX = 5;
+            if (momentumX < -5) momentumX = -5;
+
+            moveAmountX = momentumX;
+        }else{
+            if (momentumX > 0) {
+                momentumX -= iceFriction;
+            if (momentumX < 0) momentumX
+                = 0;
+            }else if (momentumX < 0) {
+                momentumX += iceFriction;
+            if (momentumX > 0) 
+                momentumX = 0;
+            }
+            moveAmountX += momentumX;
+        }
+
+        
+        
     }
+    
 
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
