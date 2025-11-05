@@ -33,19 +33,19 @@ public class DesertMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(15, 19).getLocation().addY(2), getMapTile(129, 19).getLocation().addY(2), Direction.RIGHT);
+        DinosaurEnemy dinosaurEnemy1 = new DinosaurEnemy(getMapTile(15, 18).getLocation().addY(2), getMapTile(15, 18).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy1);
 
-        DinosaurEnemy dinosaurEnemy2 = new DinosaurEnemy(getMapTile(162, 6).getLocation().addY(2), getMapTile(164, 6).getLocation().addY(2), Direction.LEFT);
+        DinosaurEnemy dinosaurEnemy2 = new DinosaurEnemy(getMapTile(123, 19).getLocation().addY(2), getMapTile(123, 19).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy2);
 
-        DinosaurEnemy dinosaurEnemy3 = new DinosaurEnemy(getMapTile(162, 3).getLocation().addY(2), getMapTile(164, 3).getLocation().addY(2), Direction.RIGHT);
+        DinosaurEnemy dinosaurEnemy3 = new DinosaurEnemy(getMapTile(63, 15).getLocation().addY(2), getMapTile(63, 15).getLocation().addY(2), Direction.RIGHT);
         enemies.add(dinosaurEnemy3);
 
-        DinosaurEnemy dinosaurEnemy4 = new DinosaurEnemy(getMapTile(162, 19).getLocation().addY(2), getMapTile(173, 19).getLocation().addY(2), Direction.LEFT);
+        DinosaurEnemy dinosaurEnemy4 = new DinosaurEnemy(getMapTile(125, 19).getLocation().addY(2), getMapTile(125, 19).getLocation().addY(2), Direction.LEFT);
         enemies.add(dinosaurEnemy4);
 
-        BugEnemy bugEnemy2 = new BugEnemy(getMapTile(69, 15).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy2 = new BugEnemy(getMapTile(66, 15).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy2);
 
         BugEnemy bugEnemy3 = new BugEnemy(getMapTile(84, 15).getLocation().subtractY(25), Direction.LEFT);
@@ -54,17 +54,20 @@ public class DesertMap extends Map {
         BugEnemy bugEnemy4 = new BugEnemy(getMapTile(94, 19).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy4);
 
-        BugEnemy bugEnemy5 = new BugEnemy(getMapTile(106, 18).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy5 = new BugEnemy(getMapTile(108, 18).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy5);
 
-        BugEnemy bugEnemy6 = new BugEnemy(getMapTile(140, 10).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy6 = new BugEnemy(getMapTile(111, 17).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy6);
 
-        BugEnemy bugEnemy7 = new BugEnemy(getMapTile(155, 10).getLocation().subtractY(25), Direction.LEFT);
+        BugEnemy bugEnemy7 = new BugEnemy(getMapTile(78, 15).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(bugEnemy7);
 
-        BugEnemy bugEnemy8 = new BugEnemy(getMapTile(182, 19).getLocation().subtractY(25), Direction.RIGHT);
+        BugEnemy bugEnemy8 = new BugEnemy(getMapTile(103, 18).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy8);
+
+        BugEnemy bugEnemy9 = new BugEnemy(getMapTile(54, 26).getLocation().subtractY(25), Direction.RIGHT);
+        enemies.add(bugEnemy9);
 
         return enemies;
     }
@@ -80,7 +83,7 @@ public class DesertMap extends Map {
         enhancedMapTiles.add(checkpoint1);
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(136,10).getLocation());
         enhancedMapTiles.add(checkpoint2);
-        CheckPoint checkpoint3 = new CheckPoint(getMapTile(5,19).getLocation());
+        CheckPoint checkpoint3 = new CheckPoint(getMapTile(30,18).getLocation());
         enhancedMapTiles.add(checkpoint3);
 
         FallingPlatform fp = new FallingPlatform(
@@ -130,6 +133,30 @@ public class DesertMap extends Map {
         );
 
         enhancedMapTiles.add(fp4);
+
+        FallingPlatform fp8 = new FallingPlatform(
+                ImageLoader.load("FallingPlatform.png"),
+                getMapTile(141, 7).getLocation(),
+                getMapTile(141, 0).getLocation(),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.DOWN
+        );
+
+        enhancedMapTiles.add(fp8);
+
+        FallingPlatform fp7 = new FallingPlatform(
+                ImageLoader.load("FallingPlatform.png"),
+                getMapTile(145, 4).getLocation(),
+                getMapTile(145, 0).getLocation(),
+                TileType.JUMP_THROUGH_PLATFORM,
+                3,
+                new Rectangle(0, 6,16,4),
+                Direction.DOWN
+        );
+
+        enhancedMapTiles.add(fp7);
 
 
         QuicksandTile qs = new QuicksandTile(getMapTile(12, 21).getLocation());
@@ -280,6 +307,7 @@ public class DesertMap extends Map {
         QuicksandTopTile qsTop5 = new QuicksandTopTile(getMapTile(133, 11).getLocation());
         QuicksandTopTile qsTop6 = new QuicksandTopTile(getMapTile(134, 11).getLocation());
 
+        /* 
         for(int i = 0; i < this.getWidth(); i++){
         
             MapTile tile = getMapTile(i, this.getEndBoundY());
@@ -305,6 +333,7 @@ public class DesertMap extends Map {
             //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
         }
     }
+        */
 
 
         
@@ -328,9 +357,9 @@ public class DesertMap extends Map {
         //EndLevelBox endLevelBox = new EndLevelBox(getMapTile(197, 19).getLocation());
         
 
-        int endLevelX = 199;
+        int endLevelX = 149;
         int targetY = 17;
-
+        /* 
         for(int m = 1; m <= targetY; m++){
             MapTile finalTile = getMapTile(endLevelX, m);
             MapTile finalTileBelow = getMapTile(endLevelX, m + 1);
@@ -341,13 +370,14 @@ public class DesertMap extends Map {
                 //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
             }
         }
+            */
        
         //enhancedMapTiles.add(endLevelBox);
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(iceBall);
 
         //The new end level box OG POINT: 198 19
-        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(198, 19).getLocation());
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(169, 10).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;

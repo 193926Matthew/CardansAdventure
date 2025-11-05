@@ -24,6 +24,7 @@ public class LobbyMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
         
+        /* 
         
         for(int i =1; i <= this.getHeight() - 4; i++){
             MapTile newTile = getMapTile(this.getEndBoundX(), i);
@@ -48,7 +49,7 @@ public class LobbyMap extends Map {
                 enhancedMapTiles.add(verticalBarrier2);
             }
         }
-    
+    */
         
 
         JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
