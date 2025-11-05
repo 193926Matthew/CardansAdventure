@@ -301,6 +301,7 @@ public class SnowTileset extends Tileset {
         //spike
         Frame spike = new FrameBuilder(getSubImage(3, 5))
                 .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
                 .build();
 
         MapTileBuilder spikeTile = new MapTileBuilder(spike)
