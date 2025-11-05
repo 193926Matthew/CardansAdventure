@@ -65,14 +65,14 @@ public class LobbyMap extends Map {
             }
         }
     
-        
+
+        JungleEnter jungleEnter = new JungleEnter(getMapTile(19,11).getLocation());
+        enhancedMapTiles.add(jungleEnter);
+
         DesertEnter desertEnter = new DesertEnter(getMapTile(10,11).getLocation());
         enhancedMapTiles.add(desertEnter);
 
-        JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
-        enhancedMapTiles.add(jungleEnter);
-
-        SnowEnter snowEnter = new SnowEnter(getMapTile(19,11).getLocation());
+        SnowEnter snowEnter = new SnowEnter(getMapTile(4,11).getLocation());
         enhancedMapTiles.add(snowEnter);
 
         return enhancedMapTiles;

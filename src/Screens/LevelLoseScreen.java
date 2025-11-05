@@ -11,15 +11,15 @@ public class LevelLoseScreen extends Screen {
     protected SpriteFont instructions;
     protected KeyLocker keyLocker = new KeyLocker();
     protected PlayLevelScreen playLevelScreen;
-    protected DesertLevelScreen desertLevelScreen;
+    protected SnowScreen snowScreen;
 
     public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
         initialize();
     }
 
-    public LevelLoseScreen(DesertLevelScreen DesertLevelScreen) {
-        this.desertLevelScreen = desertLevelScreen;
+    public LevelLoseScreen(SnowScreen snowScreen) {
+        this.snowScreen = snowScreen;
         initialize();
     }
 
@@ -44,14 +44,16 @@ public class LevelLoseScreen extends Screen {
         if (Keyboard.isKeyDown(Key.SPACE) && !keyLocker.isKeyLocked(Key.SPACE)) {
             if(!playLevelScreen.equals(null)){
                 playLevelScreen.resetLevel();
-            }else if(!desertLevelScreen.equals(null)){
-                desertLevelScreen.resetLevel();
+            }
+            if(!snowScreen.equals(null)){
+                snowScreen.resetLevel();
             }
         } else if (Keyboard.isKeyDown(Key.ESC) && !keyLocker.isKeyLocked(Key.ESC)) {
             if(!playLevelScreen.equals(null)){
                 playLevelScreen.goBackToMenu();
-            }else if(!desertLevelScreen.equals(null)){
-                desertLevelScreen.goBackToMenu();
+            }
+            if(!snowScreen.equals(null)){
+                snowScreen.resetLevel();
             }
         }
     }
