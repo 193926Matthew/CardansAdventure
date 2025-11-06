@@ -26,15 +26,15 @@ public class LobbyMap extends Map {
         this.playerStartPosition = getMapTile(13, 11).getLocation();;
     }
 
-    @Override
-    public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    // @Override
+    // public ArrayList<Enemy> loadEnemies() {
+    // ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
-        enemies.add(fox1);
+    //     ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
+    //     enemies.add(fox1);
 
-        return enemies;
-    }
+    //     return enemies;
+    // }
 
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){

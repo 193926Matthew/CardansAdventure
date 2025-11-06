@@ -705,14 +705,21 @@ public abstract class Player extends GameObject {
         } else if (playerState == PlayerState.CROUCHING) {
             // sets animation to a CROUCH animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "CROUCH_RIGHT" : "CROUCH_LEFT";
-        } else if (playerState == PlayerState.JUMPING) {
+        } else if (playerState == PlayerState.JUMPING ) {
             // if player is moving upwards, set player's animation to jump. if player moving
             // downwards, set player's animation to fall
             if (lastAmountMovedY <= 0) {
-                this.currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+                if (!hasDoubleJump || doubleJumpDelay > 0) {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+                } else {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "DOUBLE_RIGHT" : "DOUBLE_LEFT";
+                }
             } else {
-                this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
-            }
+                if (!hasDoubleJump || doubleJumpDelay > 0) {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
+                } else {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "DOUBLE_RIGHT_FALL" : "DOUBLE_LEFT_FALL";
+                }            }
         }
     }
 
