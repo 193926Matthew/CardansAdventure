@@ -64,7 +64,11 @@ public class Cat extends Player {
                     new FrameBuilder(spriteSheet.getSprite(7, 0), attackDelay)
                             .withScale(1)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
-                            .build()
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), attackDelay)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
             });
 
                         put("ATTACK_LEFT_SPIN", new Frame[] {
@@ -79,6 +83,11 @@ public class Cat extends Player {
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 2), attackDelay)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)

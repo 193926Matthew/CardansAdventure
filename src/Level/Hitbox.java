@@ -80,6 +80,10 @@ public class Hitbox extends HitboxR {
                     new FrameBuilder(spriteSheet.getSprite(0, 0), attackDelay)
                             .withScale(1)
                             .withBounds(xHitbox + 120, yHitbox, wHitbox + 20, hHitbox)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), attackDelay)
+                            .withScale(1)
+                            .withBounds(xHitbox + 80, yHitbox, wHitbox / 2, hHitbox)
                             .build()
             });
 
@@ -98,6 +102,11 @@ public class Hitbox extends HitboxR {
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(xHitbox, yHitbox, wHitbox + 20, hHitbox)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), attackDelay)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xHitbox + 80, yHitbox, wHitbox / 2, hHitbox)
                             .build()
             });
 
