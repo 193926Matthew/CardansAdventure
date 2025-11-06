@@ -212,7 +212,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
             // SECOND LINE
             powerUpTextLine2 = new SpriteFont(
-                "Press UP arrow again to double jump!",
+                "Press W arrow again to double jump!",
                 300,
                 140,  
                 "Arial",
