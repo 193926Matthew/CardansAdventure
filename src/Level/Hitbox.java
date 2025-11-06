@@ -5,11 +5,8 @@ import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.GameObject;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
-import Screens.LobbyScreen;
-import Screens.PlayLevelScreen;
 import Utils.Point;
 
 

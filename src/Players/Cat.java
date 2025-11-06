@@ -22,6 +22,7 @@ public class Cat extends Player {
         private static int wCardan = 48;
         private static int hCardan = 48;
         private static int attackDelay = 12;
+        private static int iceDelay = 3;
         private static int idleDelay = 1;
         // private BufferedImage attackOverlay;
 
@@ -80,6 +81,39 @@ public class Cat extends Player {
                     new FrameBuilder(spriteSheet.getSprite(7, 2), attackDelay)
                             .withScale(1)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build()
+            });
+
+                put("ICE_LEFT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(4, 3), iceDelay)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(4, 2), iceDelay)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(4, 1), iceDelay)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build()
+            });
+
+                                    put("ICE_RIGHT", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(4, 3), iceDelay)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(4, 2), iceDelay)
+                            .withScale(1)
+                            .withBounds(xCardan, yCardan, wCardan, hCardan)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(4, 1), iceDelay)
+                            .withScale(1)
                             .withBounds(xCardan, yCardan, wCardan, hCardan)
                             .build()
             });
