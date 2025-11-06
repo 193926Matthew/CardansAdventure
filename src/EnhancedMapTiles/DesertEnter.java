@@ -3,26 +3,44 @@ package EnhancedMapTiles;
 import java.util.HashMap;
 
 import Builders.FrameBuilder;
-import Engine.ImageLoader;
+import Game.GameState;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.EnhancedMapTile;
+
+import Engine.*;
+import Game.ScreenCoordinator;
+import Level.Map;
+import Maps.TitleScreenMap;
+import SpriteFont.SpriteFont;
+
+import java.awt.*;
+
 import Level.Player;
+
 import Level.TileType;
+
+//import SpriteFont.SpriteFont;
 import Utils.Point;
 
-public class BackToLobby extends EnhancedMapTile{
+
+public class DesertEnter extends EnhancedMapTile {
 
     private int triggerCode = 0;
 
-    public BackToLobby(Point location){
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("PandaCage.png"), 64, 64), TileType.PASSABLE);
+    public KeyLocker keyLocker = new KeyLocker();
+    protected ScreenCoordinator screenCoordinator;
+
+    public DesertEnter(Point location) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("GoldBox.png"), 16, 16), TileType.PASSABLE);
+
     }
 
+    @Override
     public void update(Player player) {
         super.update(player);
         if (intersects(player)) {
-            System.out.println("lobby touched");
+            // System.out.println(" Snow touched");
             triggerCode = 4;
             //gameState = GameState.MENU;
         }
@@ -31,20 +49,26 @@ public class BackToLobby extends EnhancedMapTile{
     public int getTriggerCode() {
         return triggerCode;
     }
+    
 
-    @Override
+        @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 40)
-                        .withScale(0.8)
+                        .withScale(3)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
-                        .withScale(0.8)
+                        .withScale(3)
                         .withBounds(1, 1, 14, 14)
                         .build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 2), 40)
+                        .withScale(3)
+                        .withBounds(1, 1, 14, 14)
+                        .build()
             });
         }};
     }
 }
+

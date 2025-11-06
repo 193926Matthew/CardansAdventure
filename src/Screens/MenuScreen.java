@@ -17,6 +17,7 @@ public class MenuScreen extends Screen {
     protected int menuItemSelected = -1;
     protected SpriteFont playGame;
     protected SpriteFont credits;
+    protected SpriteFont controls;
     protected SpriteFont cardansAdventuSpriteFont;
     protected Map background;
     protected int keyPressTimer;
@@ -48,6 +49,9 @@ public class MenuScreen extends Screen {
         cardansAdventuSpriteFont = new SpriteFont("CARDANS ADVENTURE", 80, 75, "ARCADECLASSIC.ttf", 75, Color.getHSBColor(rainbowColorHue, 0.8f, 0.8f));
         cardansAdventuSpriteFont.setOutlineColor(Color.black);
         cardansAdventuSpriteFont.setOutlineThickness(3);
+        controls = new SpriteFont("CONTROLS", 100, 400, "ARCADECLASSIC.ttf", 30,  new Color(49, 207, 240));
+        controls.setOutlineColor(Color.black);
+        controls.setOutlineThickness(3);
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
@@ -71,23 +75,31 @@ public class MenuScreen extends Screen {
         }
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
-        if (currentMenuItemHovered > 1) {
+        if (currentMenuItemHovered > 2) {
             currentMenuItemHovered = 0;
-        } else if (currentMenuItemHovered < 0) {
-            currentMenuItemHovered = 1;
+        } else if (currentMenuItemHovered < 1) {
+            currentMenuItemHovered = 0;
         }
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
             playGame.setColor(new Color(255, 184, 0));
             credits.setColor(new Color(34, 225, 0));
+            controls.setColor(new Color(34, 225, 0));
             pointerLocationX = 70;
             pointerLocationY = 205;
         } else if (currentMenuItemHovered == 1) {
             playGame.setColor(new Color(34, 225, 0));
             credits.setColor(new Color(255, 184, 0));
+            controls.setColor(new Color(34, 225, 0));
             pointerLocationX = 70;
             pointerLocationY = 305;
+        }else if(currentMenuItemHovered == 2){
+            playGame.setColor(new Color(34, 225, 0));
+            controls.setColor(new Color(255, 184, 0));
+            credits.setColor(new Color(34, 225, 0));
+            pointerLocationX = 70;
+            pointerLocationY = 405;
         }
 
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
@@ -100,7 +112,10 @@ public class MenuScreen extends Screen {
                 screenCoordinator.setGameState(GameState.TUTORIAL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.CREDITS);
+            }else if(menuItemSelected == 2){
+                screenCoordinator.setGameState(GameState.CONTROLS);
             }
+            
         }
 
         rainbowColorHue += 0.001f;
@@ -117,6 +132,7 @@ public class MenuScreen extends Screen {
         }
         playGame.draw(graphicsHandler);
         credits.draw(graphicsHandler);
+        controls.draw(graphicsHandler);
         //cardansAdventuSpriteFont.draw(graphicsHandler);
 
         String titleText = cardansAdventuSpriteFont.getText();

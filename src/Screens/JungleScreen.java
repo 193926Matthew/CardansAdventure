@@ -15,6 +15,7 @@ import Level.Player;
 import Level.PlayerListener;
 import Maps.JungleMap;
 import Players.Cat;
+import Maps.SnowMap;
 import Game.GameState;
 
 public class JungleScreen extends Screen implements PlayerListener {

@@ -281,7 +281,9 @@ public class DesertTileset extends Tileset {
         //spike
         Frame spike = new FrameBuilder(getSubImage(4, 4))
                 .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
                 .build();
+                
 
         MapTileBuilder spikeTile = new MapTileBuilder(spike)
                 .withTileType(TileType.SPIKE);

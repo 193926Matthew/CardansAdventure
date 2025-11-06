@@ -27,6 +27,7 @@ public class DinosaurEnemy extends Enemy {
     protected Point startLocation;
     protected Point endLocation;
 
+    private boolean frozenFireball = false;
     private Fireball fireball;
     private int wSnake = 48;
     private int hSnake = 48;
@@ -188,7 +189,14 @@ public class DinosaurEnemy extends Enemy {
                 shootTimer = 65;
                 currentAnimationName = facingDirection == Direction.RIGHT ? "SHOOT_RIGHT" : "SHOOT_LEFT";
             } else if (shootTimer == 0) {
-                dinosaurState = DinosaurState.SHOOT;
+                if(this.getIceBallHitStatus()){
+                    frozenFireball = true;
+                    dinosaurState = DinosaurState.SHOOT;
+                }else{
+                    frozenFireball = false;
+                    dinosaurState = DinosaurState.SHOOT;
+                }
+                
             }
             else {
                 shootTimer--;
@@ -218,6 +226,9 @@ public class DinosaurEnemy extends Enemy {
             } else {
                 fireball = new Fireball(new Point(fireballX, fireballY), movementSpeed, 400, "RIGHT");
             }
+
+            //sets the fireball to be frozen if the enemy it comes from is frozen
+            fireball.setIceBallHitStatus(frozenFireball);
 
             // add fireball enemy to the map for it to spawn in the level
             map.addEnemy(fireball);
