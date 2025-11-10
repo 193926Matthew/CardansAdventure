@@ -26,29 +26,29 @@ public class LobbyMap extends Map {
         this.playerStartPosition = getMapTile(13, 11).getLocation();;
     }
 
-    @Override
-    public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    // @Override
+    // public ArrayList<Enemy> loadEnemies() {
+    // ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
-        enemies.add(fox1);
+    //     ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
+    //     enemies.add(fox1);
 
-        return enemies;
-    }
+    //     return enemies;
+    // }
 
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
         
-    //sets barrier blocks across y axis
-         for(int i =1; i <= this.getHeight() - 4; i++){
+        
+        for(int i =1; i <= this.getHeight() - 4; i++){
             MapTile newTile = getMapTile(this.getEndBoundX(), i);
             if(newTile != null){
-                BarrierBlock horizontalBarrier = new BarrierBlock(newTile.getLocation(),"CommonTileset.png");
-                enhancedMapTiles.add(horizontalBarrier);
+                BarrierBlock verticalBarrier = new BarrierBlock(newTile.getLocation(),"CommonTileset.png");
+                enhancedMapTiles.add(verticalBarrier);
             }
         }
-/* 
+
         for(int m =0; m <= this.getHeight() - 4; m++){
             MapTile anotherTile = getMapTile(34, m);
             if(anotherTile != null){
@@ -64,7 +64,7 @@ public class LobbyMap extends Map {
                 enhancedMapTiles.add(verticalBarrier2);
             }
         }
-*/
+       
         
         DesertEnter desertEnter = new DesertEnter(getMapTile(10,11).getLocation());
         enhancedMapTiles.add(desertEnter);

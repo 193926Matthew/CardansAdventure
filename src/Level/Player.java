@@ -325,7 +325,7 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.ATTACKING_SPIN;
         spawnHitbox(HitboxState.ATTACKING_SPIN);
             }
-        else if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+        else if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
 
@@ -371,7 +371,7 @@ public abstract class Player extends GameObject {
         spawnHitbox(HitboxState.ATTACKING_SPIN);
         }
 
-        else if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+        else if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
     }
@@ -397,7 +397,7 @@ public abstract class Player extends GameObject {
         }
 
         //if player is crouched, and hits the ice key, then if they have the powerup it will activate
-        if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+        if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
     }
@@ -571,7 +571,7 @@ public abstract class Player extends GameObject {
             playerState = PlayerState.STANDING;
         }
 
-        if(Keyboard.isKeyDown(ICE_BALL_KEY)){
+        if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
     }
@@ -693,6 +693,9 @@ public abstract class Player extends GameObject {
             if (currentMapTile != null && currentMapTile.getTileType() == TileType.WATER) {
                 this.currentAnimationName = facingDirection == Direction.RIGHT ? "SWIM_STAND_RIGHT" : "SWIM_STAND_LEFT";
             }
+        } else if (playerState == PlayerState.ICE_BALL) {
+            // sets animation to a ATTACK SPIN animation based on which way player is facing
+            this.currentAnimationName = facingDirection == Direction.RIGHT ? "ICE_RIGHT" : "ICE_LEFT";
         } else if (playerState == PlayerState.ATTACKING_SPIN) {
             // sets animation to a ATTACK SPIN animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "ATTACK_RIGHT_SPIN" : "ATTACK_LEFT_SPIN";
@@ -702,14 +705,21 @@ public abstract class Player extends GameObject {
         } else if (playerState == PlayerState.CROUCHING) {
             // sets animation to a CROUCH animation based on which way player is facing
             this.currentAnimationName = facingDirection == Direction.RIGHT ? "CROUCH_RIGHT" : "CROUCH_LEFT";
-        } else if (playerState == PlayerState.JUMPING) {
+        } else if (playerState == PlayerState.JUMPING ) {
             // if player is moving upwards, set player's animation to jump. if player moving
             // downwards, set player's animation to fall
             if (lastAmountMovedY <= 0) {
-                this.currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+                if (!hasDoubleJump || doubleJumpDelay > 0) {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
+                } else {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "DOUBLE_RIGHT" : "DOUBLE_LEFT";
+                }
             } else {
-                this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
-            }
+                if (!hasDoubleJump || doubleJumpDelay > 0) {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
+                } else {
+                    this.currentAnimationName = facingDirection == Direction.RIGHT ? "DOUBLE_RIGHT_FALL" : "DOUBLE_LEFT_FALL";
+                }            }
         }
     }
 
