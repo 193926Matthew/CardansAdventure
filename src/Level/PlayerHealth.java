@@ -1,61 +1,31 @@
 package Level;
 
-import Engine.GraphicsHandler;
-import Engine.ImageLoader;
-import GameObject.GameObject;
-import java.awt.image.BufferedImage;
+public class PlayerHealth implements HealthProvider {
+    private int maxHealth;
+    private int health;
 
-public class PlayerHealth extends GameObject {
-    private Player player;
-    private BufferedImage FullHealthBar;
-    private BufferedImage YellowHealthBar;
-    private BufferedImage OrangeHealthBar;
-    private BufferedImage RedHealthBar;
-
-    private final int screenX = 20;
-    private final int screenY = 20;
-
-    public PlayerHealth(Player player) {
-        super(ImageLoader.load("FullHealthBar.png"), 20, 20);
-
-        // load all four bar states
-        this.player = player;
-        this.FullHealthBar = ImageLoader.load("FullHealthBar.png");
-        this.YellowHealthBar = ImageLoader.load("YellowHealthBar.png");
-        this.OrangeHealthBar = ImageLoader.load("OrangeHealthBar.png");
-        this.RedHealthBar = ImageLoader.load("RedHealthBar.png");
+    public PlayerHealth(int maxHealth) {
+        this.maxHealth = Math.max(1, maxHealth);
+        this.health = this.maxHealth;
     }
 
-    @Override
-    public void draw(GraphicsHandler g) {
-        System.out.println("Drawing Health Bar (HP=" + player.getHealth() + ")");
-
-        BufferedImage barImage = getCurrentHealthImage();
-
-        // Only draw if the image successfully loaded
-        if (barImage != null) {
-            g.drawImage(barImage, screenX, screenY, barImage.getWidth(), barImage.getHeight());
-        } else {
-            System.out.println("image not loading");
-        }
+    public void takeDamage(int amount) {
+        if (amount <= 0) return;
+        health = Math.max(0, health - amount);
     }
 
-    private BufferedImage getCurrentHealthImage() {
-        int hp = player.getHealth();
-        if (hp > 74) {
-            return FullHealthBar;
-        } else if (hp > 49) {
-            return YellowHealthBar;
-        } else if (hp > 24) {
-            return OrangeHealthBar;
-        } else {
-            return RedHealthBar;
-        }
+    public void heal(int amount) {
+        if (amount <= 0) return;
+        health = Math.min(maxHealth, health + amount);
     }
-    /*
-     * public void update() {
-     * //idk i just know it needs to update
-     * }
-     */
 
+    public void setMaxHealth(int newMax) {
+        maxHealth = Math.max(1, newMax);
+        health = Math.min(health, maxHealth);
+    }
+
+    @Override public int getCurrentHealth() { return health; }
+    @Override public int getMaxHealth()     { return maxHealth; }
+
+    public boolean isDead() { return health <= 0; }
 }
