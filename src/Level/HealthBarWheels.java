@@ -1,128 +1,162 @@
 package Level;
-import java.awt.*;
 
+import java.awt.Color;
 import Engine.GraphicsHandler;
+import EnhancedMapTiles.HealthPowerUp;
 
-public class HealthBarWheels {
-    private final HealthProvider provider;
+/* redesigning to use less clutter compared to original attempt
+and adding other features like a moving bar and damage reaction
+*/
 
-    // Animation state
-    private float shownRatio = 1.0f;     // what’s currently drawn (0..1)
-    private long lastUpdateNanos = System.nanoTime();
-    private boolean damageFlash = false;
+public class HealthBarWheels{
+
+    private HealthProvider provider; 
+
+    //position and size control on the screen
+    private final int x; 
+    private final int y;
+    private final int width; 
+    private final int height; 
+
+    //animation handling/state
+    private float shownRatio = 1.0f; // what is being drawn
+    private long lastUpdateNanos = System.nanoTime(); 
+    private boolean damageFlash = false; 
     private long damageFlashUntil = 0L;
+    
+    //adjustable settings
+    private float lerpPerSecond = 6.0f; // catchup rate of bar
+    private int backgroundAlpha = 120;
+    private int borderThickness = 2; 
 
-    // Tweakables
-    private float lerpPerSecond = 6.0f;  // how quickly the bar catches up to real health
-    private int cornerRadius = 8;
-    private int borderThickness = 2;
-
-    public HealthBarWheels(HealthProvider provider) {
+    public HealthBarWheels(HealthProvider provider, int x, int y, int width, int height){
         this.provider = provider;
+        this.x=x; 
+        this.y = y; 
+        this.width= width; 
+        this.height = height; 
+
+        //starts at actual health
+        this.shownRatio = getSafeRatio(); 
     }
 
-    /** Call from your game loop each frame before render. */
-    public void update() {
+    //calling every frame before it gets drawn with update
+    public void update(){
         long now = System.nanoTime();
-        float dt = (now - lastUpdateNanos) / 1_000_000_000f;
-        lastUpdateNanos = now;
+        float dt = (now-lastUpdateNanos) / 1_000_000_000f;
+        lastUpdateNanos = now; 
+        
+        float target = getSafeRatio(); 
+        float diff = target - shownRatio; 
 
-        float target = getSafeRatio();
-        // Smoothly approach target
-        float diff = target - shownRatio;
-        float step = Math.copySign(Math.min(Math.abs(diff), lerpPerSecond * dt), diff);
-        shownRatio += step;
-        if (Math.abs(target - shownRatio) < 0.001f) shownRatio = target;
+        //rough exponential rate
+        shownRatio += diff * Math.min(1f, lerpPerSecond * dt); 
 
-        // Stop flash when time is up
-        if (damageFlash && now > damageFlashUntil) damageFlash = false;
-    }
-
-    /** Call when damage happens to trigger a quick flash. */
-    public void onDamaged() {
-        damageFlash = true;
-        damageFlashUntil = System.nanoTime() + 120_000_000L; // ~120ms flash
-    }
-
-    /** Draw the bar at x,y with given size (pixels). */
-    public void render(GraphicsHandler g, int x, int y, int width, int height) {
-        Object oldAA = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Background
-        g.setColor(new Color(30, 30, 30, 200));
-        g.fillRoundRect(x, y, width, height, cornerRadius, cornerRadius);
-
-        // Border
-        g.setStroke(new BasicStroke(borderThickness));
-        g.setColor(new Color(0, 0, 0, 220));
-        g.drawRoundRect(x, y, width, height, cornerRadius, cornerRadius);
-
-        // Fill (left -> right) using shownRatio
-        int innerX = x + borderThickness;
-        int innerY = y + borderThickness;
-        int innerW = width - borderThickness * 2;
-        int innerH = height - borderThickness * 2;
-
-        int filledW = Math.max(0, Math.round(innerW * clamp01(shownRatio)));
-
-        // Choose fill color: green → yellow → red. Flash on recent damage.
-        float r = clamp01(shownRatio);
-        Color base =
-            (r > 0.5f) ? lerp(new Color(255, 220, 0), new Color(60, 200, 60), (r - 0.5f) * 2f) // 0.5..1
-                       : lerp(new Color(220, 60, 60), new Color(255, 220, 0), r * 2f);            // 0..0.5
-
-        Color fill = damageFlash ? new Color(255, 80, 80) : base;
-
-        g.setColor(fill);
-        g.fillRoundRect(innerX, innerY, filledW, innerH, cornerRadius, cornerRadius);
-
-        // Greyed remainder to show capacity
-        if (filledW < innerW) {
-            g.setColor(new Color(120, 120, 120, 60));
-            g.fillRoundRect(innerX + filledW, innerY, innerW - filledW, innerH, cornerRadius, cornerRadius);
+        //stop small wiggling
+        if(Math.abs(target-shownRatio)< 0.001f){
+            shownRatio = target; 
         }
 
-        // Optional text (e.g., "73 / 100")
-        String label = provider.getCurrentHealth() + " / " + provider.getMaxHealth();
-        g.setFont(g.getFont().deriveFont(Font.BOLD, Math.max(10f, innerH * 0.6f)));
-        FontMetrics fm = g.getFontMetrics();
-        int tx = x + (width - fm.stringWidth(label)) / 2;
-        int ty = y + (height + fm.getAscent() - fm.getDescent()) / 2;
-        g.setColor(new Color(0, 0, 0, 170));
-        g.drawString(label, tx + 1, ty + 1);
-        g.setColor(Color.WHITE);
-        g.drawString(label, tx, ty);
+        // damage flash timer
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, oldAA);
+        if (damageFlash & now > damageFlashUntil){
+            damageFlash = false; 
+        }
     }
 
-    /** Call this from your damage code to keep the flash in sync. */
+    //this gets called when hp drops(dmg is done) to make the bar flash
     public void notifyDamageIfNeeded(int oldHp) {
-        if (provider.getCurrentHealth() < oldHp) onDamaged();
+        int current = provider.getCurrentHealth();
+        if (current < oldHp) {
+            damageFlash = true;
+            damageFlashUntil = System.nanoTime() + 200_000_000L; // 0.2 seconds
+        }
     }
 
-    private float getSafeRatio() {
-        int max = Math.max(1, provider.getMaxHealth());
-        int cur = Math.max(0, Math.min(provider.getCurrentHealth(), max));
-        return cur / (float) max;
+
+    private static float clamp(float v) {
+        return Math.max(0f, Math.min(1f, v));
     }
 
-    private static float clamp01(float v) { return Math.max(0f, Math.min(1f, v)); }
-
-    private static Color lerp(Color a, Color b, float t) {
+    private static Color lerpColor(Color a, Color b, float t) {
         t = clamp(t);
-        int r = (int)(a.getRed()   + (b.getRed()   - a.getRed())   * t);
-        int g = (int)(a.getGreen() + (b.getGreen() - a.getGreen()) * t);
-        int bl= (int)(a.getBlue()  + (b.getBlue()  - a.getBlue())  * t);
-        int al= (int)(a.getAlpha() + (b.getAlpha() - a.getAlpha()) * t);
+        int r = (int) (a.getRed() + (b.getRed() - a.getRed()) * t);
+        int g = (int) (a.getGreen() + (b.getGreen() - a.getGreen()) * t);
+        int bl = (int) (a.getBlue() + (b.getBlue() - a.getBlue()) * t);
+        int al = (int) (a.getAlpha() + (b.getAlpha() - a.getAlpha()) * t);
         return new Color(r, g, bl, al);
     }
+    /*
+     * health bar colors
+     * 1.0 = green
+     * 0.6 - 0.3 = green -> yellow
+     * 0.3 and below = yellow -> red
+     */
 
-    private static float clamp(float v) { return Math.max(0f, Math.min(1f, v)); }
+     private Color getHealthColor(float ratio) {
+        ratio = Math.max(0f, Math.min(1f, ratio));
 
-    public void render(GraphicsHandler g, int margin, int margin2, int width, int height) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+        Color green = new Color(0, 200, 0);
+        Color yellow = new Color(255, 200, 0);
+        Color red = new Color(200, 0, 0);
+
+        if (ratio >= 0.6f) {
+            // mostly green, maybe nudge toward yellow
+            float t = (1f - ratio) / 0.4f; // 0.6 -> 0, 1.0 -> negative, but clamped
+            t = clamp(t);
+            return lerpColor(green, yellow, t);
+        } else if (ratio >= 0.3f) {
+            // yellow-ish
+            float t = (0.6f - ratio) / 0.3f; // 0.6 -> 0, 0.3 -> 1
+            t = clamp(t);
+            return lerpColor(yellow, red, t * 0.2f); // only a little reddening here
+        } else {
+            // low -> go to red quickly
+            float t = ratio / 0.3f; // 0.3 -> 1, 0 -> 0
+            t = 1f - clamp(t);
+            return lerpColor(yellow, red, t);
+        }
     }
+
+    //drawning the actual health bar
+    public void draw(GraphicsHandler g) {
+        // background
+        Color bg = new Color(0, 0, 0, backgroundAlpha);
+        g.drawFilledRectangle(x, y, width, height, bg);
+
+        // compute fill width
+        int barWidth = (int) (width * shownRatio);
+        if (barWidth < 0) barWidth = 0;
+        if (barWidth > width) barWidth = width;
+
+        // pick color based on actual health, not shown health
+        float realRatio = getSafeRatio();
+        Color fillColor = getHealthColor(realRatio);
+
+        // draw fill
+        g.drawFilledRectangle(x, y, barWidth, height, fillColor);
+
+        // border
+        g.drawRectangle(x, y, width, height, Color.BLACK, borderThickness);
+
+        // flash overlay
+        if (damageFlash) {
+            g.drawFilledRectangle(x, y, width, height, new Color(255, 255, 255, 70));
+        }
+    }
+
+
+    private float getSafeRatio(){
+        int max = provider.getMaxHealth(); 
+        if(max<=0) return 0f;
+        return Math.max(0f, Math.min(1f, provider.getCurrentHealth()/ (float) max)); 
+    }
+
+    public void setProvider(HealthProvider provider){
+        this.provider = provider; 
+        //should fix bug of tracking old player object after death by changing ratio back
+        this.shownRatio = getSafeRatio();
+    }
+
+
 }

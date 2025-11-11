@@ -4,6 +4,7 @@ import EnhancedMapTiles.QuicksandTile;
 import EnhancedMapTiles.QuicksandTopTile;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.DesertBoss;
 import Engine.ImageLoader;
 import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.BackToLobby;
@@ -18,6 +19,8 @@ import Level.*;
 import Tilesets.DesertTileset;
 import Utils.Direction;
 import EnhancedMapTiles.HealthPowerUp;
+import Utils.Point;
+import Utils.Direction;
 
 import java.util.ArrayList;
 
@@ -72,6 +75,13 @@ public class DesertMap extends Map {
 
         BugEnemy bugEnemy9 = new BugEnemy(getMapTile(54, 26).getLocation().subtractY(25), Direction.RIGHT);
         enemies.add(bugEnemy9);
+
+        // Desert boss test spawn
+        // (using absolute coords is fine, but i can also use getMapTile(...) at some point to match ground)
+        Point bossStart = new Point(1100, 384);
+        Point bossEnd   = new Point(1350, 384);
+        DesertBoss boss = new DesertBoss(bossStart, bossEnd, Direction.LEFT);
+        enemies.add(boss);
 
         return enemies;
     }

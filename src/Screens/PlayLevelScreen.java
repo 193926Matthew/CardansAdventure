@@ -15,6 +15,7 @@ import Maps.DesertMap;
 import Maps.SnowMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
+import Level.HUD; 
 
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
@@ -38,6 +39,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private boolean showPowerUpText = false;
     private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
 
+    //hud of healthbar 
+    private HUD hud;
+
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -52,6 +56,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
+        this.hud = new HUD(this.player); 
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
@@ -59,7 +64,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         levelLoseScreen = new LevelLoseScreen(this);
 
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
-        this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
+        this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0)); // old health logic
 
     }
 
@@ -88,6 +93,11 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 
                 if (showPowerUpText && System.currentTimeMillis() - powerUpTextStartTime > POWERUP_TEXT_DURATION) {
                     showPowerUpText = false;
+                }
+                
+                // hud follows player health
+                if(hud != null){
+                    hud.update(player); 
                 }
 
                 break;
@@ -121,6 +131,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 if (hitbox != null) {
                     hitbox.draw(graphicsHandler);
                 }
+                if(hud != null){
+                    hud.draw(graphicsHandler);
+                }
                 break;
             case LEVEL_COMPLETED:
                 levelClearedScreen.draw(graphicsHandler);
@@ -129,8 +142,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 levelLoseScreen.draw(graphicsHandler);
                 break;
         }
-        lives.setText("Health: " + player.getHealth());
-        lives.draw(graphicsHandler);
+        
+        // old health counter
+        // lives.setText("Health: " + player.getHealth());
+        // lives.draw(graphicsHandler);
 
         //powerup popup
         if (showPowerUpText && powerUpText != null) {
@@ -180,6 +195,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
+
+            this.hud = new HUD(this.player);
 
             levelClearedScreen = new LevelClearedScreen();
             levelLoseScreen = new LevelLoseScreen(this);

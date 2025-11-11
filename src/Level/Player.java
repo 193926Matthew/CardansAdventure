@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import Utils.Point;
 import java.util.Timer;
 import java.util.TimerTask;
+import Level.HealthProvider; 
 
-public abstract class Player extends GameObject {
+public abstract class Player extends GameObject implements HealthProvider {
     // values that affect player movement
     // these should be set in a subclass
     public boolean complete = false;
@@ -943,6 +944,17 @@ public abstract class Player extends GameObject {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    @Override
+    public int getCurrentHealth(){
+        return getHealth();
+    }
+
+    @Override
+    public int getMaxHealth(){
+        // current normal max health is set as 100
+        return 100; 
     }
 
     public void resetSpikeTimer(){
