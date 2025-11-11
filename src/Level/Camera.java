@@ -7,6 +7,7 @@ import GameObject.Rectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
+import EnhancedMapTiles.BarrierBlock;
 
 // This class represents a Map's "Camera", aka a piece of the map that is currently included in a level's update/draw logic based on what should be shown on screen.
 // A majority of its job is just determining which map tiles, enemies, npcs, and enhanced map tiles are "active" each frame (active = included in update/draw cycle)
@@ -27,6 +28,7 @@ public class Camera extends Rectangle {
     private ArrayList<HitboxR> activeHitboxes = new ArrayList<>();
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
+    private ArrayList<BarrierBlock> activeBarrierBlocks = new ArrayList<>();
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
     private final int UPDATE_OFF_SCREEN_RANGE = 4;
@@ -67,6 +69,7 @@ public class Camera extends Rectangle {
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
         activeHitboxes = loadActiveHitboxes();
+        activeBarrierBlocks = loadBarrierBlocks();
 
         for (Enemy enemy : activeEnemies) {
             enemy.update(player);
@@ -79,6 +82,7 @@ public class Camera extends Rectangle {
         for (NPC npc : activeNPCs) {
             npc.update(player);
         }
+
     }
 
     // determine which enemies are active (exist and are within range of the camera)
@@ -119,6 +123,26 @@ public class Camera extends Rectangle {
             }
         }
         return activeHitboxes;
+    }
+
+    // determine which enemies are active (exist and are within range of the camera)
+    private ArrayList<BarrierBlock> loadBarrierBlocks() {
+        ArrayList<BarrierBlock> activeBarrier = new ArrayList<>();
+        for (int i = map.getBarrierBlocks().size() - 1; i >= 0; i--) {
+            BarrierBlock block = map.getBarrierBlocks().get(i);
+
+            if (isMapEntityActive(block)) {
+                activeBarrier.add(block);
+                if (block.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                    block.setMapEntityStatus(MapEntityStatus.ACTIVE);
+                }
+            } else if (block.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+                block.setMapEntityStatus(MapEntityStatus.INACTIVE);
+            } else if (block.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+                map.getBarrierBlocks().remove(i);
+            }
+        }
+        return activeBarrier;
     }
 
     // determine which enhanced map tiles are active (exist and are within range of the camera)
@@ -237,6 +261,10 @@ public class Camera extends Rectangle {
 
     public ArrayList<EnhancedMapTile> getActiveEnhancedMapTiles() {
         return activeEnhancedMapTiles;
+    }
+
+    public ArrayList<BarrierBlock> getActiveBarrierBlocks() {
+        return activeBarrierBlocks;
     }
 
     public ArrayList<NPC> getActiveNPCs() {

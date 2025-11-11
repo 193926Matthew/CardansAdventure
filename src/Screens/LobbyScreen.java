@@ -6,14 +6,13 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import EnhancedMapTiles.DesertEnter;
 import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Level.Enemy;
 import Level.Hitbox;
-import Level.HitboxR;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.Player;
@@ -70,7 +69,7 @@ public class LobbyScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                if (Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.RIGHT)) {
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
@@ -94,15 +93,23 @@ public class LobbyScreen extends Screen implements PlayerListener {
                     if (tile instanceof JungleEnter) {
                         JungleEnter jungleEnter = (JungleEnter) tile;
                         if (jungleEnter.getTriggerCode() == 1) {
-                            screenCoordinator.setGameState(GameState.LEVEL);
+                            screenCoordinator.setGameState(GameState.JUNGLE);
                         }
                     }
                     if (tile instanceof SnowEnter) {
                         SnowEnter levelEnter = (SnowEnter) tile;
-                        if (levelEnter.getTriggerCode() == 2) {
-                            screenCoordinator.setGameState(GameState.JUNGLE);
+                        if (levelEnter.getTriggerCode() == 10) {
+                            screenCoordinator.setGameState(GameState.SNOW);
                         }
                     }
+
+                    if (tile instanceof DesertEnter) {
+                        DesertEnter levelEnter = (DesertEnter) tile;
+                        if (levelEnter.getTriggerCode() == 4) {
+                            screenCoordinator.setGameState(GameState.LEVEL);
+                        }
+                    }
+                    
                 }
                 break;
             // if level has been completed, bring up level cleared screen

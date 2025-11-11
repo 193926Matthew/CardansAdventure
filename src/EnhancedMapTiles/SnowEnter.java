@@ -40,8 +40,8 @@ public class SnowEnter extends EnhancedMapTile {
     public void update(Player player) {
         super.update(player);
         if (intersects(player)) {
-            System.out.println(" Snow touched");
-            triggerCode = 2;
+            // System.out.println(" Snow touched");
+            triggerCode = 10;
             //gameState = GameState.MENU;
         }
     }

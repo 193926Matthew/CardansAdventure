@@ -3,7 +3,7 @@ package Level;
 import Utils.Direction;
 
 // Represents layout data for a tile
-// only used for slopes
+// only used for slopes and spikes
 public class TileLayout {
     protected int[][] bounds;
     protected Direction direction;

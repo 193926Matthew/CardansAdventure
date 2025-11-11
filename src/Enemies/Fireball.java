@@ -3,6 +3,7 @@ package Enemies;
 import Builders.FrameBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
+import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Enemy;
 import Level.MapEntity;
@@ -19,10 +20,18 @@ import java.util.HashMap;
 public class Fireball extends Enemy {
     private float movementSpeed;
     private int existenceFrames;
+    private String facing;
 
-    public Fireball(Point location, float movementSpeed, int existenceFrames) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Fireball.png"), 7, 7), "DEFAULT");
+    public Fireball(Point location, float movementSpeed, int existenceFrames, String facing) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("SnakeSpit.png"), 24, 24), "RIGHT");
         this.movementSpeed = movementSpeed;
+        this.facing = facing;
+
+        if (facing == "LEFT") {
+            currentAnimationName = "LEFT";
+        } else {
+            currentAnimationName = "RIGHT";
+        }
 
         // how long the fireball will exist for before disappearing
         this.existenceFrames = existenceFrames;
@@ -37,8 +46,12 @@ public class Fireball extends Enemy {
         if (existenceFrames == 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         } else {
-            // move fireball forward
-            moveXHandleCollision(movementSpeed);
+            // move fireball forward at different speeds depending on if it gets hit with the iceball
+            if(this.getIceBallHitStatus() == true){
+                moveXHandleCollision(movementSpeed/2);
+            }else{
+                moveXHandleCollision(movementSpeed);
+            }
             super.update(player);
         }
         existenceFrames--;
@@ -62,9 +75,25 @@ public class Fireball extends Enemy {
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
-            put("DEFAULT", new Frame[]{
-                    new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
+            put("RIGHT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 7)
+                            .withScale(1)
+                            .withBounds(1, 1, 5, 5)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 1), 7)
+                            .withScale(1)
+                            .withBounds(1, 1, 5, 5)
+                            .build()
+            });
+            put("LEFT", new Frame[]{
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 7)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .withBounds(1, 1, 5, 5)
+                            .build(),
+                    new FrameBuilder(spriteSheet.getSprite(0, 1), 7)
+                            .withScale(1)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(1, 1, 5, 5)
                             .build()
             });

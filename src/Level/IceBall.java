@@ -25,6 +25,8 @@ public class IceBall extends EnhancedMapTile{
     private float verticalSpeed = 0;
     private float gravity = 0.3f;
     private List<Enemy> enemies;
+    private boolean enemyHitByIceBall = false;
+
     public IceBall(Point location, float movementSpeed, int existenceFrames, List<Enemy> enemies) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("iceBall.png"), 15, 15), TileType.PASSABLE);
 
@@ -48,11 +50,25 @@ public class IceBall extends EnhancedMapTile{
             verticalSpeed += gravity;
             moveYHandleCollision(verticalSpeed);
             for(Enemy enemy: enemies){
+                //System.out.println("Iceball state: " + enemyHitByIceBall);
+
+               // this.enemyHitByIceBall = false;
                 if(this.intersects(enemy)){
-                    System.out.println("Enemy attacked!");
+                    //System.out.println("Enemy attacked!");
+                   //System.out.println("Collision detected with enemy: " + enemy);
+                    this.enemyHitByIceBall = true;
+                    enemy.setIceBallHitStatus(true);
+                    //System.out.println("Enemy hit status: " + enemy.getIceBallHitStatus());
+                    
                     for (MapEntity entity : map.getEnemies()) {
                         if (entity instanceof Enemy && this.intersects(entity)) {
-                     ((Enemy) entity).kill();
+                            //System.out.println(enemy.getMovementSpeed());
+                            float movementSpeed = enemy.getMovementSpeed();
+                            //System.out.println("Iceball class state: " + enemyHitByIceBall);
+
+                            movementSpeed *= 0.75f;
+                            enemy.setMovementSpeed(movementSpeed);
+                            //System.out.println("Ice state" + enemyHitByIceBall);
                     }
                     //enemy.mapEntityStatus = MapEntityStatus.REMOVED;
                     this.mapEntityStatus = MapEntityStatus.REMOVED;
@@ -60,9 +76,13 @@ public class IceBall extends EnhancedMapTile{
                 existenceFrames--;
             }
 
+
             }
 
         }
+
+            //System.out.println("Update called. enemyHitByIceBall = " + enemyHitByIceBall);
+
 
         }
        
@@ -104,6 +124,20 @@ public class IceBall extends EnhancedMapTile{
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
     }
+
+    public boolean enemyHit(){
+        if(enemyHitByIceBall == true){
+            //System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
+           // System.out.println("Iceball class! running: " + enemyHitByIceBall);
+            return true;
+
+        }else{
+           // System.out.println("Iceball class! running: " + enemyHitByIceBall);
+           // System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
+            return false;
+        }
+    }
+
 
 
 }

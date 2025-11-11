@@ -6,7 +6,10 @@ import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.TutorialScreen;
+import Screens.SnowScreen;
 
+import Screens.ControlsScreen;
 import Engine.*;
 import Game.ScreenCoordinator;
 import Level.Map;
@@ -19,11 +22,14 @@ import SpriteFont.SpriteFont;
  */
 public class ScreenCoordinator extends Screen {
 
-	    public KeyLocker keyLocker = new KeyLocker();
-        protected ScreenCoordinator screenCoordinator;
-		int i = 0;
+	public KeyLocker keyLocker = new KeyLocker();
+    protected ScreenCoordinator screenCoordinator;
+	int i = 0;
 	// currently shown Screen
 	protected Screen currentScreen = new DefaultScreen();
+
+	private static Screen staticCurrentScreen;
+
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
 	public GameState gameState;
@@ -64,16 +70,20 @@ public class ScreenCoordinator extends Screen {
 	@Override
 	public void update() {
 
-				if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-                initialize();
-            }
-
 	/* 
 	System.out.println(gameState);
 	if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
         initialize();
     }
 	*/
+	// for testing purpose
+	if (Keyboard.isKeyDown(Key.M)) {
+		gameState = GameState.LOBBY;
+	} else if (Keyboard.isKeyDown(Key.N)) {
+		gameState = GameState.LEVEL;
+	}
+
+
 		do {
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
@@ -94,7 +104,17 @@ public class ScreenCoordinator extends Screen {
 					case JUNGLE:
 						currentScreen = new JungleScreen(this);
 						break;
+					case SNOW:
+						currentScreen = new SnowScreen(this);
+						break;
+					case TUTORIAL:
+						currentScreen = new TutorialScreen(this);
+						break;
+					case CONTROLS:
+						currentScreen = new ControlsScreen(this);
+						break;
 				}
+				staticCurrentScreen = currentScreen;
 				currentScreen.initialize();
 			}
 			previousGameState = gameState;
@@ -109,4 +129,9 @@ public class ScreenCoordinator extends Screen {
 		// call the draw method for the currentScreen
 		currentScreen.draw(graphicsHandler);
 	}
+
+	public static Screen getCurrentScreen() {
+    return staticCurrentScreen;
+}
+
 }

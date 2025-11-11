@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class DesertTileset extends Tileset {
 
     public DesertTileset() {
-        super(ImageLoader.load("DesertTileset.png"), 16, 16, 3);
+        super(ImageLoader.load("DesertTileset2.png"), 48, 48, 1);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class DesertTileset extends Tileset {
         // sandstone branch 
         Frame sandstoneBranchFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 6, 48, 4)
                 .build();
 
         MapTileBuilder sandstoneBranchTile = new MapTileBuilder(sandstoneBranchFrame)
@@ -153,7 +153,7 @@ public class DesertTileset extends Tileset {
         // cracked sandstone branch
         Frame crackedSandstoneBranchFrame = new FrameBuilder(getSubImage(2, 3))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 6, 48, 4)
                 .build();
 
         MapTileBuilder crackedSandstoneBranchTile = new MapTileBuilder(crackedSandstoneBranchFrame)
@@ -238,6 +238,7 @@ public class DesertTileset extends Tileset {
                 .withScale(tileScale)
                 .build();
 
+
         MapTileBuilder leftSlopeTile = new MapTileBuilder(leftSlopeFrame)
                 .withTileType(TileType.SLOPE)
                 .withTileLayout(SlopeTileLayoutUtils.createLeft45SlopeLayout(spriteWidth, (int) tileScale));
@@ -276,6 +277,18 @@ public class DesertTileset extends Tileset {
                 .withTileLayout(SlopeTileLayoutUtils.createTopLeft30SlopeLayout(spriteWidth, (int) tileScale));
 
         mapTiles.add(leftStairsTopTile);
+
+        //spike
+        Frame spike = new FrameBuilder(getSubImage(4, 4))
+                .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
+                .build();
+                
+
+        MapTileBuilder spikeTile = new MapTileBuilder(spike)
+                .withTileType(TileType.SPIKE);
+
+        mapTiles.add(spikeTile);
 
         return mapTiles;
     }

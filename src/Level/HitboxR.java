@@ -22,11 +22,11 @@ public class HitboxR extends MapEntity {
 
         protected Direction facingDirection;
 
-        protected int existTimer = 36;
+        protected int existTimer = 48;
 
 
-    protected Key TAIL_ATTACK_DASH_KEY = Key.T;
-    protected Key TAIL_ATTACK_SPIN_KEY = Key.Q;
+    protected Key TAIL_ATTACK_DASH_KEY = Key.RIGHT;
+    protected Key TAIL_ATTACK_SPIN_KEY = Key.LEFT;
 
     public HitboxR(float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
@@ -72,7 +72,12 @@ public class HitboxR extends MapEntity {
         // Check if hitbox hits an enemy
         for (MapEntity entity : map.getEnemies()) {
             if (entity instanceof Enemy && this.intersects(entity)) {
-                ((Enemy) entity).kill();
+                if (hitboxState == HitboxState.ATTACKING_DASH) {
+                    ((Enemy) entity).kill(2);
+                }
+                if (hitboxState == HitboxState.ATTACKING_SPIN) {
+                    ((Enemy) entity).kill(1);
+                }
             }
         }
     }

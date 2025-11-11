@@ -2,6 +2,8 @@ package Screens;
 
 import Engine.Screen;
 import EnhancedMapTiles.BackToLobby;
+import EnhancedMapTiles.JungleEnter;
+import EnhancedMapTiles.SnowEnter;
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
@@ -13,6 +15,7 @@ import Level.Player;
 import Level.PlayerListener;
 import Maps.JungleMap;
 import Players.Cat;
+import Maps.SnowMap;
 import Game.GameState;
 
 public class JungleScreen extends Screen implements PlayerListener {
@@ -53,12 +56,12 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                                if (Keyboard.isKeyDown(Key.Q) || Keyboard.isKeyDown(Key.T)) {
+                                
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
                     }
-                }
+                
 
                 if (hitbox != null) {
                     hitbox.update(player);
@@ -68,17 +71,18 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-
-                for (EnhancedMapTile tile : map.getEnhancedMapTiles()){
-                    BackToLobby backToLobby = (BackToLobby) tile;   
-                    if (backToLobby.getTriggerCode() == 3) {
-                        screenCoordinator.setGameState(GameState.LOBBY);
+                for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
+                    if (tile instanceof BackToLobby) {
+                        BackToLobby lobby = (BackToLobby) tile;
+                        if (lobby.getTriggerCode() == 3) {
+                            screenCoordinator.setGameState(GameState.LOBBY);
+                        }
                     }
                 }
+
                 break;
         
-            default:
-                break;
+            
         }
     }
 

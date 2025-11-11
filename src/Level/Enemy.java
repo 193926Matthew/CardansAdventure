@@ -9,17 +9,23 @@ import java.util.HashMap;
 public class Enemy extends MapEntity {
 
     private boolean isDead = false;
+    private boolean hitWithIceBall = false;
+    private float movementSpeed;
+    private int damage = 0;
 
     public boolean isDead() {
         return isDead;
     }
 
-    public int damage() {
-        return 1;
+    public int damageValue() {
+        return damage;
     }
 
-    public void kill() {
+
+
+    public void kill(int damage) {
         this.isDead = true;
+        this.damage = damage;
     }
 
     public void live() {
@@ -56,7 +62,6 @@ public class Enemy extends MapEntity {
         if (intersects(player)) {
             touchedPlayer(player);
         }
-
     }
 
     // A subclass can override this method to specify what it does when it touches
@@ -64,5 +69,25 @@ public class Enemy extends MapEntity {
     public void touchedPlayer(Player player) {
         player.hurtPlayer(this);
     }
+
+    //will be used in Player class and called when Iceball hits enemy
+    //to reduce the enemy's speed 
+    
+    public float getMovementSpeed(){
+        return this.movementSpeed;
+    }
+
+    public void setMovementSpeed(float movementSpeed){
+        this.movementSpeed = movementSpeed;
+    }
+
+    public void setIceBallHitStatus(Boolean hitStatus){
+        this.hitWithIceBall = hitStatus;
+    }
+
+    public boolean getIceBallHitStatus(){
+        return this.hitWithIceBall;
+    }
+
 
 }

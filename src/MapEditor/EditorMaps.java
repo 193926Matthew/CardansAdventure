@@ -2,10 +2,13 @@ package MapEditor;
 
 import Level.Map;
 import Maps.JungleMap;
-import Maps.DesertMap;
+import Maps.DesertMap; // Ensure DesertMap.java exists in src/Maps/
 import Maps.LobbyMap;
 import Maps.TestMap;
+import Maps.SnowMap;
 import Maps.TitleScreenMap;
+import Maps.TutorialMap;
+
 
 import java.util.ArrayList;
 
@@ -17,6 +20,8 @@ public class EditorMaps {
             add("LobbyMap");
             add("DesertMap");
             add("JungleMap");
+            add("SnowMap");
+            add("TutorialMap");
         }};
     }
 
@@ -32,6 +37,10 @@ public class EditorMaps {
                 return new DesertMap();
             case "JungleMap":
                 return new JungleMap();
+            case "SnowMap":
+                return new SnowMap();
+            case "TutorialMap":
+                return new TutorialMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

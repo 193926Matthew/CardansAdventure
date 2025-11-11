@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class MapEntity extends GameObject {
 
     private boolean isDead = false;
+    private int damage = 0;
 
     protected MapEntityStatus mapEntityStatus = MapEntityStatus.ACTIVE;
 
@@ -63,8 +64,9 @@ public class MapEntity extends GameObject {
         this.isUpdateOffScreen = isUpdateOffScreen;
     }
 
-    public void kill() {
+    public void kill(int damage) {
         this.isDead = true;
+        this.damage = damage;
     }
 
     public void live() {

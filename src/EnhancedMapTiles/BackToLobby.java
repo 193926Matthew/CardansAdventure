@@ -16,14 +16,14 @@ public class BackToLobby extends EnhancedMapTile{
     private int triggerCode = 0;
 
     public BackToLobby(Point location){
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("GoldBox.png"), 16, 16), TileType.PASSABLE);
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("PandaCage.png"), 64, 64), TileType.PASSABLE);
     }
 
     public void update(Player player) {
         super.update(player);
         if (intersects(player)) {
             System.out.println("lobby touched");
-            triggerCode = 3;
+            triggerCode = 4;
             //gameState = GameState.MENU;
         }
     }
@@ -37,17 +37,13 @@ public class BackToLobby extends EnhancedMapTile{
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 40)
-                        .withScale(3)
+                        .withScale(0.8)
                         .withBounds(1, 1, 14, 14)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
-                        .withScale(3)
+                        .withScale(0.8)
                         .withBounds(1, 1, 14, 14)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 2), 40)
-                        .withScale(3)
-                        .withBounds(1, 1, 14, 14)
-                        .build()
             });
         }};
     }
