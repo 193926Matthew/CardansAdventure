@@ -49,6 +49,8 @@ public class NPC extends MapEntity {
         return null;
     }
 
+   
+
     public void update(Player player) {
         super.update();
         checkTalkedTo(player);

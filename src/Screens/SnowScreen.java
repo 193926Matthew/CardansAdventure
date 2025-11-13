@@ -32,7 +32,7 @@ public class SnowScreen extends Screen implements PlayerListener {
     // --- Power-up display text ---
     private SpriteFont powerUpText;
     private SpriteFont powerUpTextLine2;
-
+   
     private long powerUpTextStartTime;
     private boolean showPowerUpText = false;
     private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
@@ -137,6 +137,7 @@ public class SnowScreen extends Screen implements PlayerListener {
             powerUpTextLine2.draw(graphicsHandler);
             }
         }
+        
 
     }
 
@@ -173,7 +174,15 @@ public class SnowScreen extends Screen implements PlayerListener {
 
             System.out.print("Start again");
             // setup player
-            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+            /*
+             * 
+             * //this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+                Commented this portion out because resetting the player instance
+                resulted in a total reset of the power ups collected,
+                resetting the location of the player works the same
+                and maintains the users powerups status 
+             */
+            this.player.setLocation(player.respawnPoint.x,player.respawnPoint.y);
             this.player.setMap(map);
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
@@ -223,32 +232,7 @@ public class SnowScreen extends Screen implements PlayerListener {
             powerUpTextStartTime = System.currentTimeMillis();
             showPowerUpText = true;
             
-        } else if (message.contains("Ice Ball")){
-            powerUpText = new SpriteFont(
-                message,
-                300,  // X position (adjust to center for your resolution)
-                150,  // Y position (near top of screen)
-                "Arial",
-                30,
-                Color.CYAN
-            );
-            powerUpText.setOutlineColor(Color.BLACK);
-            powerUpText.setOutlineThickness(3);
-
-            powerUpTextLine2 = new SpriteFont(
-                "Press I to shoot ice balls!",
-                300,
-                190,
-                "Arial",
-                20,
-                Color.WHITE
-            );
-            powerUpTextLine2.setOutlineColor(Color.BLACK);
-            powerUpTextLine2.setOutlineThickness(2);
-
-            powerUpTextStartTime = System.currentTimeMillis();
-            showPowerUpText = true;
-        }   
+        }
     }
 
     // This enum represents the different states this screen can be in

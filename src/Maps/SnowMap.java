@@ -66,6 +66,23 @@ public class SnowMap extends Map {
         NewEndLevel newEndLevel = new NewEndLevel(getMapTile(196, 20).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
+         int endLevelX = 169;
+        int targetY = 17;
+        //sets barrierBlocks along y axis 
+         for(int i = 0; i < this.getWidth(); i++){
+        
+            MapTile tile = getMapTile(i, this.getEndBoundY());
+            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
+            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
+            int barrierNum = this.getHeight() - 1;
+            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
+                BarrierBlock barrierHorizontal = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
+            // this.addBarrierBlock(barrierY);
+                enhancedMapTiles.add(barrierHorizontal);
+                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
+        }
+    }
+
         return enhancedMapTiles;
         
     }
