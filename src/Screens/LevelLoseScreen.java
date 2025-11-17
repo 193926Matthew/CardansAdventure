@@ -12,6 +12,8 @@ public class LevelLoseScreen extends Screen {
     protected KeyLocker keyLocker = new KeyLocker();
     protected PlayLevelScreen playLevelScreen;
     protected SnowScreen snowScreen;
+    protected SnowBossScreen snowbossScreen;
+
 
     public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
@@ -20,6 +22,11 @@ public class LevelLoseScreen extends Screen {
 
     public LevelLoseScreen(SnowScreen snowScreen) {
         this.snowScreen = snowScreen;
+        initialize();
+    }
+
+    public LevelLoseScreen(SnowBossScreen snowbossScreen) {
+        this.snowbossScreen = snowbossScreen;
         initialize();
     }
 

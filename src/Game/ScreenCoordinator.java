@@ -6,6 +6,7 @@ import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
+import Screens.SnowBossScreen;
 import Screens.TutorialScreen;
 import Screens.SnowScreen;
 
@@ -106,6 +107,9 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case SNOW:
 						currentScreen = new SnowScreen(this);
+						break;
+					case SNOWBOSS:
+						currentScreen = new SnowBossScreen(this);
 						break;
 					case TUTORIAL:
 						currentScreen = new TutorialScreen(this);
