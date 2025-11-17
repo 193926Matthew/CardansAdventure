@@ -175,7 +175,15 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
             System.out.print("Start again");
             // setup player
-            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+            /* 
+            Commented this portion out because resetting the player instance
+                resulted in a total reset of the power ups collected,
+                resetting the location of the player works the same
+                and maintains the users powerups status 
+             this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+                
+             */
+            this.player.setLocation(player.respawnPoint.x, player.respawnPoint.y);
             this.player.setMap(map);
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
