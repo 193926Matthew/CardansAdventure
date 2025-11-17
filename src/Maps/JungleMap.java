@@ -2,19 +2,23 @@ package Maps;
 
 import java.util.ArrayList;
 
+import Enemies.ArcticFox;
+import Enemies.DinosaurEnemy;
 import EnhancedMapTiles.BackToLobby;
 import EnhancedMapTiles.BarrierBlock;
+import Level.Enemy;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.MapTile;
 import Level.TileType;
-import Tilesets.CommonTileset;
+import Tilesets.JungleTileset;
+import Utils.Direction;
 import Utils.Point;
 
 public class JungleMap extends Map{
 
     public JungleMap() {
-        super("Testjunglemap.txt", new CommonTileset());
+        super("Testjunglemap.txt", new JungleTileset());
         this.playerStartPosition = new Point(2, 8);
 
     }
@@ -23,12 +27,18 @@ public class JungleMap extends Map{
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        BackToLobby backToLobby = new BackToLobby(getMapTile(4,11).getLocation());
-        enhancedMapTiles.add(backToLobby);
-
         return enhancedMapTiles;
     }
 
+    @Override
+    public ArrayList<Enemy> loadEnemies() {
+        ArrayList<Enemy> enemies = new ArrayList<>();
+
+        DinosaurEnemy dino1 = new DinosaurEnemy(getMapTile(27, 10).getLocation().addY(2), getMapTile(29, 10).getLocation().addY(2), Direction.LEFT);
+        enemies.add(dino1);
+
+        return enemies;
+    }
     /*
       @Override
     public ArrayList<BarrierBlock> loadBarrierBlocks(){

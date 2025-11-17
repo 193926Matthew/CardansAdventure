@@ -19,6 +19,7 @@ public abstract class Player extends GameObject {
     // these should be set in a subclass
     public boolean complete = false;
 
+    protected float vineY = 0;
     protected float walkSpeed = 0;
     protected float gravity = 0;
     protected float jumpHeight = 0;
@@ -88,6 +89,7 @@ public abstract class Player extends GameObject {
 
     // flags
     protected boolean onIce = false;
+    protected boolean onVines = false;
     protected boolean isInvincible = false; // if true, player cannot be hurt by enemies (good for testing)
     protected int invincibleTimer;
     protected int duration = 60;
@@ -166,6 +168,7 @@ public abstract class Player extends GameObject {
             isTouchingSpike();
             applyGravity();
             isTouchingIce();
+            onVines = isTouchingVines();
             // update player's state and current actions, which includes things like
             // determining how much it should move each frame and if its walking or jumping
             do {
@@ -253,12 +256,20 @@ public abstract class Player extends GameObject {
             if (momentumY > 0.001f) {
                 setYMomentum(0.001f);
             }
-        //if the player is not in quicksand, reset walk speed and jump height
-        } else {
+      
+        }else {
+              //if the player is not in quicksand, reset walk speed and jump height
             isInTile = false;
             setJumpHeight(14.5f);
             setWalkSpeed(4.3f);
         }
+
+        // If player is on vines, disable gravity
+        if (onVines) {
+            momentumY = 0;
+            return; 
+        }   
+
 
         moveAmountY += gravity + momentumY;
 
@@ -290,6 +301,9 @@ public abstract class Player extends GameObject {
             case DOUBLE_JUMP:
                 playerDoubleJump();
                 break;
+            case CLIMBING:
+                playerClimbing();
+                break;
             case ICE_BALL:
                 playerIceBallAttack();
                 break;
@@ -299,6 +313,11 @@ public abstract class Player extends GameObject {
     // player STANDING state logic
     protected void playerStanding() {
         isAttacking = false;
+
+         if (onVines) {
+            playerState = PlayerState.CLIMBING;
+            return;
+        }
         // if walk left or walk right key is pressed, player enters WALKING state
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.WALKING;
@@ -336,6 +355,12 @@ public abstract class Player extends GameObject {
     // player WALKING state logic
     protected void playerWalking() {
         // if walk left key is pressed, move player to the left
+
+        if (onVines) {
+            playerState = PlayerState.CLIMBING;
+            return;
+        }
+
         if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
@@ -514,6 +539,10 @@ public abstract class Player extends GameObject {
     
     // player JUMPING state logic
     protected void playerJumping() {
+        if (onVines) {
+            playerState = PlayerState.CLIMBING;
+            return;
+        }
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
@@ -995,7 +1024,40 @@ public abstract class Player extends GameObject {
         }
 
         
-        
+    }
+    
+   protected boolean isTouchingVines(){
+        for(MapTile tile : map.getMapTiles()){
+            if(tile.getTileType() == TileType.VINES && getBounds().intersects(tile.getBounds())){
+                return true;
+            }
+        }
+        return false;
+   }
+
+    protected void playerClimbing() {
+
+        if (Keyboard.isKeyDown(JUMP_KEY)) {
+            moveAmountY -= walkSpeed; 
+        }
+        if (Keyboard.isKeyDown(CROUCH_KEY)) {
+            moveAmountY += walkSpeed; 
+        }
+
+   
+        if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+            moveAmountX -= walkSpeed * 0.5f;
+            facingDirection = Direction.LEFT;
+        }
+        if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+            moveAmountX += walkSpeed * 0.5f;
+            facingDirection = Direction.RIGHT;
+        }
+
+        if (!onVines) {
+            airGroundState = AirGroundState.AIR;
+            playerState = PlayerState.JUMPING;
+        }
     }
     
 
