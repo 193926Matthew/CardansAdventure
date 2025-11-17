@@ -4,6 +4,9 @@ import Engine.Screen;
 import EnhancedMapTiles.BackToLobby;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
+
+import java.awt.Color;
+
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
@@ -13,8 +16,10 @@ import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
+import Maps.DesertMap;
 import Maps.JungleMap;
 import Players.Cat;
+import SpriteFont.SpriteFont;
 import Maps.SnowMap;
 import Game.GameState;
 
@@ -28,6 +33,8 @@ public class JungleScreen extends Screen implements PlayerListener {
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
+    protected SpriteFont lives;
+
 
     public JungleScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -45,7 +52,9 @@ public class JungleScreen extends Screen implements PlayerListener {
         map.addHitbox(this.hitbox);
 
         levelClearedScreen = new LevelClearedScreen();
+        levelLoseScreen = new LevelLoseScreen(this);
         //levelLoseScreen = new LevelLoseScreen(this);
+         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
 
         this.jungleScreenState = JungleScreenState.RUNNING;
     }
@@ -81,6 +90,25 @@ public class JungleScreen extends Screen implements PlayerListener {
                 }
 
                 break;
+
+                 // if level has been completed, bring up level cleared screen
+            case LEVEL_COMPLETED:
+                    if (levelCompletedStateChangeStart) {
+                        screenTimer = 130;
+                        levelCompletedStateChangeStart = false;
+                    } else {
+                        levelClearedScreen.update();
+                        screenTimer--;
+                        if (screenTimer == 0) {
+                            GoBackToLobby();
+                        }
+                    }
+                break;
+            // wait on level lose screen to make a decision (either resets level or sends
+            // player back to main menu)
+            case LEVEL_LOSE:
+                    resetcheckTEST();
+                break;
         
             
         }
@@ -102,7 +130,12 @@ public class JungleScreen extends Screen implements PlayerListener {
                 levelLoseScreen.draw(graphicsHandler);
                 break;
         }
+
+        lives.setText("Health: " + player.getHealth());
+        lives.draw(graphicsHandler);
+
     }
+
 
     public JungleScreenState getJungleScreenState() {
         return jungleScreenState;
@@ -137,4 +170,33 @@ public class JungleScreen extends Screen implements PlayerListener {
         screenCoordinator.setGameState(GameState.MENU);
     }
 
+     public void resetcheckTEST() {
+            map = new JungleMap();
+
+            System.out.print("Start again");
+            // setup player
+            /* 
+            Commented this portion out because resetting the player instance
+                resulted in a total reset of the power ups collected,
+                resetting the location of the player works the same
+                and maintains the users powerups status 
+             this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+                
+             */
+            this.player.setLocation(player.respawnPoint.x, player.respawnPoint.y);
+            this.player.setMap(map);
+            this.player.addListener(this);
+            this.hitbox = new Hitbox(player.getLocation());
+            map.addHitbox(this.hitbox);
+
+            levelClearedScreen = new LevelClearedScreen();
+            levelLoseScreen = new LevelLoseScreen(this);
+
+            this.jungleScreenState = jungleScreenState.RUNNING;
+            this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
+    }
+
+     public void GoBackToLobby(){
+        screenCoordinator.setGameState(GameState.LOBBY);
+    }
 }

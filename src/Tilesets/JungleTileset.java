@@ -263,7 +263,7 @@ public class JungleTileset extends Tileset {
         mapTiles.add(spikeTile);
 
         // sky
-        Frame skyFrame = new FrameBuilder(getSubImage(4, 4))
+        Frame skyFrame = new FrameBuilder(getSubImage(4, 2))
                 .withScale(tileScale)
                 .build();
 
@@ -291,15 +291,38 @@ public class JungleTileset extends Tileset {
 
         mapTiles.add(vines);
 
-        // slope block connector buttom
-        Frame slopeBlockFrame = new FrameBuilder(getSubImage(4, 2))
+         //spikedown
+        Frame spikeDown = new FrameBuilder(getSubImage(4, 4))
                 .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
                 .build();
 
-        MapTileBuilder SlopeBlock = new MapTileBuilder(slopeBlockFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+        MapTileBuilder spikeTileDown = new MapTileBuilder(spikeDown)
+                .withTileType(TileType.SPIKE);
 
-        mapTiles.add(SlopeBlock);
+        mapTiles.add(spikeTileDown);
+
+          //spike right
+        Frame spikeRight = new FrameBuilder(getSubImage(4, 3))
+                .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
+                .build();
+
+        MapTileBuilder spikeTileRight = new MapTileBuilder(spikeRight)
+                .withTileType(TileType.SPIKE);
+
+        mapTiles.add(spikeTileRight);
+
+          //spike left
+        Frame spikeLeft = new FrameBuilder(getSubImage(4, 5))
+                .withScale(tileScale)
+                .withBounds(14, 26, 4, 6)
+                .build();
+
+        MapTileBuilder spikeTileLeft = new MapTileBuilder(spikeLeft)
+                .withTileType(TileType.SPIKE);
+
+        mapTiles.add(spikeTileLeft);
 
         return mapTiles;
         

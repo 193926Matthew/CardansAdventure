@@ -3,7 +3,6 @@ package Maps;
 import Tilesets.CommonTileset;
 import Utils.Direction;
 import Utils.Point;
-import Level.Enemy;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ import java.util.ArrayList;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import EnhancedMapTiles.NewEndLevel;
-import Level.EnhancedMapTile;
-import Level.Map;
+import Level.*;
 
 public class TutorialMap extends Map {
     public TutorialMap() {
@@ -35,10 +33,11 @@ public class TutorialMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+    
         NewEndLevel newEndLevel = new NewEndLevel(getMapTile(74, 12).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
     }
-
+    
 }

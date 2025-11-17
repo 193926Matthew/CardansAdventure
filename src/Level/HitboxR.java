@@ -22,7 +22,7 @@ public class HitboxR extends MapEntity {
 
         protected Direction facingDirection;
 
-        protected int existTimer = 36;
+        protected int existTimer = 48;
 
 
     protected Key TAIL_ATTACK_DASH_KEY = Key.RIGHT;

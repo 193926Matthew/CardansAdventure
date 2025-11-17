@@ -24,23 +24,23 @@ public class LobbyMap extends Map {
     public LobbyMap(){
         super("lobby_map.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(13, 11).getLocation();;
+
     }
 
-    @Override
-    public ArrayList<Enemy> loadEnemies() {
-    ArrayList<Enemy> enemies = new ArrayList<>();
+    // @Override
+    // public ArrayList<Enemy> loadEnemies() {
+    // ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
-        enemies.add(fox1);
+    //     ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
+    //     enemies.add(fox1);
 
-        return enemies;
-    }
+    //     return enemies;
+    // }
 
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-        
-        
+          
         for(int i =1; i <= this.getHeight() - 4; i++){
             MapTile newTile = getMapTile(this.getEndBoundX(), i);
             if(newTile != null){
