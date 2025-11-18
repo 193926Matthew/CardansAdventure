@@ -11,18 +11,18 @@ import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
-import Maps.DesertMap;
+import Maps.SnowBossMap;
 import Maps.SnowMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 
 // This class is for when the platformer game is actually being played
-public class PlayLevelScreen extends Screen implements PlayerListener {
+public class SnowBossScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected static Map map;
     protected Player player;
     protected Hitbox hitbox;
-    protected PlayLevelScreenState playLevelScreenState;
+    protected SnowScreenState playLevelScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
@@ -39,13 +39,13 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
 
 
-    public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
+    public SnowBossScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     public void initialize() {
         // define/setup map
-        map = new DesertMap();
+        map = new SnowBossMap();
 
         // System.out.print("Start");
         // setup player
@@ -58,7 +58,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        this.playLevelScreenState = SnowScreenState.RUNNING;
         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
 
     }
@@ -66,8 +66,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     public void update() {
         // based on screen state, perform specific actions
         switch (playLevelScreenState) {
-            // if level is "running" update player and map to keep game logic for the
-            // platformer level going
             case RUNNING:
                 player.update();
                 map.update(player);
@@ -96,6 +94,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
+                    levelClearedScreen.update();
                 } else {
                     levelClearedScreen.update();
                     screenTimer--;
@@ -142,22 +141,22 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
     }
 
-    public PlayLevelScreenState getPlayLevelScreenState() {
+    public SnowScreenState getPlayLevelScreenState() {
         return playLevelScreenState;
     }
 
     @Override
     public void onLevelCompleted() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_COMPLETED) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
+        if (playLevelScreenState != SnowScreenState.LEVEL_COMPLETED) {
+            playLevelScreenState = SnowScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
         }
     }
 
     @Override
     public void onDeath() {
-        if (playLevelScreenState != PlayLevelScreenState.LEVEL_LOSE) {
-            playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE;
+        if (playLevelScreenState != SnowScreenState.LEVEL_LOSE) {
+            playLevelScreenState = SnowScreenState.LEVEL_LOSE;
         }
     }
 
@@ -166,24 +165,16 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     public void resetToCheckpoint() {
-        playLevelScreenState = PlayLevelScreenState.RUNNING;
+        playLevelScreenState = SnowScreenState.RUNNING;
     }
 
     //this does what initialize but it works with checkpoint
     public void resetcheckTEST() {
-            map = new DesertMap();
+            map = new SnowMap();
 
             System.out.print("Start again");
             // setup player
-            /* 
-            Commented this portion out because resetting the player instance
-                resulted in a total reset of the power ups collected,
-                resetting the location of the player works the same
-                and maintains the users powerups status 
-             this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
-                
-             */
-            this.player.setLocation(player.respawnPoint.x, player.respawnPoint.y);
+            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
             this.player.setMap(map);
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
@@ -192,7 +183,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             levelClearedScreen = new LevelClearedScreen();
             levelLoseScreen = new LevelLoseScreen(this);
 
-            this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+            this.playLevelScreenState = SnowScreenState.RUNNING;
             this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
@@ -220,7 +211,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
             // SECOND LINE
             powerUpTextLine2 = new SpriteFont(
-                "Press W arrow again to double jump!",
+                "Press UP arrow again to double jump!",
                 300,
                 140,  
                 "Arial",
@@ -262,7 +253,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
     // This enum represents the different states this screen can be in
-    private enum PlayLevelScreenState {
+    private enum SnowScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
 }

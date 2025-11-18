@@ -13,6 +13,8 @@ public class LevelLoseScreen extends Screen {
     protected PlayLevelScreen playLevelScreen;
     protected SnowScreen snowScreen;
     protected JungleBArenaScreen jungleBArenaScreen;
+    protected SnowBossScreen snowbossScreen;
+
 
     public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
@@ -26,6 +28,9 @@ public class LevelLoseScreen extends Screen {
 
     public LevelLoseScreen(JungleBArenaScreen jungleBArenaScreen) {
         this.jungleBArenaScreen = jungleBArenaScreen;
+    }
+    public LevelLoseScreen(SnowBossScreen snowbossScreen) {
+        this.snowbossScreen = snowbossScreen;
         initialize();
     }
 

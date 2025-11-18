@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Enemies.ArcticFox;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.PoisonFrog;
 import EnhancedMapTiles.JungleEnter;
 import EnhancedMapTiles.SnowEnter;
 import Level.Enemy;
@@ -30,7 +31,7 @@ public class LobbyMap extends Map {
     // public ArrayList<Enemy> loadEnemies() {
     // ArrayList<Enemy> enemies = new ArrayList<>();
 
-    //     ArcticFox fox1 = new ArcticFox(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
+    //     PoisonFrog fox1 = new PoisonFrog(getMapTile(10, 12).getLocation().subtractY(25), Direction.RIGHT);
     //     enemies.add(fox1);
 
     //     return enemies;
@@ -39,8 +40,7 @@ public class LobbyMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-        
-        
+          
         for(int i =1; i <= this.getHeight() - 4; i++){
             MapTile newTile = getMapTile(this.getEndBoundX(), i);
             if(newTile != null){

@@ -17,17 +17,18 @@ import EnhancedMapTiles.VerticalMovingPlatform;
 import GameObject.Rectangle;
 import Level.*;
 import Tilesets.DesertTileset;
+import Tilesets.SnowBossTileset;
 import Tilesets.SnowTileset;
 import Utils.Direction;
 
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
-public class SnowMap extends Map {
+public class SnowBossMap extends Map {
 
 
-    public SnowMap() {
-        super("snow_map.txt", new SnowTileset());
+    public SnowBossMap() {
+        super("snow_boss_map.txt", new SnowBossTileset());
          this.playerStartPosition = getMapTile(2, 20).getLocation();
     }
 
@@ -38,12 +39,6 @@ public class SnowMap extends Map {
         ArcticFox fox1 = new ArcticFox(getMapTile(85, 18).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(fox1);
 
-        ArcticFox fox2 = new ArcticFox(getMapTile(137, 14).getLocation().subtractY(25), Direction.LEFT);
-        enemies.add(fox2);
-
-        ArcticFox fox3 = new ArcticFox(getMapTile(178, 14).getLocation().subtractY(25), Direction.LEFT);
-        enemies.add(fox3);
-
         return enemies;
     }
 
@@ -51,37 +46,14 @@ public class SnowMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        CheckPoint checkpoint1 = new CheckPoint(getMapTile(100,18).getLocation());
-        enhancedMapTiles.add(checkpoint1);
-
-        CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
-        enhancedMapTiles.add(checkpoint2);
-
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
         enhancedMapTiles.add(backToLobby);
         */
 
         //This is what we use to end the level, ignore BackToLobby thing. that was a test.
-        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(196, 20).getLocation());
-        enhancedMapTiles.add(newEndLevel);
-
-         int endLevelX = 169;
-        int targetY = 17;
-        //sets barrierBlocks along y axis 
-         for(int i = 0; i < this.getWidth(); i++){
-        
-            MapTile tile = getMapTile(i, this.getEndBoundY());
-            MapTile thisTile = getTileByPosition(i,this.getEndBoundY() - 1);
-            MapTile tileBelow = getMapTile(i, this.getEndBoundY() + 4);
-            int barrierNum = this.getHeight() - 1;
-            if( tile != null && tileBelow.getTileType() == TileType.PASSABLE){
-                BarrierBlock barrierHorizontal = new BarrierBlock(tile.getLocation(), "CommonTileset.png");
-            // this.addBarrierBlock(barrierY);
-                enhancedMapTiles.add(barrierHorizontal);
-                //System.out.println("! Tile at ( " + i + ", " + this.getHeight() + " is null");
-        }
-    }
+        // NewEndLevel newEndLevel = new NewEndLevel(getMapTile(196, 20).getLocation());
+        // enhancedMapTiles.add(newEndLevel);
 
         return enhancedMapTiles;
         

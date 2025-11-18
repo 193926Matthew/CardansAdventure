@@ -153,6 +153,24 @@ public abstract class Player extends GameObject {
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
+        boolean doubleJumpPrevCollected = false;
+        boolean icePrevCollected = false;
+
+        //upon checkpoint reset, update does not recognize previous status of powerups as being true
+        //may be issue with powerup class? Once collected disappears, status remains with player
+        //once current player dies, instance lost with it. 
+        //everything is reset with checkpoint 
+        hasDoubleJump = hasDoubleJump();
+        if(hasDoubleJump == true){
+            doubleJumpPrevCollected = true;
+        }else{
+            if(doubleJumpPrevCollected == true){
+                this.setHasDoubleJump(true);
+                hasDoubleJump = true;
+            }
+        }
+        hasIceBall = hasIceBall();
+       
 
         // if player is currently playing through level (has not won or lost)
         if (levelState == LevelState.RUNNING) {
@@ -223,7 +241,7 @@ public abstract class Player extends GameObject {
                 //System.out.println(usedDoubleJump + " " + doubleJumpDelay);
                 usedDoubleJump = false;
             }else if (usedDoubleJump == false && hasDoubleJump == true && doubleJumpDelay <= 90 && doubleJumpDelay != 0){
-                //System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
+                System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
                 doubleJumpDelay--;
                // System.out.println(usedDoubleJump + " " + doubleJumpDelay);
             }
@@ -855,6 +873,12 @@ public abstract class Player extends GameObject {
                 moveY(20);
             } else {
                 respawn();
+                setHasDoubleJump(hasDoubleJump());
+                setHasIceBall(hasIceBall());
+                System.out.println(hasIceBall());
+                System.out.println(hasDoubleJump());
+                //hasIceBall
+                //hasDoubleJump
                 // tell all player listeners that the player has died in the level
                 
                 for (PlayerListener listener : listeners) {
