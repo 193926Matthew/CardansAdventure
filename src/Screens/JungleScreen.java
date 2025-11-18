@@ -80,9 +80,7 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-                break;
-        
-            
+                break;  
         }
     }
 

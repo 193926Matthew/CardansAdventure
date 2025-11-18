@@ -70,7 +70,8 @@ public abstract class Player extends GameObject {
     int iceSlideAmmount = 1;
     float iceFriction = 0.5f;
 
-
+    private boolean inVictoryState = false;
+    private boolean victoryLockedOnGround = false;
 
     // Attack variables
     private boolean isAttacking = false;
@@ -860,6 +861,17 @@ public abstract class Player extends GameObject {
         }
     }
 
+    public void playVictoryAnimation() {
+        
+        System.out.println("dancing");
+        playerState = PlayerState.VICTORY;
+        inVictoryState = true;
+        victoryLockedOnGround = false;
+
+        currentAnimationName = "VICTORY_DANCE";
+    }
+
+
 
     public void setHasDoubleJump(boolean value){
         this.hasDoubleJump = value;
@@ -961,6 +973,8 @@ public abstract class Player extends GameObject {
                 } else {
                     this.currentAnimationName = facingDirection == Direction.RIGHT ? "DOUBLE_RIGHT_FALL" : "DOUBLE_LEFT_FALL";
                 }            }
+        } else if (playerState == PlayerState.VICTORY){
+            this.currentAnimationName = "VICTORY_DANCE";
         }
     }
 
@@ -1021,6 +1035,13 @@ public abstract class Player extends GameObject {
         }
     }
 
+    public void notifyLevelCompleted() {
+    for (PlayerListener listener : listeners) {
+        listener.onLevelCompleted();
+    }
+    }
+
+
     // other entities can call this to tell the player they beat a level
     public void completeLevel() {
         levelState = LevelState.LEVEL_COMPLETED;
@@ -1040,7 +1061,7 @@ public abstract class Player extends GameObject {
             moveYHandleCollision(moveAmountY);
         }
         // move player to the right until it walks off screen
-        else if (map.getCamera().containsDraw(this)) {
+        else if (map.getCamera().containsDraw(this)) { // victory dance here when killing boss
             currentAnimationName = "WALK_RIGHT";
             super.update();
             moveXHandleCollision(walkSpeed - 1);
