@@ -487,6 +487,26 @@ public class Cat extends Player {
                         .build()
             });
 
+            put("VICTORY_DANCE", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(0, 0), 14)
+                        .withScale(1)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
+                        .withScale(1)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(7, 1), 14)
+                        .withScale(1)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build(),
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
+                        .withScale(1)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(xCardan, yCardan, wCardan, hCardan)
+                        .build()
+            });
+
         }};
         
     }

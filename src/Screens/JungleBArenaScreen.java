@@ -77,6 +77,7 @@ public class JungleBArenaScreen extends Screen implements PlayerListener{
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
+                
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
@@ -145,11 +146,11 @@ public class JungleBArenaScreen extends Screen implements PlayerListener{
 
     //this does what initialize but it works with checkpoint
     public void resetcheckTEST() {
-            map = new SnowMap();
+            map = new JungleBossArena();
 
             System.out.print("Start again");
             // setup player
-            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+            this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
             this.player.setMap(map);
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
