@@ -6,6 +6,7 @@ import Level.EnhancedMapTile;
 import Level.Map;
 import Tilesets.CommonTileset;
 import Utils.Direction;
+
 import Enemies.JungleBoss;
 import EnhancedMapTiles.NewEndLevel;
 import EnhancedMapTiles.SpawnBossTrigger;

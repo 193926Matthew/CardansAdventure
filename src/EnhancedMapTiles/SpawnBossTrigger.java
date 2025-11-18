@@ -33,7 +33,7 @@ public class SpawnBossTrigger extends EnhancedMapTile{
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 40)
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 40)
                         .withScale(1)
                         .withBounds(1, 1, 14, 14)
                         .build()

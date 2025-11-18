@@ -16,8 +16,6 @@ import Level.MapEntity;
 import Level.MapEntityStatus;
 import Level.Player;
 import Maps.JungleBossArena;
-import Screens.JungleBArenaScreen;
-import Enemies.Fireball;
 
 public class JungleBoss extends Enemy{
     private float gravity = 3f;
@@ -27,7 +25,7 @@ public class JungleBoss extends Enemy{
     private Direction facingDirection;
     private AirGroundState airGroundState;
     private boolean hurt = false;
-    private int health = 5; // orginal 25
+    private int health = 50; // orginal 25
     private int HurtTimer = 240;
     
     // jumping
@@ -100,7 +98,7 @@ public class JungleBoss extends Enemy{
             this.mapEntityStatus = MapEntityStatus.REMOVED; 
 
             //player.playVictoryAnimation();
-            arena.isBossDead();
+            //arena.isBossDead();
             //player.notifyLevelCompleted();
             
             super.update();
