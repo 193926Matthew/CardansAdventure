@@ -32,6 +32,8 @@ public class SnowScreen extends Screen implements PlayerListener {
     // --- Power-up display text ---
     private SpriteFont powerUpText;
     private SpriteFont powerUpTextLine2;
+    private SpriteFont powerUpTexLine3;
+    private SpriteFont powerUpTextLine4;
    
     private long powerUpTextStartTime;
     private boolean showPowerUpText = false;
@@ -130,13 +132,14 @@ public class SnowScreen extends Screen implements PlayerListener {
         lives.setText("Health: " + player.getHealth());
         lives.draw(graphicsHandler);
 
-        //powerup popup
+       //powerup popup
         if (showPowerUpText && powerUpText != null) {
             powerUpText.draw(graphicsHandler);
         if (powerUpTextLine2 != null) {
             powerUpTextLine2.draw(graphicsHandler);
             }
         }
+
         
 
     }
@@ -202,7 +205,6 @@ public class SnowScreen extends Screen implements PlayerListener {
     public void GoBackToLobby(){
         screenCoordinator.setGameState(GameState.LOBBY);
     }
-
     // method to show power-up text popup
     public void showPowerUpText(String message) {
         if (message.contains("Double Jump")){
@@ -219,7 +221,7 @@ public class SnowScreen extends Screen implements PlayerListener {
 
             // SECOND LINE
             powerUpTextLine2 = new SpriteFont(
-                "Press UP arrow again to double jump!",
+                "Press W arrow again to double jump!",
                 300,
                 140,  
                 "Arial",
@@ -232,8 +234,109 @@ public class SnowScreen extends Screen implements PlayerListener {
             powerUpTextStartTime = System.currentTimeMillis();
             showPowerUpText = true;
             
+        } else if (message.contains("Ice Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.CYAN
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press I to shoot ice balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Poison Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.MAGENTA
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press O to shoot poison balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Speed Boost")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.YELLOW
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Speed boost automatically activated when available",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Fire Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.RED
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press F to shoot fire balls",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
         }
     }
+
 
     // This enum represents the different states this screen can be in
     private enum SnowScreenState {

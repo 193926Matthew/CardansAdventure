@@ -177,6 +177,11 @@ public class BugEnemy extends Enemy {
     }
 
     @Override
+    public int getHealth(){
+        return this.health;
+    }
+    
+    @Override
     public void onEndCollisionCheckY(boolean hasCollided, Direction direction, MapEntity entityCollidedWith) {
         // if bug is colliding with the ground, change its air ground state to GROUND
         // if it is not colliding with the ground, it means that it's currently in the air, so its air ground state is changed to AIR

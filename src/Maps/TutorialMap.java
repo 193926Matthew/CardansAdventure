@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
 import EnhancedMapTiles.NewEndLevel;
+import EnhancedMapTiles.*;
 import Level.*;
 
 public class TutorialMap extends Map {
@@ -25,6 +26,7 @@ public class TutorialMap extends Map {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         BugEnemy bugEnemy1 = new BugEnemy(getMapTile(53, 12).getLocation().subtractY(25), Direction.RIGHT);
+        System.out.println(bugEnemy1.getHealth());
         enemies.add(bugEnemy1);
 
         return enemies;
@@ -33,9 +35,15 @@ public class TutorialMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+
+        PowerUp speedBoost = new PowerUp(getMapTile(11,13).getLocation(), "Speed Boost", "SpeedBoost.png");
+
+
     
         NewEndLevel newEndLevel = new NewEndLevel(getMapTile(74, 12).getLocation());
         enhancedMapTiles.add(newEndLevel);
+        enhancedMapTiles.add(speedBoost);
+
 
         return enhancedMapTiles;
     }

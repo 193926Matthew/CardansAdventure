@@ -20,6 +20,8 @@ public abstract class Player extends GameObject {
     public boolean complete = false;
 
     protected float walkSpeed = 0;
+    protected float boostedSpeed = 12;
+    protected float baseSpeed = 4.3f;
     protected float gravity = 0;
     protected float jumpHeight = 0;
     protected float jumpDegrade = 0;
@@ -59,6 +61,10 @@ public abstract class Player extends GameObject {
     protected Key TAIL_ATTACK_SPIN_KEY = Key.LEFT;
     protected Key DOUBLE_JUMP_KEY = Key.W;
     protected Key ICE_BALL_KEY = Key.I;
+    protected Key POISON_BALL_KEY = Key.O;
+    protected Key FIRE_BALL_KEY = Key.B; 
+    //protected Key SPEED_BOOST_KEY = Key.S;
+
 
     //ice slider
     int iceSlideAmmount = 1;
@@ -77,11 +83,22 @@ public abstract class Player extends GameObject {
     private boolean hasDoubleJump = false;
     private boolean usedDoubleJump = false;
     private boolean hasIceBall = false;
+    private boolean hasPoisonBall = false;
+    private boolean hasFireBall  = false;
+    private boolean hasSuperSpeed = false;
+
+
     // private boolean hasJumped = false;
     private int doubleJumpKeyCount = 0;
     private int doubleJumpDelay;
+    private int superSpeedDelay = 400; 
+    private int superSpeedTime = 1000;
+    
     private int dashDelay = 18;
     private boolean enemyHitByIceBall;
+    private boolean enemyHitByPoison;
+    private boolean speedInCooldown;
+    private boolean speedActive;
 
     //Timer for spikes
     private Timer spikeTimer = new Timer();
@@ -152,23 +169,13 @@ public abstract class Player extends GameObject {
     public void update() {
         moveAmountX = 0;
         moveAmountY = 0;
-        boolean doubleJumpPrevCollected = false;
-        boolean icePrevCollected = false;
-
-        //upon checkpoint reset, update does not recognize previous status of powerups as being true
-        //may be issue with powerup class? Once collected disappears, status remains with player
-        //once current player dies, instance lost with it. 
-        //everything is reset with checkpoint 
-        hasDoubleJump = hasDoubleJump();
-        if(hasDoubleJump == true){
-            doubleJumpPrevCollected = true;
-        }else{
-            if(doubleJumpPrevCollected == true){
-                this.setHasDoubleJump(true);
-                hasDoubleJump = true;
-            }
+       
+        if(hasSuperSpeed){
+           playerSpeedBoost();
         }
-        hasIceBall = hasIceBall();
+       
+
+        
        
 
         // if player is currently playing through level (has not won or lost)
@@ -234,13 +241,13 @@ public abstract class Player extends GameObject {
                     isInvincible = false;
                 }
             }
+            
             if(usedDoubleJump == true){
                 //System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
                 doubleJumpDelay = 90;
                 //System.out.println(usedDoubleJump + " " + doubleJumpDelay);
                 usedDoubleJump = false;
             }else if (usedDoubleJump == false && hasDoubleJump == true && doubleJumpDelay <= 90 && doubleJumpDelay != 0){
-                System.out.println("State: " + playerState + ", AirGround: " + airGroundState + ", Delay: " + doubleJumpDelay);
                 doubleJumpDelay--;
                // System.out.println(usedDoubleJump + " " + doubleJumpDelay);
             }
@@ -311,6 +318,15 @@ public abstract class Player extends GameObject {
             case ICE_BALL:
                 playerIceBallAttack();
                 break;
+            case POISON_BALL:
+                playerPoisonBallAttack();
+                break;
+            case FIRE_BALL:
+                playerFireBallAttack();
+                break;
+            case SPEED_BOOST:
+                speedBoostActivated();
+                break;
         }
     }
 
@@ -346,6 +362,12 @@ public abstract class Player extends GameObject {
         else if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
+        else if(Keyboard.isKeyDown(POISON_BALL_KEY) && hasPoisonBall){
+            playerState = PlayerState.POISON_BALL;
+        }
+         else if(Keyboard.isKeyDown(FIRE_BALL_KEY) && hasFireBall){
+            playerState = PlayerState.FIRE_BALL;
+        }
 
 
 
@@ -354,15 +376,35 @@ public abstract class Player extends GameObject {
     // player WALKING state logic
     protected void playerWalking() {
         // if walk left key is pressed, move player to the left
-        if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
+        
+        if(Keyboard.isKeyDown(MOVE_LEFT_KEY) && hasSuperSpeed){
+            speedBoostActivated();
+            if(this.getCoolDownStatus() == false){
+                walkSpeed = boostedSpeed;  
+            }else{
+                walkSpeed = baseSpeed;
+            }
+                      
+            moveAmountX -= walkSpeed;
+            facingDirection = Direction.LEFT; 
+        }else if (Keyboard.isKeyDown(MOVE_LEFT_KEY)) {
             moveAmountX -= walkSpeed;
             facingDirection = Direction.LEFT;
         }
-
         // if walk right key is pressed, move player to the right
-        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+        else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) && hasSuperSpeed) {
+           speedBoostActivated();
+            if(this.getCoolDownStatus() == false){
+                walkSpeed = boostedSpeed;  
+            }else{
+                walkSpeed = baseSpeed;
+            }
             moveAmountX += walkSpeed;
             facingDirection = Direction.RIGHT;
+        } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY)) {
+            moveAmountX += walkSpeed;
+            facingDirection = Direction.RIGHT;
+
         } else if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY)) {
             playerState = PlayerState.STANDING;
         }
@@ -392,6 +434,12 @@ public abstract class Player extends GameObject {
         else if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
         }
+        else if(Keyboard.isKeyDown(POISON_BALL_KEY) && hasPoisonBall){
+            playerState = PlayerState.POISON_BALL;
+        }
+         else if(Keyboard.isKeyDown(FIRE_BALL_KEY) && hasFireBall){
+            playerState = PlayerState.FIRE_BALL;
+        }
     }
 
     // player CROUCHING state logic
@@ -417,6 +465,12 @@ public abstract class Player extends GameObject {
         //if player is crouched, and hits the ice key, then if they have the powerup it will activate
         if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
+        }
+         if(Keyboard.isKeyDown(POISON_BALL_KEY) && hasPoisonBall){
+            playerState = PlayerState.POISON_BALL;
+        }
+        if(Keyboard.isKeyDown(FIRE_BALL_KEY) && hasFireBall){
+            playerState = PlayerState.FIRE_BALL;
         }
     }
 
@@ -467,7 +521,7 @@ public abstract class Player extends GameObject {
 
                     airGroundState = AirGroundState.AIR;
                     jumpForce = jumpHeight * 2;
-                    jumpForce -= 10;
+                    jumpForce -= jumpHeight / 2;
                     if (jumpForce > 0) {
                         moveAmountY -= jumpForce;
                         jumpForce -= jumpDegrade;
@@ -485,6 +539,8 @@ public abstract class Player extends GameObject {
         }
     }
 
+    //activates when player hits i key, locks the key and calls the firing mechanism
+    //unlocks key when the key is up
     protected void playerIceBallAttack(){
         if(hasIceBall && Keyboard.isKeyDown(ICE_BALL_KEY) && !keyLocker.isKeyLocked(ICE_BALL_KEY)){
             keyLocker.lockKey(ICE_BALL_KEY);
@@ -527,6 +583,137 @@ public abstract class Player extends GameObject {
 
         }
     }
+
+    protected void playerSpeedBoost(){
+        //superSpeedTime is the time active for the speed boost
+        //if greater than 0
+        if (superSpeedTime > 0) {
+            //must decrease as used, to reach cooldown
+            superSpeedTime--;
+
+            //if we reach 400, then that indicates that 500 has passed
+            //thus cooldown begins
+            if (superSpeedTime == 400) { // boost ends, cooldown begins
+                //reset walkspeed to the normal baseSpeed
+                this.walkSpeed = baseSpeed;
+                this.setWalkSpeed(4.3f);
+                //print so player is aware
+                System.out.println("Boost ended, cooldown started.");
+                //change cooldown status to true
+                this.speedInCooldown = true;
+            }
+            //if superSpeedTime is 0, then that means that the cooldown has ended
+            //we change the speedInCooldown to false
+            if (superSpeedTime == 0) {
+                this.speedInCooldown = false;
+                System.out.println("Cooldown ended, boost ready.");
+            }
+    }
+
+    }
+
+    //returns the current cooldown status of the speed boost
+    public boolean getCoolDownStatus(){
+        return this.speedInCooldown;
+    }
+
+    //Used to activate/update the superSpeedTime
+    //increases player speed if superSpeedTime <=0,
+        //
+    protected void speedBoostActivated(){
+        if (superSpeedTime <= 0) {
+            walkSpeed = boostedSpeed;
+            this.setWalkSpeed(boostedSpeed);
+            superSpeedTime = 1000 + 200; // 1000 for boost + 400 for cooldown
+        }
+
+    }
+    //Activates poison ball sequence 
+    protected void playerPoisonBallAttack(){
+        if(hasPoisonBall && Keyboard.isKeyDown(POISON_BALL_KEY) && !keyLocker.isKeyLocked(POISON_BALL_KEY)){
+            keyLocker.lockKey(POISON_BALL_KEY);
+            //activates firing for poison ball
+            firePoisonBall();
+        }
+        if(Keyboard.isKeyUp(POISON_BALL_KEY)){
+            keyLocker.unlockKey(POISON_BALL_KEY);
+            playerState = PlayerState.WALKING;
+        }
+    }
+
+    //Activates to fire the poison ball
+    protected void firePoisonBall(){
+        
+        float speed = 0;
+
+        if(this.facingDirection == Direction.RIGHT){
+            //for(int i = 0; i < 2; i++){
+                Point spawn = new Point(Math.round(getX() + getWidth()), getY() + (3 * 10));
+                speed = 0.2f;
+                PoisonBall poisonBall = new PoisonBall(spawn,speed + (5*1.2f),240,map.getEnemies());
+                this.enemyHitByPoison = poisonBall.enemyHit();
+                this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_RIGHT";
+
+                map.addEnhancedMapTile(poisonBall);
+
+            //}
+
+        }else{
+            //for(int i = 0; i < 2; i++){
+                Point spawn = new Point(Math.round(getX() - 21), getY() + (3 * 10));
+                speed = -0.2f;
+                PoisonBall poisonBall = new PoisonBall(spawn,speed + (5*-1.2f),240,map.getEnemies());
+                this.enemyHitByPoison = poisonBall.enemyHit();
+                this.currentAnimationName = facingDirection == Direction.LEFT ? "WALK_LEFT" : "WALK_LEFT";
+
+
+                map.addEnhancedMapTile(poisonBall);
+            //}
+
+        }
+    }
+        
+    //runs when player hits the F key, locks the key
+    //and calls firing method for flame ball
+    protected void playerFireBallAttack(){
+        if(hasFireBall && Keyboard.isKeyDown(FIRE_BALL_KEY) && !keyLocker.isKeyLocked(FIRE_BALL_KEY)){
+            keyLocker.lockKey(FIRE_BALL_KEY);
+            //activates firing for poison ball
+            fireFlameBall();
+        }
+        if(Keyboard.isKeyUp(FIRE_BALL_KEY)){
+            keyLocker.unlockKey(FIRE_BALL_KEY);
+            playerState = PlayerState.WALKING;
+        }
+    }
+
+    //Activates to fire the fire ball
+    protected void fireFlameBall(){
+        
+        float speed = 0;
+
+        if(this.facingDirection == Direction.RIGHT){
+            for(int i = 0; i < 3; i++){
+                Point spawn = new Point(Math.round(getX() + getWidth()), getY() + (i * 10));
+                speed = 1.5f;
+                this.currentAnimationName = facingDirection == Direction.RIGHT ? "WALK_RIGHT" : "WALK_RIGHT";
+
+                FirePower fireball = new FirePower(spawn,speed + (i*1.2f),240,map.getEnemies());
+    
+                map.addEnhancedMapTile(fireball);
+            }
+
+        }else{
+            for(int i = 0; i < 3; i++){
+                Point spawn = new Point(Math.round(getX() - 21), getY() + (i * 10));
+                speed = -1.5f;
+                FirePower fireball = new FirePower(spawn,speed + (i*0.5f),240,map.getEnemies());
+                this.currentAnimationName = facingDirection == Direction.LEFT ? "WALK_LEFT" : "WALK_LEFT";
+                map.addEnhancedMapTile(fireball);
+            }
+
+        }
+    }
         
     
     
@@ -535,20 +722,28 @@ public abstract class Player extends GameObject {
 
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND ) {
-
+           
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
             // player is set to be in air and then player is sent into the air
             airGroundState = AirGroundState.AIR;
+            
             jumpForce = jumpHeight;
-            if (jumpForce > 0) {
-                moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
-                if (jumpForce < 0) {
-                    jumpForce = 0;
-                }
+            //if has superSpeed and is not in cool down, will increase jump force so player
+            //does not feel delayed, otherwise if in cooldown or does not have super speed resorts to normal status
+            if(hasSuperSpeed && this.getCoolDownStatus() == false){
+                jumpForce *= 1.2f;
             }
+            if (jumpForce > 0) {
+                    moveAmountY -= jumpForce;
+                    jumpForce -= jumpDegrade;
+                    if (jumpForce < 0) {
+                        jumpForce = 0;
+                    }
+                }
+            
+           
         }
 
         // if player is in air (currently in a jump) and has more jumpForce, continue
@@ -591,6 +786,12 @@ public abstract class Player extends GameObject {
 
         if(Keyboard.isKeyDown(ICE_BALL_KEY) && hasIceBall){
             playerState = PlayerState.ICE_BALL;
+        }
+         if(Keyboard.isKeyDown(POISON_BALL_KEY) && hasPoisonBall){
+            playerState = PlayerState.POISON_BALL;
+        }
+         if(Keyboard.isKeyDown(FIRE_BALL_KEY) && hasFireBall){
+            playerState = PlayerState.FIRE_BALL;
         }
     }
 
@@ -667,13 +868,35 @@ public abstract class Player extends GameObject {
     public boolean hasDoubleJump(){
         return hasDoubleJump;
     }
+   public void setHasSpeedBoost(boolean value){
+        this.hasSuperSpeed = value;
+    }
 
+    public boolean hasSuperSpeed(){
+        return hasSuperSpeed;
+    }
      public void setHasIceBall(boolean value){
         this.hasIceBall = value;
     }
 
     public boolean hasIceBall(){
         return hasIceBall;
+    }
+
+    public void setHasPoisonBall(boolean value){
+        this.hasPoisonBall = value;
+    }
+
+    public boolean hasPoisonBall(){
+        return hasPoisonBall;
+    }
+
+     public void setHasFireBall(boolean value){
+        this.hasFireBall = value;
+    }
+
+    public boolean hasFireBall(){
+        return hasFireBall;
     }
     // while player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() {
@@ -852,13 +1075,6 @@ public abstract class Player extends GameObject {
                 moveY(20);
             } else {
                 respawn();
-                setHasDoubleJump(hasDoubleJump());
-                setHasIceBall(hasIceBall());
-                System.out.println(hasIceBall());
-                System.out.println(hasDoubleJump());
-                //hasIceBall
-                //hasDoubleJump
-                // tell all player listeners that the player has died in the level
                 
                 for (PlayerListener listener : listeners) {
                     listener.onDeath();
