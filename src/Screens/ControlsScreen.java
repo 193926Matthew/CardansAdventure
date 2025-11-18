@@ -29,6 +29,12 @@ public class ControlsScreen extends Screen {
     protected SpriteFont tailAttack;
     protected SpriteFont icePowerUp;
     protected SpriteFont doubleJumpPowerUp;
+    protected SpriteFont firePowerUp;
+    protected SpriteFont poisonBallPowerUp;
+
+
+    
+
     protected SpriteFont returnInstructionsLabel;
 
     public ControlsScreen(ScreenCoordinator screenCoordinator) {

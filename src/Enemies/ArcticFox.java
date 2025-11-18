@@ -57,7 +57,10 @@ public class ArcticFox extends Enemy {
         super.draw(graphicsHandler);
         // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
-
+     @Override
+    public int getHealth(){
+        return this.health;
+    }
     @Override
     public void initialize() {
         super.initialize();

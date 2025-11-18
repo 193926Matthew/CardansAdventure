@@ -18,17 +18,18 @@ import java.util.List;
 // This class is for the fireball enemy that the DinosaurEnemy class shoots out
 // it will travel in a straight line (x axis) for a set time before disappearing
 // it will disappear early if it collides with a solid map tile
-public class IceBall extends EnhancedMapTile{
+public class PoisonBall extends EnhancedMapTile{
     private float movementSpeed;
     private int existenceFrames;
     private MapEntityStatus mapEntityStatus;
     private float verticalSpeed = 0;
     private float gravity = 0.3f;
+    private int poisonDelay = 100;
     private List<Enemy> enemies;
-    private boolean enemyHitByIceBall = false;
+    private boolean enemyHitByPoison = false;
 
-    public IceBall(Point location, float movementSpeed, int existenceFrames, List<Enemy> enemies) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("iceBall.png"), 15, 15), TileType.PASSABLE);
+    public PoisonBall(Point location, float movementSpeed, int existenceFrames, List<Enemy> enemies) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("poisonBall.png"), 15, 15), TileType.PASSABLE);
 
         this.movementSpeed = movementSpeed;
         this.currentAnimationName = "DEFAULT";
@@ -45,33 +46,30 @@ public class IceBall extends EnhancedMapTile{
         if (existenceFrames == 0 ) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
         } else {
-            // move fireball forward
+            // move poisonBall forward
             moveXHandleCollision(movementSpeed);
             verticalSpeed += gravity;
             moveYHandleCollision(verticalSpeed);
             for(Enemy enemy: enemies){
-                //System.out.println("Iceball state: " + enemyHitByIceBall);
-
-               // this.enemyHitByIceBall = false;
                 if(this.intersects(enemy)){
-                    //System.out.println("Enemy attacked!");
-                   //System.out.println("Collision detected with enemy: " + enemy);
-                    this.enemyHitByIceBall = true;
-                    enemy.setIceBallHitStatus(true);
-                    //System.out.println("Enemy hit status: " + enemy.getIceBallHitStatus());
-                    
+                    this.enemyHitByPoison = true;
+                    enemy.setPoisonStatus(true);                    
                     for (MapEntity entity : map.getEnemies()) {
                         if (entity instanceof Enemy && this.intersects(entity)) {
-                            //System.out.println(enemy.getMovementSpeed());
-                            float movementSpeed = enemy.getMovementSpeed();
-                            //System.out.println("Iceball class state: " + enemyHitByIceBall);
-
-                            movementSpeed *= 0.75f;
-                            enemy.setMovementSpeed(movementSpeed);
-                            //readded ice able to attack enemy
+                            //re-added ice able to attack enemy
                             //possibly removed prior 
+                            //hurts enemy
                             ((Enemy)entity).kill(10);
-                            //System.out.println("Ice state" + enemyHitByIceBall);
+                            System.out.println("Enemy dealt 10 damage by poison ball!" );
+                            //ensures that poison status is set to true, allows for poison to run in Enemy class
+                            ((Enemy)entity).setPoisonStatus(true);
+                            System.out.println("Enemy now has with poison ailment");
+
+                            boolean poison = ((Enemy)entity).getPoisonStatus();
+                            System.out.println(poison);
+                            }
+
+                    
                     }
                     //enemy.mapEntityStatus = MapEntityStatus.REMOVED;
                     this.mapEntityStatus = MapEntityStatus.REMOVED;
@@ -80,14 +78,10 @@ public class IceBall extends EnhancedMapTile{
             }
 
 
-            }
+            
 
         }
-
-            //System.out.println("Update called. enemyHitByIceBall = " + enemyHitByIceBall);
-
-
-        }
+}
        
 
 
@@ -129,7 +123,7 @@ public class IceBall extends EnhancedMapTile{
     }
 
     public boolean enemyHit(){
-        if(enemyHitByIceBall == true){
+        if(enemyHitByPoison == true){
             //System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
            // System.out.println("Iceball class! running: " + enemyHitByIceBall);
             return true;

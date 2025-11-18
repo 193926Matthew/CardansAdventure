@@ -113,6 +113,7 @@ public class DinosaurEnemy extends Enemy {
        
         if (health <= 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
+            this.isDead();
             super.update();
             return;
         }
@@ -426,6 +427,11 @@ public class DinosaurEnemy extends Enemy {
         }};
     }
     
+    @Override
+    public int getHealth(){
+        return this.health;
+    }
+
     @Override
     public float getMovementSpeed(){
         return this.movementSpeed;

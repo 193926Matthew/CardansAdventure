@@ -50,12 +50,15 @@ public class SnowMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+        
 
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(100,18).getLocation());
         enhancedMapTiles.add(checkpoint1);
 
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
         enhancedMapTiles.add(checkpoint2);
+        
+
 
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
