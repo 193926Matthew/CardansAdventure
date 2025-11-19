@@ -9,7 +9,9 @@ import Tilesets.JungleTileset;
 import Utils.Direction;
 
 import Enemies.JungleBoss;
+import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.NewEndLevel;
+import EnhancedMapTiles.PowerUp;
 import EnhancedMapTiles.SpawnBossTrigger;
 
 public class JungleBossArena extends Map {
@@ -63,6 +65,16 @@ public class JungleBossArena extends Map {
         if (BossDead){
             enhancedMapTiles.add(friend);
         }
+
+        
+        PowerUp fire = new PowerUp(getMapTile(6,4).getLocation(),"Fire Ball","fireFlower.png");
+        enhancedMapTiles.add(fire);
+
+        HealthPowerUp health1 = new HealthPowerUp(getMapTile(16,4).getLocation());
+        HealthPowerUp health2 = new HealthPowerUp(getMapTile(28,4).getLocation());
+        enhancedMapTiles.add(health1);
+        enhancedMapTiles.add(health2);
+        
         return enhancedMapTiles;
         
     }

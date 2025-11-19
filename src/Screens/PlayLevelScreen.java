@@ -137,10 +137,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         //powerup popup
         if (showPowerUpText && powerUpText != null) {
             powerUpText.draw(graphicsHandler);
-        if (powerUpTextLine2 != null) {
-            powerUpTextLine2.draw(graphicsHandler);
+            if (powerUpTextLine2 != null) {
+                powerUpTextLine2.draw(graphicsHandler);
+            }
         }
-    }
        
 
     }

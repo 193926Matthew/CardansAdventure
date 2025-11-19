@@ -25,7 +25,7 @@ public class JungleBoss extends Enemy{
     private Direction facingDirection;
     private AirGroundState airGroundState;
     private boolean hurt = false;
-    private int health = 50; // orginal 25
+    private int health = 250; // orginal 25
     private int HurtTimer = 240;
     
     // jumping
