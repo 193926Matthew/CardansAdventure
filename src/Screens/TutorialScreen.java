@@ -148,4 +148,8 @@ public class TutorialScreen extends Screen implements PlayerListener {
     private enum TutorialScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
+
+    @Override
+    public void onOpeningCutsceneCompleted() {
+    }
 }

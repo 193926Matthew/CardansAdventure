@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import Enemies.ArcticFox;
 import Enemies.DinosaurEnemy;
+import Enemies.PoisonFrog;
 import Engine.ImageLoader;
 import EnhancedMapTiles.BackToLobby;
 import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.CheckPoint;
+import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import EnhancedMapTiles.NewEndLevel;
 import EnhancedMapTiles.VerticalMovingPlatform;
@@ -25,8 +27,7 @@ public class JungleMap extends Map{
 
     public JungleMap() {
         super("Testjunglemap.txt", new JungleTileset());
-        this.playerStartPosition = new Point(1, 20);
-
+        this.playerStartPosition = getMapTile(2, 20).getLocation();
     }
 
         @Override
@@ -86,6 +87,9 @@ public class JungleMap extends Map{
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(166,21).getLocation());
         enhancedMapTiles.add(checkpoint2);
 
+        HealthPowerUp healthPack1 = new HealthPowerUp(getMapTile(107,9).getLocation());
+        enhancedMapTiles.add(healthPack1);
+
         return enhancedMapTiles;
     }
 
@@ -101,6 +105,16 @@ public class JungleMap extends Map{
 
         DinosaurEnemy dino3 = new DinosaurEnemy(getMapTile(167, 5).getLocation().addY(2), getMapTile(169, 5).getLocation().addY(2), Direction.LEFT);
         enemies.add(dino3);
+
+        PoisonFrog frog1 = new PoisonFrog(getMapTile(76,5).getLocation(), Direction.LEFT);
+        enemies.add(frog1);
+
+        PoisonFrog frog2 = new PoisonFrog(getMapTile(122,27).getLocation(), Direction.LEFT);
+        enemies.add(frog2);
+
+        PoisonFrog frog3 = new PoisonFrog(getMapTile(192,21).getLocation(), Direction.LEFT);
+        enemies.add(frog3);
+
 
         return enemies;
     }

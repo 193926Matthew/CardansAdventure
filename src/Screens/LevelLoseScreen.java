@@ -13,6 +13,9 @@ public class LevelLoseScreen extends Screen {
     protected PlayLevelScreen playLevelScreen;
     protected SnowScreen snowScreen;
     protected JungleScreen jungleScreen;
+    protected TutorialScreen tutorialScreen;
+    protected SnowBossScreen snowbossScreen;
+
 
     public LevelLoseScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
@@ -24,8 +27,18 @@ public class LevelLoseScreen extends Screen {
         initialize();
     }
 
+    public LevelLoseScreen(TutorialScreen tutorialScreen) {
+        this.tutorialScreen = tutorialScreen;
+        initialize();
+    }
+
      public LevelLoseScreen(JungleScreen jungleScreen) {
         this.jungleScreen = jungleScreen;
+        initialize();
+    }
+    
+    public LevelLoseScreen(SnowBossScreen snowbossScreen) {
+        this.snowbossScreen = snowbossScreen;
         initialize();
     }
 
@@ -69,4 +82,5 @@ public class LevelLoseScreen extends Screen {
         loseMessage.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
     }
+
 }

@@ -5,7 +5,9 @@ import Screens.JungleScreen;
 //import Screens.JungleScreen;
 import Screens.LobbyScreen;
 import Screens.MenuScreen;
+import Screens.OpeningCutScenceScreen;
 import Screens.PlayLevelScreen;
+import Screens.SnowBossScreen;
 import Screens.TutorialScreen;
 import Screens.SnowScreen;
 
@@ -107,11 +109,17 @@ public class ScreenCoordinator extends Screen {
 					case SNOW:
 						currentScreen = new SnowScreen(this);
 						break;
+					case SNOWBOSS:
+						currentScreen = new SnowBossScreen(this);
+						break;
 					case TUTORIAL:
 						currentScreen = new TutorialScreen(this);
 						break;
 					case CONTROLS:
 						currentScreen = new ControlsScreen(this);
+						break;
+					case OPENING:
+						currentScreen = new OpeningCutScenceScreen(this);
 						break;
 				}
 				staticCurrentScreen = currentScreen;

@@ -21,51 +21,53 @@ import Maps.JungleMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Maps.SnowMap;
+import Maps.StartingCutsceneMap;
 import Game.GameState;
 
-public class JungleScreen extends Screen implements PlayerListener {
+public class OpeningCutScenceScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
     protected Hitbox hitbox;
-    protected JungleScreenState jungleScreenState;
+    protected OpeningCutScenceScreenState openingCutScenceScreenState;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
+    protected SpriteFont openingCutSceneMessage;
 
 
-    public JungleScreen(ScreenCoordinator screenCoordinator) {
+    public OpeningCutScenceScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
     @Override
     public void initialize() {
-        map = new JungleMap();
-
+        map = new StartingCutsceneMap();
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
         this.player.addListener(this);
+        player.startOpeningScene();
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
-        levelLoseScreen = new LevelLoseScreen(this);
         //levelLoseScreen = new LevelLoseScreen(this);
-         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
+        this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
+        openingCutSceneMessage = new SpriteFont("I need to help save my friends", 100,250 ,"ARCADECLASSIC",40, Color.WHITE);
+        openingCutSceneMessage.setOutlineColor(Color.BLACK);
+        openingCutSceneMessage.setOutlineThickness(3);
 
-        this.jungleScreenState = JungleScreenState.RUNNING;
+        this.openingCutScenceScreenState = OpeningCutScenceScreenState.RUNNING;
     }
 
     @Override
     public void update() {
-        switch (jungleScreenState) {
+        switch (openingCutScenceScreenState) {
             case RUNNING:
                 player.update();
-                map.update(player);
-                                
+                map.update(player);                  
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
@@ -100,7 +102,7 @@ public class JungleScreen extends Screen implements PlayerListener {
                         levelClearedScreen.update();
                         screenTimer--;
                         if (screenTimer == 0) {
-                            GoBackToLobby();
+                            GoToTutorial();
                         }
                     }
                 break;
@@ -115,7 +117,7 @@ public class JungleScreen extends Screen implements PlayerListener {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        switch (jungleScreenState) {
+        switch (openingCutScenceScreenState) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
@@ -131,17 +133,19 @@ public class JungleScreen extends Screen implements PlayerListener {
                 break;
         }
 
-        lives.setText("Health: " + player.getHealth());
-        lives.draw(graphicsHandler);
+        openingCutSceneMessage.setText("I need to help save my friends");
+        if(player.getDisplayOpeningText()){
+            openingCutSceneMessage.draw(graphicsHandler);
+        }
 
     }
 
 
-    public JungleScreenState getJungleScreenState() {
-        return jungleScreenState;
+    public OpeningCutScenceScreenState getOpeningCutScenceScreenState() {
+        return openingCutScenceScreenState;
     }
 
-    private enum JungleScreenState {
+    private enum OpeningCutScenceScreenState {
         RUNNING,
         LEVEL_COMPLETED,
         LEVEL_LOSE
@@ -149,16 +153,16 @@ public class JungleScreen extends Screen implements PlayerListener {
 
     @Override
     public void onLevelCompleted() {
-        if (jungleScreenState != JungleScreenState.LEVEL_COMPLETED) {
-            jungleScreenState = JungleScreenState.LEVEL_COMPLETED;
+        if (openingCutScenceScreenState != OpeningCutScenceScreenState.LEVEL_COMPLETED) {
+            openingCutScenceScreenState = OpeningCutScenceScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
         }
     }
 
     @Override
     public void onDeath() {
-        if (jungleScreenState != JungleScreenState.LEVEL_LOSE) {
-            jungleScreenState = JungleScreenState.LEVEL_LOSE;
+        if (openingCutScenceScreenState != OpeningCutScenceScreenState.LEVEL_LOSE) {
+            openingCutScenceScreenState = OpeningCutScenceScreenState.LEVEL_LOSE;
         }
     }
 
@@ -171,7 +175,7 @@ public class JungleScreen extends Screen implements PlayerListener {
     }
 
      public void resetcheckTEST() {
-            map = new JungleMap();
+            map = new StartingCutsceneMap();
 
             System.out.print("Start again");
             // setup player
@@ -190,17 +194,18 @@ public class JungleScreen extends Screen implements PlayerListener {
             map.addHitbox(this.hitbox);
 
             levelClearedScreen = new LevelClearedScreen();
-            levelLoseScreen = new LevelLoseScreen(this);
 
-            this.jungleScreenState = jungleScreenState.RUNNING;
+            this.openingCutScenceScreenState = OpeningCutScenceScreenState.RUNNING;
             this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
-     public void GoBackToLobby(){
-        screenCoordinator.setGameState(GameState.LOBBY);
+     public void GoToTutorial(){
+        screenCoordinator.setGameState(GameState.TUTORIAL);
     }
 
      @Override
      public void onOpeningCutsceneCompleted() {
+        System.out.println("FIRE");
+        screenCoordinator.setGameState(GameState.TUTORIAL);
      }
 }

@@ -7,6 +7,7 @@ import EnhancedMapTiles.QuicksandTile;
 import EnhancedMapTiles.QuicksandTopTile;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
+import SpriteFont.SpriteFont;
 import Utils.AirGroundState;
 import Utils.Direction;
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
     public boolean complete = false;
+    public boolean startOpeningScene = false;
+    public boolean displayOpeningText = true;
+
+    //opening jump count
+    int jumpCount = 0;
 
     protected float vineY = 0;
     protected float walkSpeed = 0;
@@ -28,6 +34,7 @@ public abstract class Player extends GameObject {
      protected float terminalVelocityX = 0;
     protected float momentumYIncrease = 0;
     protected float momentumXDecrase = 0;
+    private long openingSceneEndTime = 0;
 
     // values for player stats
     public int health = 100;
@@ -86,6 +93,8 @@ public abstract class Player extends GameObject {
 
     //Timer for spikes
     private Timer spikeTimer = new Timer();
+
+
 
     // flags
     protected boolean onIce = false;
@@ -156,6 +165,37 @@ public abstract class Player extends GameObject {
         moveAmountY = 0;
         boolean doubleJumpPrevCollected = false;
         boolean icePrevCollected = false;
+
+        // Opening cutscene: walk right for 5 seconds
+        if (startOpeningScene) {
+            // 1. Walk right during the first 5 seconds
+            if (System.currentTimeMillis() < openingSceneEndTime+100) {
+
+                    moveRight(3f);
+                    facingDirection = Direction.RIGHT;
+                    currentAnimationName = "WALK_RIGHT";
+
+                    super.update();
+                    return;   
+            }
+
+            if (playerState != PlayerState.JUMPING && airGroundState != airGroundState.AIR) {
+                displayOpeningText = false;
+                if(jumpCount >= 5){
+                    startOpeningScene = false;
+                    for (PlayerListener listener : listeners) {
+                        listener.onOpeningCutsceneCompleted();
+                    }
+                }
+                jumpCount++;
+                playerState = PlayerState.JUMPING;
+                currentAnimationName = "JUMP_RIGHT";
+
+                super.update();
+                return;
+            }
+        }
+
 
         //upon checkpoint reset, update does not recognize previous status of powerups as being true
         //may be issue with powerup class? Once collected disappears, status remains with player
@@ -926,7 +966,21 @@ public abstract class Player extends GameObject {
     
     }
     
+    public void startOpeningScene(){
+        startOpeningScene = true;
+        openingSceneEndTime = System.currentTimeMillis() + 5000;
+    }
 
+    public void openingScene(){
+        
+    }
+    
+   
+    
+
+    public void updatePlayer(){
+        super.update();
+    }
     public boolean enemyHits(){
         return this.enemyHitByIceBall;
     }
@@ -998,6 +1052,7 @@ public abstract class Player extends GameObject {
         this.health = health;
     }
 
+
     public void resetSpikeTimer(){
         spikeTimer.cancel();
         spikeTimer = new Timer();
@@ -1009,6 +1064,9 @@ public abstract class Player extends GameObject {
         }, 1500);
         canTakeSpikeDamage = false;
     }
+
+
+
 
     protected void isTouchingIce(){
         for(MapTile tile: map.getMapTiles()){
@@ -1068,6 +1126,14 @@ public abstract class Player extends GameObject {
         }
         return false;
    }
+
+    public boolean getDisplayOpeningText(){
+        return displayOpeningText;
+    }
+
+    public boolean isOpeningSceneActive() {
+        return startOpeningScene;
+    }
 
     protected void playerClimbing() {
 

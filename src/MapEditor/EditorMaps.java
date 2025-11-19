@@ -4,8 +4,10 @@ import Level.Map;
 import Maps.JungleMap;
 import Maps.DesertMap; // Ensure DesertMap.java exists in src/Maps/
 import Maps.LobbyMap;
+import Maps.SnowBossMap;
 import Maps.TestMap;
 import Maps.SnowMap;
+import Maps.StartingCutsceneMap;
 import Maps.TitleScreenMap;
 import Maps.TutorialMap;
 
@@ -22,6 +24,8 @@ public class EditorMaps {
             add("JungleMap");
             add("SnowMap");
             add("TutorialMap");
+            add("SnowBossMap");
+            add("StartingCutsceneMap");
         }};
     }
 
@@ -41,6 +45,10 @@ public class EditorMaps {
                 return new SnowMap();
             case "TutorialMap":
                 return new TutorialMap();
+            case "SnowBossMap":
+                return new SnowBossMap();
+            case "StartingCutsceneMap":
+                return new StartingCutsceneMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

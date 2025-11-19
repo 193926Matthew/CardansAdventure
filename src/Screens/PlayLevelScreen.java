@@ -265,4 +265,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     private enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
+
+    @Override
+    public void onOpeningCutsceneCompleted() {
+    }
 }
