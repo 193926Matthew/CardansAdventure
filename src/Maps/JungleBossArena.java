@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Tilesets.CommonTileset;
+import Tilesets.JungleTileset;
 import Utils.Direction;
 
 import Enemies.JungleBoss;
@@ -18,7 +19,7 @@ public class JungleBossArena extends Map {
 
 
     public JungleBossArena() {
-        super("JungleBossArena.txt", new CommonTileset());
+        super("JungleBossArena.txt", new JungleTileset());
         this.playerStartPosition = getMapTile(2, 4).getLocation();
     }
 
@@ -32,14 +33,24 @@ public class JungleBossArena extends Map {
 
     public void spawnBossNow() {
         JungleBoss boss = new JungleBoss(
-            getMapTile(15, 5).getLocation().subtractY(25),
-            Direction.LEFT
+            getMapTile(28, 11).getLocation().subtractY(25),
+            Direction.LEFT,
+            this
         );
 
         addEnemy(boss);
         bossAlreadySpawned = true;
         System.out.println("Jungle Boss Spawned");
-    }   
+    }
+    
+    public void spawnFriend(){
+        System.out.println("frined");
+        NewEndLevel friend = new NewEndLevel(getMapTile(22,11).getLocation());
+        addEnhancedMapTile(friend);
+        friend.initialize();
+        return;
+
+    }
 
 
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
