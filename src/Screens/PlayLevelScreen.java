@@ -324,7 +324,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             powerUpText.setOutlineThickness(3);
 
             powerUpTextLine2 = new SpriteFont(
-                "Press F to shoot fire balls",
+                "Press B to shoot fire balls",
                 300,
                 190,
                 "Arial",
