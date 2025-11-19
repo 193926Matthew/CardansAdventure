@@ -57,7 +57,7 @@ public class SnowMap extends Map {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
         
 
-        PowerUp iceBall = new PowerUp(getMapTile(8,18).getLocation(),"Ice Ball","updatedIce.png");
+        PowerUp iceBall = new PowerUp(getMapTile(8,18).getLocation(),"Ice Ball","updatedIceFlower.png");
         enhancedMapTiles.add(iceBall);
 
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(100,18).getLocation());

@@ -73,6 +73,10 @@ public class PowerUp extends EnhancedMapTile{
                  TutorialScreen ts = (TutorialScreen) ScreenCoordinator.getCurrentScreen();
                 ts.showPowerUpText(message);
             }
+             if(ScreenCoordinator.getCurrentScreen() instanceof JungleScreen ){
+                 JungleScreen JunScreen = (JungleScreen) ScreenCoordinator.getCurrentScreen();
+                JunScreen.showPowerUpText(message);
+            }
             if(ScreenCoordinator.getCurrentScreen() instanceof JungleBArenaScreen ){
                  JungleBArenaScreen JunBoss = (JungleBArenaScreen) ScreenCoordinator.getCurrentScreen();
                 JunBoss.showPowerUpText(message);
