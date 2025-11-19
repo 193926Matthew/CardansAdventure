@@ -65,12 +65,12 @@ public class JungleScreen extends Screen implements PlayerListener {
             case RUNNING:
                 player.update();
                 map.update(player);
-                                
+                if (Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.RIGHT)) {
                     if (hitbox == null) {
                         hitbox = new Hitbox(player.getLocation());
                         map.addHitbox(hitbox);
                     }
-                
+                }
 
                 if (hitbox != null) {
                     hitbox.update(player);
@@ -80,16 +80,26 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-                for (EnhancedMapTile tile : map.getEnhancedMapTiles()) {
-                    if (tile instanceof BackToLobby) {
-                        BackToLobby lobby = (BackToLobby) tile;
-                        if (lobby.getTriggerCode() == 3) {
-                            screenCoordinator.setGameState(GameState.LOBBY);
-                        }
+                break;
+            // if level has been completed, bring up level cleared screen
+            case LEVEL_COMPLETED:
+                if (levelCompletedStateChangeStart) {
+                    screenTimer = 130;
+                    levelCompletedStateChangeStart = false;
+                    levelClearedScreen.update();
+                } else {
+                    levelClearedScreen.update();
+                    screenTimer--;
+                    if (screenTimer == 0) {
+                        GoBackToLobby();
                     }
                 }
-
-                break;  
+                break;
+            // wait on level lose screen to make a decision (either resets level or sends
+            // player back to main menu)
+            case LEVEL_LOSE:
+                resetcheckTEST();
+            break;
         }
     }
 
@@ -176,7 +186,7 @@ public class JungleScreen extends Screen implements PlayerListener {
     }
 
      public void GoBackToLobby(){
-        screenCoordinator.setGameState(GameState.LOBBY);
+        screenCoordinator.setGameState(GameState.JBOSS);
     }
 
      @Override

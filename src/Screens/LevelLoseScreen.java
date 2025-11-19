@@ -71,6 +71,9 @@ public class LevelLoseScreen extends Screen {
             if(!snowScreen.equals(null)){
                 snowScreen.resetLevel();
             }
+            if(!jungleScreen.equals(null)){
+                jungleScreen.resetLevel();
+            }
         } else if (Keyboard.isKeyDown(Key.ESC) && !keyLocker.isKeyLocked(Key.ESC)) {
             if(!playLevelScreen.equals(null)){
                 playLevelScreen.goBackToMenu();
