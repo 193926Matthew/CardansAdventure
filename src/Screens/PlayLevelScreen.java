@@ -33,6 +33,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     // --- Power-up display text ---
     private SpriteFont powerUpText;
     private SpriteFont powerUpTextLine2;
+    
+
 
     private long powerUpTextStartTime;
     private boolean showPowerUpText = false;
@@ -137,8 +139,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             powerUpText.draw(graphicsHandler);
         if (powerUpTextLine2 != null) {
             powerUpTextLine2.draw(graphicsHandler);
-            }
         }
+    }
+       
 
     }
 
@@ -258,11 +261,90 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
             powerUpTextStartTime = System.currentTimeMillis();
             showPowerUpText = true;
-        }   
+        }else if (message.contains("Poison Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.MAGENTA
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press O to shoot poison balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Speed Boost")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.YELLOW
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Speed boost automatically activated when available",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Fire Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.RED
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press B to shoot fire balls",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }
     }
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
+    }
+
+    @Override
+    public void onOpeningCutsceneCompleted() {
     }
 }

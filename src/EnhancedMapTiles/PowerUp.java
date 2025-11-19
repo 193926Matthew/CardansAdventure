@@ -14,6 +14,7 @@ import Engine.GraphicsHandler;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Game.Game;
+import Screens.*;
 
 
 
@@ -49,12 +50,31 @@ public class PowerUp extends EnhancedMapTile{
                 player.setHasIceBall(true);
                 message = "Got Ice Ball";
 
+            }else if(currentPowerName.equals("Speed Boost")){
+                message = "Got Speed Boost";
+                player.setHasSpeedBoost(true);
+            }else if(currentPowerName.equals("Poison Ball")){
+                message = "Got Poison Ball";
+                player.setHasPoisonBall(true);
+            }else if(currentPowerName.equals("Fire Ball")){
+                message = "Got Fire Ball";
+                player.setHasFireBall(true);
             }
 
             if (ScreenCoordinator.getCurrentScreen() instanceof PlayLevelScreen) {
                 PlayLevelScreen pls = (PlayLevelScreen) ScreenCoordinator.getCurrentScreen();
                 pls.showPowerUpText(message);
             }
+            if(ScreenCoordinator.getCurrentScreen() instanceof SnowScreen){
+                SnowScreen snl = (SnowScreen) ScreenCoordinator.getCurrentScreen();
+                snl.showPowerUpText(message);
+            }
+            if(ScreenCoordinator.getCurrentScreen() instanceof TutorialScreen ){
+                 TutorialScreen ts = (TutorialScreen) ScreenCoordinator.getCurrentScreen();
+                ts.showPowerUpText(message);
+            }
+            
+               
         }
         if(counter == 1){
             counter+=1;

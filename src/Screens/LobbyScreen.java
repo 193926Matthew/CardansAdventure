@@ -186,4 +186,8 @@ public class LobbyScreen extends Screen implements PlayerListener {
         RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
     }
 
+    @Override
+    public void onOpeningCutsceneCompleted() {
+    }
+
 }

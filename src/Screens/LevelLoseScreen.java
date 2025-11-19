@@ -12,6 +12,9 @@ public class LevelLoseScreen extends Screen {
     protected KeyLocker keyLocker = new KeyLocker();
     protected PlayLevelScreen playLevelScreen;
     protected SnowScreen snowScreen;
+    protected JungleScreen jungleScreen;
+    protected TutorialScreen tutorialScreen;
+    protected JungleBArenaScreen jungleBArenaScreen;
     protected SnowBossScreen snowbossScreen;
 
 
@@ -25,6 +28,19 @@ public class LevelLoseScreen extends Screen {
         initialize();
     }
 
+    public LevelLoseScreen(TutorialScreen tutorialScreen) {
+        this.tutorialScreen = tutorialScreen;
+        initialize();
+    }
+
+     public LevelLoseScreen(JungleScreen jungleScreen) {
+        this.jungleScreen = jungleScreen;
+        initialize();
+    }
+    
+    public LevelLoseScreen(JungleBArenaScreen jungleBArenaScreen) {
+        this.jungleBArenaScreen = jungleBArenaScreen;
+    }
     public LevelLoseScreen(SnowBossScreen snowbossScreen) {
         this.snowbossScreen = snowbossScreen;
         initialize();
@@ -55,6 +71,9 @@ public class LevelLoseScreen extends Screen {
             if(!snowScreen.equals(null)){
                 snowScreen.resetLevel();
             }
+            if(!jungleScreen.equals(null)){
+                jungleScreen.resetLevel();
+            }
         } else if (Keyboard.isKeyDown(Key.ESC) && !keyLocker.isKeyLocked(Key.ESC)) {
             if(!playLevelScreen.equals(null)){
                 playLevelScreen.goBackToMenu();
@@ -70,4 +89,5 @@ public class LevelLoseScreen extends Screen {
         loseMessage.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
     }
+
 }

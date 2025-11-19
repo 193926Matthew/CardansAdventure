@@ -1,4 +1,3 @@
-
 package Level;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
@@ -18,17 +17,17 @@ import java.util.List;
 // This class is for the fireball enemy that the DinosaurEnemy class shoots out
 // it will travel in a straight line (x axis) for a set time before disappearing
 // it will disappear early if it collides with a solid map tile
-public class IceBall extends EnhancedMapTile{
+public class FirePower extends EnhancedMapTile{
     private float movementSpeed;
     private int existenceFrames;
     private MapEntityStatus mapEntityStatus;
     private float verticalSpeed = 0;
     private float gravity = 0.3f;
     private List<Enemy> enemies;
-    private boolean enemyHitByIceBall = false;
+    private boolean enemyHitByFireBall = false;
 
-    public IceBall(Point location, float movementSpeed, int existenceFrames, List<Enemy> enemies) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("iceBall.png"), 15, 15), TileType.PASSABLE);
+    public FirePower(Point location, float movementSpeed, int existenceFrames, List<Enemy> enemies) {
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("FireBall.png"), 7, 6), TileType.PASSABLE);
 
         this.movementSpeed = movementSpeed;
         this.currentAnimationName = "DEFAULT";
@@ -56,23 +55,10 @@ public class IceBall extends EnhancedMapTile{
                 if(this.intersects(enemy)){
                     //System.out.println("Enemy attacked!");
                    //System.out.println("Collision detected with enemy: " + enemy);
-                    this.enemyHitByIceBall = true;
-                    enemy.setIceBallHitStatus(true);
-                    //System.out.println("Enemy hit status: " + enemy.getIceBallHitStatus());
-                    
+                    this.enemyHitByFireBall = true;
                     for (MapEntity entity : map.getEnemies()) {
                         if (entity instanceof Enemy && this.intersects(entity)) {
-                            //System.out.println(enemy.getMovementSpeed());
-                            float movementSpeed = enemy.getMovementSpeed();
-                            //System.out.println("Iceball class state: " + enemyHitByIceBall);
-
-                            movementSpeed *= 0.75f;
-                            enemy.setMovementSpeed(movementSpeed);
-                            //readded ice able to attack enemy
-                            //possibly removed prior 
-                            ((Enemy)entity).kill(10);
-                            //System.out.println("Ice state" + enemyHitByIceBall);
-                    }
+                            ((Enemy)entity).kill(25);                    }
                     //enemy.mapEntityStatus = MapEntityStatus.REMOVED;
                     this.mapEntityStatus = MapEntityStatus.REMOVED;
                 }
@@ -83,8 +69,6 @@ public class IceBall extends EnhancedMapTile{
             }
 
         }
-
-            //System.out.println("Update called. enemyHitByIceBall = " + enemyHitByIceBall);
 
 
         }
@@ -116,8 +100,8 @@ public class IceBall extends EnhancedMapTile{
         return new HashMap<String, Frame[]>() {{
             put("DEFAULT", new Frame[]{
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(1)
-                            .withBounds(1, 1, 5, 2)
+                            .withScale(3)
+                            .withBounds(1, 1, 5, 5)
                             .build()
             });
         }};
@@ -127,19 +111,7 @@ public class IceBall extends EnhancedMapTile{
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
     }
-
-    public boolean enemyHit(){
-        if(enemyHitByIceBall == true){
-            //System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
-           // System.out.println("Iceball class! running: " + enemyHitByIceBall);
-            return true;
-
-        }else{
-           // System.out.println("Iceball class! running: " + enemyHitByIceBall);
-           // System.out.println("enemyHit() called. Value = " + enemyHitByIceBall);
-            return false;
-        }
-    }
+    
 
 
 

@@ -11,6 +11,7 @@ import EnhancedMapTiles.BackToLobby;
 import EnhancedMapTiles.CheckPoint;
 import EnhancedMapTiles.EndLevelBox;
 import EnhancedMapTiles.FallingPlatform;
+import EnhancedMapTiles.HealthPowerUp;
 import EnhancedMapTiles.HorizontalMovingPlatform;
 import EnhancedMapTiles.NewEndLevel;
 import EnhancedMapTiles.VerticalMovingPlatform;
@@ -35,14 +36,18 @@ public class SnowMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArcticFox fox1 = new ArcticFox(getMapTile(85, 18).getLocation().subtractY(25), Direction.LEFT);
+         ArcticFox fox1 = new ArcticFox(getMapTile(24, 20).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(fox1);
 
-        ArcticFox fox2 = new ArcticFox(getMapTile(137, 14).getLocation().subtractY(25), Direction.LEFT);
+
+        ArcticFox fox2 = new ArcticFox(getMapTile(85, 18).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(fox2);
 
-        ArcticFox fox3 = new ArcticFox(getMapTile(178, 14).getLocation().subtractY(25), Direction.LEFT);
+        ArcticFox fox3 = new ArcticFox(getMapTile(137, 14).getLocation().subtractY(25), Direction.LEFT);
         enemies.add(fox3);
+
+        ArcticFox fox4 = new ArcticFox(getMapTile(178, 14).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(fox4);
 
         return enemies;
     }
@@ -50,12 +55,20 @@ public class SnowMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+        
+
+        PowerUp iceBall = new PowerUp(getMapTile(8,18).getLocation(),"Ice Ball","updatedIce.png");
+        enhancedMapTiles.add(iceBall);
 
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(100,18).getLocation());
         enhancedMapTiles.add(checkpoint1);
 
+        HealthPowerUp healthPack1 = new HealthPowerUp(getMapTile(97,18).getLocation());
+        enhancedMapTiles.add(healthPack1);
         CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
         enhancedMapTiles.add(checkpoint2);
+        
+
 
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
@@ -63,7 +76,7 @@ public class SnowMap extends Map {
         */
 
         //This is what we use to end the level, ignore BackToLobby thing. that was a test.
-        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(196, 20).getLocation());
+        NewEndLevel newEndLevel = new NewEndLevel(getMapTile(178, 14).getLocation());
         enhancedMapTiles.add(newEndLevel);
 
          int endLevelX = 169;

@@ -80,11 +80,19 @@ public class DesertMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        PowerUp iceBall = new PowerUp(getMapTile(10,16).getLocation(),"Ice Ball","updatedIce.png");
+        PowerUp fireBall = new PowerUp(getMapTile(11,19).getLocation(),"Fire Ball","fireFlower.png");
         PowerUp doubleJump = new PowerUp(getMapTile(15,16).getLocation(),"Double Jump","updatedDoubleJump.png");
+
+       
+
         HealthPowerUp extraHealth = new HealthPowerUp(getMapTile(126,17).getLocation());
         enhancedMapTiles.add(doubleJump);
         enhancedMapTiles.add(extraHealth);
+        enhancedMapTiles.add(fireBall);
+
+     
+      
+
 
         CheckPoint checkpoint1 = new CheckPoint(getMapTile(57,19).getLocation());
         enhancedMapTiles.add(checkpoint1);
@@ -449,9 +457,7 @@ public class DesertMap extends Map {
     }
 */
 
-        //enhancedMapTiles.add(endLevelBox);
-        enhancedMapTiles.add(doubleJump);
-        enhancedMapTiles.add(iceBall);
+       
 
         //The new end level box OG POINT: 198 19
         NewEndLevel newEndLevel = new NewEndLevel(getMapTile(169, 22).getLocation());

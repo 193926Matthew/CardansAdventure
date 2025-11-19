@@ -1,53 +1,45 @@
 package Screens;
 
-import java.awt.Color;
+import Engine.Screen;
+
 import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
-import Engine.Screen;
-import Game.GameState;
 import Game.ScreenCoordinator;
+
 import Level.Hitbox;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
-import Maps.SnowBossMap;
-import Maps.SnowMap;
+import Maps.JungleBossArena;
+
 import Players.Cat;
 import SpriteFont.SpriteFont;
+import Maps.SnowMap;
+import Game.GameState;
+import java.awt.Color;
 
-// This class is for when the platformer game is actually being played
-public class SnowBossScreen extends Screen implements PlayerListener {
+
+public class JungleBArenaScreen extends Screen implements PlayerListener{
     protected ScreenCoordinator screenCoordinator;
-    protected static Map map;
+    protected Map map;
     protected Player player;
     protected Hitbox hitbox;
-    protected SnowScreenState playLevelScreenState;
+    protected JBAScreenState JBAscreenstate;
     protected int screenTimer;
     protected LevelClearedScreen levelClearedScreen;
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
 
-    // popup
-    // --- Power-up display text ---
-    private SpriteFont powerUpText;
-    private SpriteFont powerUpTextLine2;
-
-    private long powerUpTextStartTime;
-    private boolean showPowerUpText = false;
-    private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
-
-
-    public SnowBossScreen(ScreenCoordinator screenCoordinator) {
+    public JungleBArenaScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
+        @Override
     public void initialize() {
-        // define/setup map
-        map = new SnowBossMap();
+        map = new JungleBossArena();
 
-        // System.out.print("Start");
         // setup player
         this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
         this.player.setMap(map);
@@ -58,14 +50,13 @@ public class SnowBossScreen extends Screen implements PlayerListener {
         levelClearedScreen = new LevelClearedScreen();
         levelLoseScreen = new LevelLoseScreen(this);
 
-        this.playLevelScreenState = SnowScreenState.RUNNING;
+        this.JBAscreenstate = JBAScreenState.RUNNING;
         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
-
     }
 
     public void update() {
         // based on screen state, perform specific actions
-        switch (playLevelScreenState) {
+        switch (JBAscreenstate) {
             case RUNNING:
                 player.update();
                 map.update(player);
@@ -83,14 +74,10 @@ public class SnowBossScreen extends Screen implements PlayerListener {
                         hitbox = null;
                     }
                 }
-                
-                if (showPowerUpText && System.currentTimeMillis() - powerUpTextStartTime > POWERUP_TEXT_DURATION) {
-                    showPowerUpText = false;
-                }
-
                 break;
             // if level has been completed, bring up level cleared screen
             case LEVEL_COMPLETED:
+                
                 if (levelCompletedStateChangeStart) {
                     screenTimer = 130;
                     levelCompletedStateChangeStart = false;
@@ -113,7 +100,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
 
     public void draw(GraphicsHandler graphicsHandler) {
         // based on screen state, draw appropriate graphics
-        switch (playLevelScreenState) {
+        switch (JBAscreenstate) {
             case RUNNING:
                 map.draw(graphicsHandler);
                 player.draw(graphicsHandler);
@@ -131,50 +118,39 @@ public class SnowBossScreen extends Screen implements PlayerListener {
         lives.setText("Health: " + player.getHealth());
         lives.draw(graphicsHandler);
 
-        //powerup popup
-        if (showPowerUpText && powerUpText != null) {
-            powerUpText.draw(graphicsHandler);
-        if (powerUpTextLine2 != null) {
-            powerUpTextLine2.draw(graphicsHandler);
-            }
-        }
-
     }
 
-    public SnowScreenState getPlayLevelScreenState() {
-        return playLevelScreenState;
-    }
 
     @Override
     public void onLevelCompleted() {
-        if (playLevelScreenState != SnowScreenState.LEVEL_COMPLETED) {
-            playLevelScreenState = SnowScreenState.LEVEL_COMPLETED;
+        if (JBAscreenstate != JBAScreenState.LEVEL_COMPLETED) {
+            JBAscreenstate = JBAScreenState.LEVEL_COMPLETED;
             levelCompletedStateChangeStart = true;
         }
     }
 
     @Override
     public void onDeath() {
-        if (playLevelScreenState != SnowScreenState.LEVEL_LOSE) {
-            playLevelScreenState = SnowScreenState.LEVEL_LOSE;
+        if (JBAscreenstate != JBAScreenState.LEVEL_LOSE) {
+            JBAscreenstate = JBAScreenState.LEVEL_LOSE;
         }
     }
 
-    public void resetLevel() {
+        public void resetLevel() {
         initialize();
     }
 
     public void resetToCheckpoint() {
-        playLevelScreenState = SnowScreenState.RUNNING;
+        JBAscreenstate = JBAScreenState.RUNNING;
     }
 
     //this does what initialize but it works with checkpoint
     public void resetcheckTEST() {
-            map = new SnowMap();
+            map = new JungleBossArena();
 
             System.out.print("Start again");
             // setup player
-            this.player = new Cat(player.respawnPoint.x, player.respawnPoint.y);
+            this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
             this.player.setMap(map);
             this.player.addListener(this);
             this.hitbox = new Hitbox(player.getLocation());
@@ -183,7 +159,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
             levelClearedScreen = new LevelClearedScreen();
             levelLoseScreen = new LevelLoseScreen(this);
 
-            this.playLevelScreenState = SnowScreenState.RUNNING;
+            this.JBAscreenstate = JBAscreenstate.RUNNING;
             this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
@@ -196,6 +172,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
     }
 
     // method to show power-up text popup
+    /* 
     public void showPowerUpText(String message) {
         if (message.contains("Double Jump")){
             powerUpText = new SpriteFont(
@@ -251,13 +228,23 @@ public class SnowBossScreen extends Screen implements PlayerListener {
             showPowerUpText = true;
         }   
     }
+    */
 
-    // This enum represents the different states this screen can be in
-    private enum SnowScreenState {
-        RUNNING, LEVEL_COMPLETED, LEVEL_LOSE
+    public JBAScreenState getJBAScreenState() {
+        return JBAscreenstate;
     }
+
+
+    private enum JBAScreenState {
+        RUNNING,
+        LEVEL_COMPLETED,
+        LEVEL_LOSE
+    }
+
 
     @Override
     public void onOpeningCutsceneCompleted() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onOpeningCutsceneCompleted'");
     }
-}
+}   

@@ -54,10 +54,14 @@ public class ArcticFox extends Enemy {
                 this.mapEntityStatus = MapEntityStatus.REMOVED;
             }
         }
+
         super.draw(graphicsHandler);
         // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
-
+     @Override
+    public int getHealth(){
+        return this.health;
+    }
     @Override
     public void initialize() {
         super.initialize();
@@ -111,7 +115,7 @@ public class ArcticFox extends Enemy {
                  }else{
                     currentAnimationName = "FROZEN_WALK_LEFT";
                  }
-
+               
             }
     
             if (isHurt()) {
@@ -135,9 +139,10 @@ public class ArcticFox extends Enemy {
                 } else if (facingDirection == Direction.LEFT) {
                     currentAnimationName = "WALK_LEFT";
             }
+            
         }
             // System.out.println("right");
-        }
+    }
 
         if (player.getX() <= getX()) {
             if(this.getIceBallHitStatus() == true){
@@ -146,7 +151,7 @@ public class ArcticFox extends Enemy {
                  }else{
                     currentAnimationName = "FROZEN_WALK_LEFT";
                  }
-
+                
             }
             if (isHurt()) {
                 if (facingDirection == Direction.RIGHT) {
@@ -169,6 +174,7 @@ public class ArcticFox extends Enemy {
                 } else if (facingDirection == Direction.LEFT) {
                     currentAnimationName = "WALK_LEFT";
                 }
+                
             }
             // System.out.println("left");
         }
@@ -222,6 +228,7 @@ public class ArcticFox extends Enemy {
             }
         }
     }
+
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {

@@ -109,7 +109,7 @@ public class MenuScreen extends Screen {
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
             if (menuItemSelected == 0) {
-                screenCoordinator.setGameState(GameState.TUTORIAL);
+                screenCoordinator.setGameState(GameState.OPENING);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.CREDITS);
             }else if(menuItemSelected == 2){

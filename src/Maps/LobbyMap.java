@@ -14,7 +14,7 @@ import Level.Map;
 import Level.MapTile;
 import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.DesertEnter;
-import Tilesets.CommonTileset;
+import Tilesets.LobbyTileset;
 import Utils.Direction;
 import Utils.Point;
 import Level.TileType;
@@ -23,9 +23,8 @@ import Level.TileType;
 public class LobbyMap extends Map {
 
     public LobbyMap(){
-        super("lobby_map.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(13, 11).getLocation();;
-
+        super("lobby_map.txt", new LobbyTileset());
+        this.playerStartPosition = getMapTile(12, 11).getLocation();;
     }
 
     // @Override
@@ -67,14 +66,14 @@ public class LobbyMap extends Map {
         }
        
         
-        DesertEnter desertEnter = new DesertEnter(getMapTile(10,11).getLocation());
+        DesertEnter desertEnter = new DesertEnter(getMapTile(5,11).getLocation());
         enhancedMapTiles.add(desertEnter);
 
 
-        JungleEnter jungleEnter = new JungleEnter(getMapTile(4,11).getLocation());
+        JungleEnter jungleEnter = new JungleEnter(getMapTile(18,11).getLocation());
         enhancedMapTiles.add(jungleEnter);
 
-        SnowEnter snowEnter = new SnowEnter(getMapTile(19,11).getLocation());
+        SnowEnter snowEnter = new SnowEnter(getMapTile(29,11).getLocation());
         enhancedMapTiles.add(snowEnter);
 
         return enhancedMapTiles;

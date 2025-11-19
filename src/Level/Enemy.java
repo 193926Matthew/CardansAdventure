@@ -10,8 +10,12 @@ public class Enemy extends MapEntity {
 
     private boolean isDead = false;
     private boolean hitWithIceBall = false;
+    private boolean hitByPoison = false;
     private float movementSpeed;
     private int damage = 0;
+    private int startingHealth;
+    private int health;
+    private int poisonDelay = 100;
 
     public boolean isDead() {
         return isDead;
@@ -62,6 +66,15 @@ public class Enemy extends MapEntity {
         if (intersects(player)) {
             touchedPlayer(player);
         }
+        if(this.getPoisonStatus() == true){
+            if(poisonDelay == 0){
+                System.out.println("poison ailment damage taken!" + " 5 damage taken");
+                this.kill(5);
+                poisonDelay =100; 
+            }
+
+            poisonDelay--;
+        }
     }
 
     // A subclass can override this method to specify what it does when it touches
@@ -87,6 +100,22 @@ public class Enemy extends MapEntity {
 
     public boolean getIceBallHitStatus(){
         return this.hitWithIceBall;
+    }
+
+    public void setPoisonStatus(Boolean hitStatus){
+        this.hitByPoison = hitStatus;
+    }
+
+    public boolean getPoisonStatus(){
+        return this.hitByPoison;
+    }
+
+    public void setHealth(int healthValue){
+        this.startingHealth = healthValue;
+    }
+
+    public int getHealth(){
+        return this.startingHealth;
     }
 
 
