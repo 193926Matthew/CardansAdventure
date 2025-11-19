@@ -22,6 +22,7 @@ import Level.TileType;
 import Tilesets.JungleTileset;
 import Utils.Direction;
 import Utils.Point;
+import EnhancedMapTiles.*;
 
 public class JungleMap extends Map{
 
@@ -32,7 +33,10 @@ public class JungleMap extends Map{
 
         @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles(){
+        
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+        PowerUp poisonBall = new PowerUp(getMapTile(8, 21).getLocation(), "Poison Ball", "poisonPowerUp.png");
+
 
         HorizontalMovingPlatform hmp = new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
@@ -89,6 +93,9 @@ public class JungleMap extends Map{
 
         HealthPowerUp healthPack1 = new HealthPowerUp(getMapTile(107,9).getLocation());
         enhancedMapTiles.add(healthPack1);
+        
+        enhancedMapTiles.add(poisonBall);
+
 
         return enhancedMapTiles;
     }
