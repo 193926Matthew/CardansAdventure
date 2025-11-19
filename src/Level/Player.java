@@ -215,18 +215,7 @@ public abstract class Player extends GameObject {
         }
 
 
-        //upon checkpoint reset, update does not recognize previous status of powerups as being true
-        //may be issue with powerup class? Once collected disappears, status remains with player
-        //once current player dies, instance lost with it. 
-        //everything is reset with checkpoint 
-        hasDoubleJump = hasDoubleJump();
-        if(hasDoubleJump == true){
-            doubleJumpPrevCollected = true;
-        }else{
-            if(doubleJumpPrevCollected == true){
-                this.setHasDoubleJump(true);
-                hasDoubleJump = true;
-            }
+        
        
         if(hasSuperSpeed){
            playerSpeedBoost();
@@ -327,7 +316,7 @@ public abstract class Player extends GameObject {
             //respawn();
         }
     }
-    }
+    
 
     protected void applyGravity() {
         // if player is in quicksand, reduce walk speed and jump height and limit downward momentum
@@ -597,10 +586,9 @@ public abstract class Player extends GameObject {
                     usedDoubleJump = true;
                     //keyLocker.unlockKey(DOUBLE_JUMP_KEY);
                     currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
-
                     airGroundState = AirGroundState.AIR;
                     jumpForce = jumpHeight * 2;
-                    jumpForce -= jumpHeight / 2;
+                    jumpForce -= jumpHeight/2;
                     if (jumpForce > 0) {
                         moveAmountY -= jumpForce;
                         jumpForce -= jumpDegrade;
