@@ -55,6 +55,7 @@ public class SnowMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+        
 
         PowerUp iceBall = new PowerUp(getMapTile(8,18).getLocation(),"Ice Ball","updatedIce.png");
         enhancedMapTiles.add(iceBall);
@@ -64,6 +65,10 @@ public class SnowMap extends Map {
 
         HealthPowerUp healthPack1 = new HealthPowerUp(getMapTile(97,18).getLocation());
         enhancedMapTiles.add(healthPack1);
+        CheckPoint checkpoint2 = new CheckPoint(getMapTile(133,14).getLocation());
+        enhancedMapTiles.add(checkpoint2);
+        
+
 
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());

@@ -89,28 +89,7 @@ public class JungleScreen extends Screen implements PlayerListener {
                     }
                 }
 
-                break;
-
-                 // if level has been completed, bring up level cleared screen
-            case LEVEL_COMPLETED:
-                    if (levelCompletedStateChangeStart) {
-                        screenTimer = 130;
-                        levelCompletedStateChangeStart = false;
-                    } else {
-                        levelClearedScreen.update();
-                        screenTimer--;
-                        if (screenTimer == 0) {
-                            GoBackToLobby();
-                        }
-                    }
-                break;
-            // wait on level lose screen to make a decision (either resets level or sends
-            // player back to main menu)
-            case LEVEL_LOSE:
-                    resetcheckTEST();
-                break;
-        
-            
+                break;  
         }
     }
 

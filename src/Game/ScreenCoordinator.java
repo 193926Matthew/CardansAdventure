@@ -10,6 +10,7 @@ import Screens.PlayLevelScreen;
 import Screens.SnowBossScreen;
 import Screens.TutorialScreen;
 import Screens.SnowScreen;
+import Screens.JungleBArenaScreen;
 
 import Screens.ControlsScreen;
 import Engine.*;
@@ -57,32 +58,19 @@ public class ScreenCoordinator extends Screen {
 	public void initialize() {
 		// start game off with Menu Screen
 		gameState = GameState.MENU;
-
-		/* 
-		if (i == 0) {
-			gameState = GameState.MENU;
-			i = i + 1;
-		} else {
-			gameState = GameState.LOBBY;
-		}
-		*/
         
 	}
 
 	@Override
 	public void update() {
 
-	/* 
-	System.out.println(gameState);
-	if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-        initialize();
-    }
-	*/
 	// for testing purpose
 	if (Keyboard.isKeyDown(Key.M)) {
 		gameState = GameState.LOBBY;
 	} else if (Keyboard.isKeyDown(Key.N)) {
 		gameState = GameState.LEVEL;
+	} else if (Keyboard.isKeyDown(Key.B)){
+		gameState = GameState.JBOSS;
 	}
 
 
@@ -114,6 +102,9 @@ public class ScreenCoordinator extends Screen {
 						break;
 					case TUTORIAL:
 						currentScreen = new TutorialScreen(this);
+						break;
+					case JBOSS:
+						currentScreen = new JungleBArenaScreen(this);
 						break;
 					case CONTROLS:
 						currentScreen = new ControlsScreen(this);

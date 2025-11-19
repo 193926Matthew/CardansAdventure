@@ -3,6 +3,7 @@ package MapEditor;
 import Level.Map;
 import Maps.JungleMap;
 import Maps.DesertMap; // Ensure DesertMap.java exists in src/Maps/
+import Maps.JungleBossArena;
 import Maps.LobbyMap;
 import Maps.SnowBossMap;
 import Maps.TestMap;
@@ -24,6 +25,7 @@ public class EditorMaps {
             add("JungleMap");
             add("SnowMap");
             add("TutorialMap");
+            add("JungleBossArena");
             add("SnowBossMap");
             add("StartingCutsceneMap");
         }};
@@ -45,6 +47,8 @@ public class EditorMaps {
                 return new SnowMap();
             case "TutorialMap":
                 return new TutorialMap();
+            case "JungleBossArena":
+                return new JungleBossArena();
             case "SnowBossMap":
                 return new SnowBossMap();
             case "StartingCutsceneMap":

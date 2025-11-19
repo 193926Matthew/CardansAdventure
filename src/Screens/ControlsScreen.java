@@ -29,6 +29,12 @@ public class ControlsScreen extends Screen {
     protected SpriteFont tailAttack;
     protected SpriteFont icePowerUp;
     protected SpriteFont doubleJumpPowerUp;
+    protected SpriteFont firePowerUp;
+    protected SpriteFont poisonBallPowerUp;
+
+
+    
+
     protected SpriteFont returnInstructionsLabel;
 
     public ControlsScreen(ScreenCoordinator screenCoordinator) {
@@ -51,7 +57,9 @@ public class ControlsScreen extends Screen {
         tailAttack = new SpriteFont("Tail Attack: right arrow key", 360,150,"Times New Roman", 20, Color.blue);
         tailSpinAttack = new SpriteFont("Tail spin attack: left arrow key", 360,200,"Times New Roman", 20, Color.blue);
         icePowerUp = new SpriteFont("IceBall attack power-up(when acquired): i-key", 360, 250, "Times New Roman", 20, Color.blue);
-        doubleJumpPowerUp = new SpriteFont("Double-Jump power-up(when-acquired): press w key twice", 10,1350,"Times New Roman", 20, Color.blue);
+        doubleJumpPowerUp = new SpriteFont("Double-Jump power-up(when-acquired): press w key twice", 10,350,"Times New Roman", 20, Color.blue);
+        firePowerUp = new SpriteFont("Fireball power-up(when-acquired): press B key", 300,280,"Times New Roman", 20, Color.black);
+        poisonBallPowerUp = new SpriteFont("Poisonball power-up(when-acquired): press O key", 315,315,"Times New Roman", 20, Color.black);
 
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
@@ -83,6 +91,8 @@ public class ControlsScreen extends Screen {
         tailSpinAttack.draw(graphicsHandler);
         icePowerUp.draw(graphicsHandler);
         doubleJumpPowerUp.draw(graphicsHandler);
+        firePowerUp.draw(graphicsHandler);
+        poisonBallPowerUp.draw(graphicsHandler);
 
         controlsLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
