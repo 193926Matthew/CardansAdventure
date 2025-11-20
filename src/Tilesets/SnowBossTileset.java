@@ -374,7 +374,7 @@ public class SnowBossTileset extends Tileset {
         // left end branch
         Frame leftEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 40, 16, 4)
                 .build();
 
         MapTileBuilder leftEndBranchTile = new MapTileBuilder(leftEndBranchFrame)
@@ -385,7 +385,7 @@ public class SnowBossTileset extends Tileset {
         // right end branch
         Frame rightEndBranchFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
+                .withBounds(0, 40, 16, 4)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .build();
 

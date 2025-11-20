@@ -143,6 +143,14 @@ public abstract class Player extends GameObject {
         this.respawnPoint = respawnPoint;
     }
 
+    public void addInvincible() {
+        isInvincible = true;
+    }
+
+    public void removeInvincible() {
+        isInvincible = false;
+    }
+
     // respawn player at last checkpoint
     public void respawn() {
         System.out.println("Respawn triggered.");
@@ -1132,6 +1140,9 @@ public abstract class Player extends GameObject {
         }
         // move player to the right until it walks off screen
         else if (map.getCamera().containsDraw(this)) { // victory dance here when killing boss
+                        for (PlayerListener listener : listeners) {
+                listener.onLevelCompleted();
+            }
             currentAnimationName = "WALK_RIGHT";
             super.update();
             moveXHandleCollision(walkSpeed - 1);

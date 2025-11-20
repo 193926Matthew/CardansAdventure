@@ -5,6 +5,7 @@ import EnhancedMapTiles.QuicksandTopTile;
 import Enemies.ArcticFox;
 import Enemies.BugEnemy;
 import Enemies.DinosaurEnemy;
+import Enemies.Narwhal;
 import Engine.ImageLoader;
 import EnhancedMapTiles.BarrierBlock;
 import EnhancedMapTiles.BackToLobby;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 // Represents a test map to be used in a level
 public class SnowBossMap extends Map {
 
+    Narwhal narwhal;
+
 
     public SnowBossMap() {
         super("snow_boss_map.txt", new SnowBossTileset());
@@ -36,8 +39,8 @@ public class SnowBossMap extends Map {
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        ArcticFox fox1 = new ArcticFox(getMapTile(85, 18).getLocation().subtractY(25), Direction.LEFT);
-        enemies.add(fox1);
+        narwhal = new Narwhal(getMapTile(1, 20).getLocation().subtractY(25), Direction.LEFT);
+        enemies.add(narwhal);
 
         return enemies;
     }
@@ -45,6 +48,11 @@ public class SnowBossMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
+
+        NewEndLevel friend = new NewEndLevel(getMapTile(10,19).getLocation());
+        if (!narwhal.isNarwhalDead()) {
+            enhancedMapTiles.add(friend);
+        }
 
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
@@ -58,7 +66,7 @@ public class SnowBossMap extends Map {
         return enhancedMapTiles;
         
     }
-
+    
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();

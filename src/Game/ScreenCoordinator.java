@@ -65,13 +65,13 @@ public class ScreenCoordinator extends Screen {
 	public void update() {
 
 	// for testing purpose
-	/*if (Keyboard.isKeyDown(Key.M)) {
+	if (Keyboard.isKeyDown(Key.M)) {
 		gameState = GameState.LOBBY;
 	} else if (Keyboard.isKeyDown(Key.N)) {
 		gameState = GameState.LEVEL;
 	} else if (Keyboard.isKeyDown(Key.B)){
-		gameState = GameState.JBOSS;
-	} */
+		gameState = GameState.SNOWBOSS;
+	}
 	
 
 

@@ -5,6 +5,7 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import EnhancedMapTiles.HealthPowerUp;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Hitbox;
@@ -15,6 +16,7 @@ import Maps.SnowBossMap;
 import Maps.SnowMap;
 import Players.Cat;
 import SpriteFont.SpriteFont;
+import Utils.Point;
 
 // This class is for when the platformer game is actually being played
 public class SnowBossScreen extends Screen implements PlayerListener {
@@ -46,6 +48,9 @@ public class SnowBossScreen extends Screen implements PlayerListener {
     public void initialize() {
         // define/setup map
         map = new SnowBossMap();
+
+        HealthPowerUp hpItem = new HealthPowerUp(new Point(340, 700));
+        map.addEnhancedMapTile(hpItem);
 
         // System.out.print("Start");
         // setup player
@@ -170,7 +175,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
 
     //this does what initialize but it works with checkpoint
     public void resetcheckTEST() {
-            map = new SnowMap();
+            map = new SnowBossMap();
 
             System.out.print("Start again");
             // setup player
