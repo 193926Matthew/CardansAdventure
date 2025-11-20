@@ -283,7 +283,7 @@ public class JungleBoss extends Enemy{
     }
 
     public void ShootStuff(){
-        System.out.println("shooting");
+        // System.out.println("shooting");
         int fireballX;
         float movementSpeed;
         if (facingDirection == Direction.RIGHT) {
