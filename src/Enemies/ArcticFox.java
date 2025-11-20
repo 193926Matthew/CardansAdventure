@@ -32,6 +32,7 @@ public class ArcticFox extends Enemy {
     private int jumpStartTime = 0;
     private int jumpTime = 0;
     private double jumpRandom = Math.random() * (300) + 1;
+    private boolean canJump = true;
 
     public ArcticFox(Point location, Direction facingDirection) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("ArcticFox.png"), 200, 100), "WALK_LEFT");
@@ -90,12 +91,14 @@ public class ArcticFox extends Enemy {
         // add gravity (if in air, this will cause bug to fall)
         moveAmountY += gravity;
 
-        if (jumpStartTime <= jumpRandom) {
+        if (jumpStartTime <= jumpRandom && canJump) {
             jumpStartTime++;
         } else {
-            jumpRandom = Math.random() * (300) + 1;
-            jumpStartTime = 0;
-            gravity = -10f;
+            if(canJump){
+                jumpRandom = Math.random() * (300) + 1;
+                jumpStartTime = 0;
+                gravity = -10f;
+            }
         }
 
         // if on ground, walk forward based on facing direction
@@ -109,14 +112,6 @@ public class ArcticFox extends Enemy {
 
         if (player.getX() >= getX()) {
 
-            if(this.getIceBallHitStatus() == true){
-                 if (facingDirection == Direction.RIGHT) {
-                    currentAnimationName = "FROZEN_WALK_RIGHT";
-                 }else{
-                    currentAnimationName = "FROZEN_WALK_LEFT";
-                 }
-               
-            }
     
             if (isHurt()) {
                 if (facingDirection == Direction.RIGHT) {
@@ -127,7 +122,7 @@ public class ArcticFox extends Enemy {
                 gravity = -10f;
                 // System.out.println("right");
                 hurt = false;
-            } else if (gravity == -10f && currentAnimationName != "HURT_WALK_RIGHT" || gravity == -10f && currentAnimationName != "HURT_WALK_LEFT") {
+            } else if (gravity == -10f && currentAnimationName != "HURT_WALK_RIGHT" || gravity == -10f && currentAnimationName != "HURT_WALK_LEFT" && canJump) {
                 if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "JUMP_RIGHT";
                 } else {
@@ -139,20 +134,26 @@ public class ArcticFox extends Enemy {
                 } else if (facingDirection == Direction.LEFT) {
                     currentAnimationName = "WALK_LEFT";
             }
-            
-        }
+
+            if(this.getIceBallHitStatus() == true){
+                 if (facingDirection == Direction.RIGHT) {
+                    gravity = 10f;
+                    currentAnimationName = "FROZEN_WALK_RIGHT";
+                    movementSpeed = 0.2f;
+                    canJump = false;
+                 }else{
+                    gravity = 10f;
+                    currentAnimationName = "FROZEN_WALK_LEFT";
+                    movementSpeed = 0.2f;
+                    canJump = false;
+                }
+            }
             // System.out.println("right");
+        }
     }
 
         if (player.getX() <= getX()) {
-            if(this.getIceBallHitStatus() == true){
-                 if (facingDirection == Direction.RIGHT) {
-                    currentAnimationName = "FROZEN_WALK_RIGHT";
-                 }else{
-                    currentAnimationName = "FROZEN_WALK_LEFT";
-                 }
-                
-            }
+
             if (isHurt()) {
                 if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "HURT_WALK_RIGHT";
@@ -162,7 +163,7 @@ public class ArcticFox extends Enemy {
                 gravity = -10f;
                 // System.out.println("left");
                 hurt = false;
-            } else if (gravity == -10f && currentAnimationName != "HURT_WALK_RIGHT" || gravity == -10f && currentAnimationName != "HURT_WALK_LEFT") {
+            } else if (gravity == -10f && currentAnimationName != "HURT_WALK_RIGHT" || gravity == -10f && currentAnimationName != "HURT_WALK_LEFT" && canJump) {
                 if (facingDirection == Direction.RIGHT) {
                     currentAnimationName = "JUMP_RIGHT";
                 } else {
@@ -175,6 +176,20 @@ public class ArcticFox extends Enemy {
                     currentAnimationName = "WALK_LEFT";
                 }
                 
+            }
+
+            if(this.getIceBallHitStatus() == true){
+                 if (facingDirection == Direction.RIGHT) {
+                    gravity = 10f;
+                    currentAnimationName = "FROZEN_WALK_RIGHT";
+                    movementSpeed = 0.2f;
+                    canJump = false;
+                 }else{
+                    gravity = 10f;
+                    currentAnimationName = "FROZEN_WALK_LEFT";
+                    movementSpeed = 0.2f;
+                    canJump = false;
+                 }
             }
             // System.out.println("left");
         }
@@ -186,18 +201,21 @@ public class ArcticFox extends Enemy {
         moveYHandleCollision(moveAmountY);
         moveXHandleCollision(moveAmountX);
 
-        if (gravity != 10f) {
+        if (gravity != 10f && canJump == true) {
             jumpTime++;
         }
 
         if (jumpTime == 20) {
-            jumpTime = 0;
+            if(canJump){
+                jumpTime = 0;
+            }
             gravity = 10f;
         }
 
 
         super.update(player);
-    }
+    
+}
 
     @Override
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction,  MapEntity entityCollidedWith) {
@@ -359,41 +377,41 @@ public class ArcticFox extends Enemy {
                             .build()
             });
             put("FROZEN_WALK_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
                             .withScale(0.5)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 1), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 1), 8)
                             .withScale(0.5)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
                             .withScale(0.5)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 2), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 2), 8)
                             .withScale(0.5)
                             .withBounds(2, 4, 200, 95)
                             .build()
             });
 
             put("FROZEN_WALK_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
                             .withScale(0.5)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 1), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 1), 8)
                             .withScale(0.5)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
                             .withScale(0.5)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 200, 95)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(2, 2), 8)
+                    new FrameBuilder(spriteSheet.getSprite(3, 2), 8)
                             .withScale(0.5)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(2, 4, 200, 95)
