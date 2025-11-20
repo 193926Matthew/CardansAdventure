@@ -35,12 +35,12 @@ public class CreditsScreen extends Screen {
         background.setAdjustCamera(false);
         creditsLabel = new SpriteFont("Credits", 15, 7, "Yoster", 30, Color.white);
         createdByLabelAlex = new SpriteFont("Original Code by Alex Thimineur", 130, 121, "Times New Roman", 20, Color.white);
-        createdByLabelHatters = new SpriteFont("Cardan's Adventure by Matt Hatters", 130, 161, "Times New Roman", 20, Color.white);
-        createdByLabelBrian = new SpriteFont("Brian Palchizaca", 130, 201, "Times New Roman", 20, Color.white);
-        createdByLabelBrody = new SpriteFont("Brody Chevrier", 130, 241, "Times New Roman", 20, Color.white);
-        createdByLabelHannah = new SpriteFont("Hannah Willetts", 130, 281, "Times New Roman", 20, Color.white);
-        createdByLabelMatthew = new SpriteFont("Matthew Jones", 130, 321, "Times New Roman", 20, Color.white);
-        createdByLabelMia = new SpriteFont("Mia Hernandez", 130, 361, "Times New Roman", 20, Color.white);
+        createdByLabelHatters = new SpriteFont("Cardan's Adventure by Matt Hatters:", 130, 161, "Times New Roman", 20, Color.white);
+        createdByLabelBrian = new SpriteFont("     Brian Palchizaca", 130, 201, "Times New Roman", 20, Color.white);
+        createdByLabelBrody = new SpriteFont("     Brody Chevrier", 130, 241, "Times New Roman", 20, Color.white);
+        createdByLabelHannah = new SpriteFont("     Hannah Willetts", 130, 281, "Times New Roman", 20, Color.white);
+        createdByLabelMatthew = new SpriteFont("     Matthew Jones", 130, 321, "Times New Roman", 20, Color.white);
+        createdByLabelMia = new SpriteFont("     Mia Hernandez", 130, 361, "Times New Roman", 20, Color.white);
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
     }
