@@ -60,7 +60,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
+        levelClearedScreen = new LevelClearedScreen(true);
         levelLoseScreen = new LevelLoseScreen(this);
 
         this.playLevelScreenState = SnowScreenState.RUNNING;
@@ -185,7 +185,7 @@ public class SnowBossScreen extends Screen implements PlayerListener {
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
 
-            levelClearedScreen = new LevelClearedScreen();
+            levelClearedScreen = new LevelClearedScreen(true);
             levelLoseScreen = new LevelLoseScreen(this);
 
             this.playLevelScreenState = SnowScreenState.RUNNING;

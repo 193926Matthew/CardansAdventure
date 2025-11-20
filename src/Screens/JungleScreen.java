@@ -23,6 +23,7 @@ import SpriteFont.SpriteFont;
 import Maps.SnowMap;
 import Game.GameState;
 
+
 public class JungleScreen extends Screen implements PlayerListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
@@ -34,6 +35,15 @@ public class JungleScreen extends Screen implements PlayerListener {
     protected LevelLoseScreen levelLoseScreen;
     protected boolean levelCompletedStateChangeStart;
     protected SpriteFont lives;
+
+    //Pop up
+    // --- Power-up display text---
+    private SpriteFont powerUpText;
+    private SpriteFont powerUpTextLine2;
+
+    private long powerUpTextStartTime;
+    private boolean showPowerUpText = false;
+    private final long POWERUP_TEXT_DURATION = 2000; // milliseconds
 
 
     public JungleScreen(ScreenCoordinator screenCoordinator) {
@@ -51,7 +61,7 @@ public class JungleScreen extends Screen implements PlayerListener {
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
+        levelClearedScreen = new LevelClearedScreen(false);
         levelLoseScreen = new LevelLoseScreen(this);
         //levelLoseScreen = new LevelLoseScreen(this);
          this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
@@ -78,6 +88,9 @@ public class JungleScreen extends Screen implements PlayerListener {
                     if (hitbox.isRemoved()) {
                         hitbox = null;
                     }
+                }
+                  if (showPowerUpText && System.currentTimeMillis() - powerUpTextStartTime > POWERUP_TEXT_DURATION) {
+                    showPowerUpText = false;
                 }
 
                 break;
@@ -122,6 +135,13 @@ public class JungleScreen extends Screen implements PlayerListener {
 
         lives.setText("Health: " + player.getHealth());
         lives.draw(graphicsHandler);
+         //powerup popup
+        if (showPowerUpText && powerUpText != null) {
+            powerUpText.draw(graphicsHandler);
+        if (powerUpTextLine2 != null) {
+            powerUpTextLine2.draw(graphicsHandler);
+        }
+        }
 
     }
 
@@ -178,18 +198,153 @@ public class JungleScreen extends Screen implements PlayerListener {
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
 
-            levelClearedScreen = new LevelClearedScreen();
+            levelClearedScreen = new LevelClearedScreen(false);
             levelLoseScreen = new LevelLoseScreen(this);
 
             this.jungleScreenState = jungleScreenState.RUNNING;
             this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
     }
 
-     public void GoBackToLobby(){
+    public void GoBackToLobby(){
         screenCoordinator.setGameState(GameState.JBOSS);
     }
 
      @Override
      public void onOpeningCutsceneCompleted() {
      }
+
+       // method to show power-up text popup
+    public void showPowerUpText(String message) {
+        if (message.contains("Double Jump")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  
+                100,  
+                "Arial",
+                30,
+                Color.ORANGE
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            // SECOND LINE
+            powerUpTextLine2 = new SpriteFont(
+                "Press W arrow again to double jump!",
+                300,
+                140,  
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+            
+        } else if (message.contains("Ice Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.CYAN
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press I to shoot ice balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Poison Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.MAGENTA
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press O to shoot poison balls!",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Speed Boost")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.YELLOW
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Speed boost automatically activated when available",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }else if (message.contains("Fire Ball")){
+            powerUpText = new SpriteFont(
+                message,
+                300,  // X position (adjust to center for your resolution)
+                150,  // Y position (near top of screen)
+                "Arial",
+                30,
+                Color.RED
+            );
+            powerUpText.setOutlineColor(Color.BLACK);
+            powerUpText.setOutlineThickness(3);
+
+            powerUpTextLine2 = new SpriteFont(
+                "Press B to shoot fire balls",
+                300,
+                190,
+                "Arial",
+                20,
+                Color.WHITE
+            );
+            powerUpTextLine2.setOutlineColor(Color.BLACK);
+            powerUpTextLine2.setOutlineThickness(2);
+
+            powerUpTextStartTime = System.currentTimeMillis();
+            showPowerUpText = true;
+        }
+    }
+
+     
+
 }

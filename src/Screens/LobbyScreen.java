@@ -49,7 +49,7 @@ public class LobbyScreen extends Screen implements PlayerListener {
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
+        levelClearedScreen = new LevelClearedScreen(true);
         // levelLoseScreen = new LevelLoseScreen(this);
 
         // health item

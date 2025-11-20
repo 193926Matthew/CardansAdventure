@@ -20,7 +20,7 @@ public class NewEndLevel extends EnhancedMapTile {
     public void update(Player player) {
         super.update(player);
         if (intersects(player)) {
-            System.out.println("Level Completed!");
+            // System.out.println("Level Completed!");
             currentAnimationName = "BROKEOUT";
             currentAnimationName = "FREE";
             player.completeLevel();

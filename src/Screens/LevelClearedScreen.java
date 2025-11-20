@@ -34,12 +34,13 @@ public class LevelClearedScreen extends Map {
     private int y = 1;
     private int i = 0;
     private int j = 0;
+    private boolean End;
     SpriteSheet cardanSpriteSheet = new SpriteSheet(ImageLoader.load("Cardan.png"), 70, 70);
 
-    public LevelClearedScreen() {
-
+    public LevelClearedScreen(boolean End) {
         super("end_level_map.txt", new CommonTileset());
 
+        this.End = End;
         Point catLocation = getMapTile(7, 6).getLocation().subtractX(35).subtractY(8);
         cat = new Sprite(cardanSpriteSheet.getSprite(1, 0));
         cat.setScale(3);
@@ -79,7 +80,11 @@ public class LevelClearedScreen extends Map {
     public void initialize() {
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
-        cardansAdventuSpriteFont = new SpriteFont("LEVEL CLEARED", 200, 75, "ARCADECLASSIC.ttf", 75, Color.getHSBColor(rainbowColorHue, 0.8f, 0.8f));
+        if (End) {
+            cardansAdventuSpriteFont = new SpriteFont("LEVEL CLEARED!", 200, 75, "ARCADECLASSIC.ttf", 75, Color.getHSBColor(rainbowColorHue, 0.8f, 0.8f));
+        } else {
+            cardansAdventuSpriteFont = new SpriteFont("BOSS INCOMING!", 200, 75, "ARCADECLASSIC.ttf", 75, Color.getHSBColor(rainbowColorHue, 0.8f, 0.8f));
+        }
         cardansAdventuSpriteFont.setOutlineColor(Color.black);
         cardansAdventuSpriteFont.setOutlineThickness(3);    
     }

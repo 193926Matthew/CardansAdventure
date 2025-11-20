@@ -108,6 +108,7 @@ public abstract class Player extends GameObject {
     private boolean enemyHitByPoison;
     private boolean speedInCooldown;
     private boolean speedActive;
+    private int endTimer = 0;
 
     //Timer for spikes
     private Timer spikeTimer = new Timer();
@@ -153,17 +154,17 @@ public abstract class Player extends GameObject {
 
     // respawn player at last checkpoint
     public void respawn() {
-        System.out.println("Respawn triggered.");
-        System.out.println("Respawn point: " + respawnPoint);
-        System.out.println("Level state before respawn: " + levelState);
+        // System.out.println("Respawn triggered.");
+        // System.out.println("Respawn point: " + respawnPoint);
+        // System.out.println("Level state before respawn: " + levelState);
 
         if (respawnPoint != null) {
-            System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
+            // System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
             this.setLocation(respawnPoint.x, respawnPoint.y);
         } else {
-            System.out.println("Respawning at starting point (2,21)");
+            // System.out.println("Respawning at starting point (2,21)");
             setRespawnPoint(new Point(2*32, 21*32)); // Default respawn point at start
-            System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
+            // System.out.println("Respawning at: (" + respawnPoint.x + ", " + respawnPoint.y + ")");
             this.setLocation(respawnPoint.x, respawnPoint.y);
     }
 
@@ -263,7 +264,7 @@ public abstract class Player extends GameObject {
 
             if (this.x < 0) {
                 this.x = 0;
-                System.out.println("Cannot go beyond x bounds");
+                // System.out.println("Cannot go beyond x bounds");
             }
 
             
@@ -275,7 +276,7 @@ public abstract class Player extends GameObject {
 
             if(this.getX2() > map.getWidthPixels()){
                 this.x = map.getWidthPixels() - this.getWidth();
-                System.out.println("Cannot go beyond x bounds");
+                // System.out.println("Cannot go beyond x bounds");
 
             }
 
@@ -673,7 +674,7 @@ public abstract class Player extends GameObject {
                 this.walkSpeed = baseSpeed;
                 this.setWalkSpeed(4.3f);
                 //print so player is aware
-                System.out.println("Boost ended, cooldown started.");
+                // System.out.println("Boost ended, cooldown started.");
                 //change cooldown status to true
                 this.speedInCooldown = true;
             }
@@ -681,7 +682,7 @@ public abstract class Player extends GameObject {
             //we change the speedInCooldown to false
             if (superSpeedTime == 0) {
                 this.speedInCooldown = false;
-                System.out.println("Cooldown ended, boost ready.");
+                // System.out.println("Cooldown ended, boost ready.");
             }
     }
 
@@ -1140,10 +1141,14 @@ public abstract class Player extends GameObject {
         }
         // move player to the right until it walks off screen
         else if (map.getCamera().containsDraw(this)) { // victory dance here when killing boss
-                        for (PlayerListener listener : listeners) {
+            if (endTimer == 75) {
+                for (PlayerListener listener : listeners) {
                 listener.onLevelCompleted();
+                endTimer = 0;
             }
-            currentAnimationName = "WALK_RIGHT";
+            }
+            endTimer++;
+            currentAnimationName = "ATTACK_LEFT_SPIN";
             super.update();
             moveXHandleCollision(walkSpeed - 1);
         } else {

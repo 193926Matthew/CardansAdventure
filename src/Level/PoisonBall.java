@@ -60,13 +60,13 @@ public class PoisonBall extends EnhancedMapTile{
                             //possibly removed prior 
                             //hurts enemy
                             ((Enemy)entity).kill(10);
-                            System.out.println("Enemy dealt 10 damage by poison ball!" );
+                            // System.out.println("Enemy dealt 10 damage by poison ball!" );
                             //ensures that poison status is set to true, allows for poison to run in Enemy class
                             ((Enemy)entity).setPoisonStatus(true);
-                            System.out.println("Enemy now has with poison ailment");
+                            // System.out.println("Enemy now has with poison ailment");
 
                             boolean poison = ((Enemy)entity).getPoisonStatus();
-                            System.out.println(poison);
+                            // System.out.println(poison);
                             }
 
                     

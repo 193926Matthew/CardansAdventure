@@ -26,7 +26,7 @@ public class TutorialMap extends Map {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         BugEnemy bugEnemy1 = new BugEnemy(getMapTile(53, 12).getLocation().subtractY(25), Direction.RIGHT);
-        System.out.println(bugEnemy1.getHealth());
+        // System.out.println(bugEnemy1.getHealth());
         enemies.add(bugEnemy1);
 
         return enemies;

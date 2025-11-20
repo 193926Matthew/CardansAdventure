@@ -24,7 +24,7 @@ public class SpriteFont {
         	// Try loading from a .ttf file
         	if (fontName.toLowerCase().endsWith(".ttf")) {
             	File fontFile = new File("Resources\\" + fontName);
-				System.out.println(fontFile.getAbsolutePath());
+				// System.out.println(fontFile.getAbsolutePath());
             	Font newFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);
             	this.font = newFont.deriveFont(Font.PLAIN, (float) fontSize);
         	} else {

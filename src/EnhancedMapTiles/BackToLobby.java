@@ -22,7 +22,7 @@ public class BackToLobby extends EnhancedMapTile{
     public void update(Player player) {
         super.update(player);
         if (intersects(player)) {
-            System.out.println("lobby touched");
+            // System.out.println("lobby touched");
             triggerCode = 4;
             //gameState = GameState.MENU;
         }

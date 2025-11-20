@@ -11,6 +11,7 @@ import Level.Enemy;
 import Level.MapEntity;
 import Level.MapEntityStatus;
 import Level.Player;
+import Maps.SnowBossMap;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
@@ -29,7 +30,7 @@ public class Narwhal extends Enemy {
     private Direction facingDirection;
     private AirGroundState airGroundState;
     private boolean hurt = false;
-    private int health = 1;
+    private int health = 250;
     private int jumpStartTime = 0;
     private int jumpTime = 0;
     private double jumpRandom = Math.random() * (300) + 1;
@@ -41,16 +42,13 @@ public class Narwhal extends Enemy {
     private int stuckInt = 0;
     private int stuckTimer = 0;
     private IceCrash iceCrash;
-    private boolean fate = true; // true = alive, false = dead
+    private SnowBossMap arena;
 
-    public Narwhal(Point location, Direction facingDirection) {
+    public Narwhal(Point location, Direction facingDirection, SnowBossMap arena) {
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("Narwhal.png"), 200, 200), "WALK_LEFT");
+        this.arena = arena;
         this.startFacingDirection = facingDirection;
         this.initialize();
-    }
-
-    public boolean isNarwhalDead() {
-        return fate;
     }
 
     public boolean isHurt() {
@@ -70,7 +68,7 @@ public class Narwhal extends Enemy {
         }
 
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
+        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
      @Override
     public int getHealth(){
@@ -90,7 +88,9 @@ public class Narwhal extends Enemy {
 
         if (health <= 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED;
-            fate = false;
+            if (arena != null) {
+                arena.spawnFriend();
+            }            
             super.update();
             return;
         }

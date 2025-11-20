@@ -57,7 +57,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
+        levelClearedScreen = new LevelClearedScreen(true);
         levelLoseScreen = new LevelLoseScreen(this);
 
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -137,10 +137,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
         //powerup popup
         if (showPowerUpText && powerUpText != null) {
             powerUpText.draw(graphicsHandler);
-        if (powerUpTextLine2 != null) {
-            powerUpTextLine2.draw(graphicsHandler);
+            if (powerUpTextLine2 != null) {
+                powerUpTextLine2.draw(graphicsHandler);
+            }
         }
-    }
        
 
     }
@@ -192,7 +192,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
 
-            levelClearedScreen = new LevelClearedScreen();
+            levelClearedScreen = new LevelClearedScreen(true);
             levelLoseScreen = new LevelLoseScreen(this);
 
             this.playLevelScreenState = PlayLevelScreenState.RUNNING;
@@ -223,7 +223,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
             // SECOND LINE
             powerUpTextLine2 = new SpriteFont(
-                "Press W arrow again to double jump!",
+                "Press W twice to double jump!",
                 300,
                 140,  
                 "Arial",

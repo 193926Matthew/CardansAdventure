@@ -35,11 +35,20 @@ public class SnowBossMap extends Map {
          this.playerStartPosition = getMapTile(2, 20).getLocation();
     }
 
+    public void spawnFriend(){
+        // System.out.println("frined");
+        NewEndLevel friend = new NewEndLevel(getMapTile(15,20).getLocation());
+        addEnhancedMapTile(friend);
+        friend.initialize();
+        return;
+
+    }
+
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        narwhal = new Narwhal(getMapTile(1, 20).getLocation().subtractY(25), Direction.LEFT);
+        narwhal = new Narwhal(getMapTile(1, 20).getLocation().subtractY(25), Direction.LEFT, this);
         enemies.add(narwhal);
 
         return enemies;
@@ -48,12 +57,6 @@ public class SnowBossMap extends Map {
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-
-        NewEndLevel friend = new NewEndLevel(getMapTile(10,19).getLocation());
-        if (!narwhal.isNarwhalDead()) {
-            enhancedMapTiles.add(friend);
-        }
-
         /* 
         BackToLobby backToLobby = new BackToLobby(getMapTile(196,20).getLocation());
         enhancedMapTiles.add(backToLobby);

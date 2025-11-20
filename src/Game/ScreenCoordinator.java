@@ -32,6 +32,7 @@ public class ScreenCoordinator extends Screen {
 	protected Screen currentScreen = new DefaultScreen();
 
 	private static Screen staticCurrentScreen;
+	
 
 
 	// keep track of gameState so ScreenCoordinator knows which Screen to show
@@ -65,13 +66,21 @@ public class ScreenCoordinator extends Screen {
 	public void update() {
 
 	// for testing purpose
-	if (Keyboard.isKeyDown(Key.M)) {
+	if (Keyboard.isKeyDown(Key.ONE)) {
+		gameState = GameState.MENU;
+	} else if (Keyboard.isKeyDown(Key.TWO)) {
 		gameState = GameState.LOBBY;
-	} else if (Keyboard.isKeyDown(Key.N)) {
+	} else if (Keyboard.isKeyDown(Key.THREE)){
 		gameState = GameState.LEVEL;
-	} else if (Keyboard.isKeyDown(Key.B)){
+	} else if (Keyboard.isKeyDown(Key.FOUR)){
+		gameState = GameState.SNOW;
+	} else if (Keyboard.isKeyDown(Key.FIVE)){
+		gameState = GameState.JUNGLE;
+	} else if (Keyboard.isKeyDown(Key.SIX)){
 		gameState = GameState.SNOWBOSS;
-	}
+	} else if (Keyboard.isKeyDown(Key.SEVEN)){
+		gameState = GameState.JBOSS;
+	} 
 	
 
 

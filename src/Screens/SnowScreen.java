@@ -56,7 +56,7 @@ public class SnowScreen extends Screen implements PlayerListener {
         this.hitbox = new Hitbox(player.getLocation());
         map.addHitbox(this.hitbox);
 
-        levelClearedScreen = new LevelClearedScreen();
+        levelClearedScreen = new LevelClearedScreen(false);
         levelLoseScreen = new LevelLoseScreen(this);
 
         this.playLevelScreenState = SnowScreenState.RUNNING;
@@ -191,7 +191,7 @@ public class SnowScreen extends Screen implements PlayerListener {
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
 
-            levelClearedScreen = new LevelClearedScreen();
+            levelClearedScreen = new LevelClearedScreen(false);
             levelLoseScreen = new LevelLoseScreen(this);
 
             this.playLevelScreenState = SnowScreenState.RUNNING;
@@ -203,7 +203,7 @@ public class SnowScreen extends Screen implements PlayerListener {
     }
 
     public void GoBackToLobby(){
-        screenCoordinator.setGameState(GameState.LOBBY);
+        screenCoordinator.setGameState(GameState.SNOWBOSS);
     }
     // method to show power-up text popup
     public void showPowerUpText(String message) {

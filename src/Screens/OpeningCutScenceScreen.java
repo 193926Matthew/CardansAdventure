@@ -55,7 +55,7 @@ public class OpeningCutScenceScreen extends Screen implements PlayerListener {
 
         //levelLoseScreen = new LevelLoseScreen(this);
         this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
-        openingCutSceneMessage = new SpriteFont("I need to help save my friends", 100,250 ,"ARCADECLASSIC",40, Color.WHITE);
+        openingCutSceneMessage = new SpriteFont("I need to help save my friends!", 100,250 ,"ARCADECLASSIC",40, Color.WHITE);
         openingCutSceneMessage.setOutlineColor(Color.BLACK);
         openingCutSceneMessage.setOutlineThickness(3);
 
@@ -133,7 +133,7 @@ public class OpeningCutScenceScreen extends Screen implements PlayerListener {
                 break;
         }
 
-        openingCutSceneMessage.setText("I need to help save my friends");
+        openingCutSceneMessage.setText("I need to help save my friends!");
         if(player.getDisplayOpeningText()){
             openingCutSceneMessage.draw(graphicsHandler);
         }
@@ -193,7 +193,7 @@ public class OpeningCutScenceScreen extends Screen implements PlayerListener {
             this.hitbox = new Hitbox(player.getLocation());
             map.addHitbox(this.hitbox);
 
-            levelClearedScreen = new LevelClearedScreen();
+            levelClearedScreen = new LevelClearedScreen(true);
 
             this.openingCutScenceScreenState = OpeningCutScenceScreenState.RUNNING;
             this.lives = new SpriteFont("health: " + player.getHealth(), -1, 1, "Arial", 40, new Color(255, 0, 0));
@@ -205,7 +205,7 @@ public class OpeningCutScenceScreen extends Screen implements PlayerListener {
 
      @Override
      public void onOpeningCutsceneCompleted() {
-        System.out.println("FIRE");
+        // System.out.println("FIRE");
         screenCoordinator.setGameState(GameState.TUTORIAL);
      }
 }

@@ -79,7 +79,6 @@ public class JungleTileset extends Tileset {
         // depth block
         Frame depthBlockFrame = new FrameBuilder(getSubImage(0, 4))
                 .withScale(tileScale)
-                .withBounds(0, 6, 16, 4)
                 .build();
 
         MapTileBuilder depthBlockTile = new MapTileBuilder(depthBlockFrame)

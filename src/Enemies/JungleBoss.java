@@ -25,7 +25,7 @@ public class JungleBoss extends Enemy{
     private Direction facingDirection;
     private AirGroundState airGroundState;
     private boolean hurt = false;
-    private int health = 50; // orginal 25
+    private int health = 250; // orginal 25
     private int HurtTimer = 240;
     
     // jumping
@@ -40,19 +40,20 @@ public class JungleBoss extends Enemy{
 
     // enemy size
     private static final float BOSS_SCALE = 2f;
-    private static final int BOUND_X = 2; //2
-    private static final int BOUND_Y = 4; //4
-    private static final int BOUND_WIDTH = 90; // 90
-    private static final int BOUND_HEIGHT = 56; //56
+    private static final int BOUND_X = 20; //2
+    private static final int BOUND_Y = 35; //4
+    private static final int BOUND_WIDTH = 60; // 90
+    private static final int BOUND_HEIGHT = 30; //56
 
     public JungleBossArena arena;
 
     
 
 
-    public JungleBoss(Point location, Direction facingDirection){
+    public JungleBoss(Point location, Direction facingDirection, JungleBossArena arena){
         super(location.x, location.y, new SpriteSheet(ImageLoader.load("ElephantBoss.png"), 100, 64), "WALK_LEFT");
         this.startFacingDirection = facingDirection;
+        this.arena = arena;
         this.initialize();
     }
 
@@ -73,7 +74,7 @@ public class JungleBoss extends Enemy{
             }
         }
         super.draw(graphicsHandler);
-        // drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
+        //drawBounds(graphicsHandler, new Color(255, 0, 0, 170));
     }
 
     @Override
@@ -92,14 +93,17 @@ public class JungleBoss extends Enemy{
     @Override
     public void update(Player player) {
         //System.out.println(movementSpeed);
+        // System.out.println("Boss HP: " + health);
+
 
         // bosss dies
         if (health <= 0) {
             this.mapEntityStatus = MapEntityStatus.REMOVED; 
 
-            //player.playVictoryAnimation();
-            //arena.isBossDead();
-            //player.notifyLevelCompleted();
+            // TELL THE MAP THAT THE BOSS DIED
+            if (arena != null) {
+                arena.spawnFriend();
+            }
             
             super.update();
             return;
@@ -179,7 +183,7 @@ public class JungleBoss extends Enemy{
 
                 HurtTimer--;
                 if (HurtTimer <= 0){
-                    System.out.println("im better now");
+                    // System.out.println("im better now");
                     HurtTimer = 240;
                     jumpCoolDownMax = 40;
                     hurt = false;
@@ -213,7 +217,7 @@ public class JungleBoss extends Enemy{
 
                 HurtTimer--;
                 if (HurtTimer <= 0){
-                    System.out.println("im better now");
+                    // System.out.println("im better now");
                     HurtTimer = 240;
                     jumpCoolDownMax = 40;
                     hurt = false;
@@ -319,16 +323,7 @@ public class JungleBoss extends Enemy{
                             .withScale(BOSS_SCALE)
                             .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
                             .build()
-                    /* 
-                    new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                            .withScale(BOSS_SCALE)
-                            .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
-                            .withScale(BOSS_SCALE)
-                            .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
-                            .build()
-                    */        
+       
             });
 
             put("WALK_RIGHT", new Frame[] {
@@ -342,18 +337,7 @@ public class JungleBoss extends Enemy{
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
                             .build()
-                    /* 
-                    new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                            .withScale(BOSS_SCALE)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
-                            .withScale(BOSS_SCALE)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                             .withBounds(BOUND_X, BOUND_Y, BOUND_WIDTH, BOUND_HEIGHT)
-                            .build()
-                    */
+   
             });
 
             put("HURT_WALK_LEFT", new Frame[] {

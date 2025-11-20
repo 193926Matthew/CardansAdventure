@@ -31,7 +31,7 @@ public class HealthPowerUp extends EnhancedMapTile {
             collected = true;
             player.setHealth(currentHealth + healAmount);
             this.mapEntityStatus = MapEntityStatus.REMOVED;
-            System.out.println("Collected Health PowerUp: healed " + healAmount);
+            // System.out.println("Collected Health PowerUp: healed " + healAmount);
         }
     }
 

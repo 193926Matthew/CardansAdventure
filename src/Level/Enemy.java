@@ -68,7 +68,7 @@ public class Enemy extends MapEntity {
         }
         if(this.getPoisonStatus() == true){
             if(poisonDelay == 0){
-                System.out.println("poison ailment damage taken!" + " 5 damage taken");
+                // System.out.println("poison ailment damage taken!" + " 5 damage taken");
                 this.kill(5);
                 poisonDelay =100; 
             }
