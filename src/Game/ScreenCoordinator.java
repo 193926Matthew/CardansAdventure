@@ -66,6 +66,7 @@ public class ScreenCoordinator extends Screen {
 	public void update() {
 
 	// for testing purpose
+	/* 
 	if (Keyboard.isKeyDown(Key.ONE)) {
 		gameState = GameState.MENU;
 	} else if (Keyboard.isKeyDown(Key.TWO)) {
@@ -81,7 +82,7 @@ public class ScreenCoordinator extends Screen {
 	} else if (Keyboard.isKeyDown(Key.SEVEN)){
 		gameState = GameState.JBOSS;
 	} 
-	
+	*/
 
 
 		do {
